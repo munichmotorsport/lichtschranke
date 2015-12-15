@@ -47,11 +47,12 @@
     <AbsoluteLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/linearLayout">
+        android:layout_below="@+id/linearLayout"
+        android:layout_above="@+id/linearLayout2">
 
         <ListView
             android:layout_width="match_parent"
-            android:layout_height="310dp"
+            android:layout_height="match_parent"
             android:id="@+id/listView"
             android:layout_x="-2dp"
             android:layout_y="94dp">
@@ -85,7 +86,29 @@
             android:layout_alignParentEnd="true"
             android:layout_x="228dp"
             android:layout_y="22dp" />
+
     </AbsoluteLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="108dp"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/linearLayout2"
+        android:gravity="center">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Clear List"
+            android:id="@+id/btn_clearList" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Next"
+            android:id="@+id/btn_next" />
+    </LinearLayout>
 
 </RelativeLayout>
 
