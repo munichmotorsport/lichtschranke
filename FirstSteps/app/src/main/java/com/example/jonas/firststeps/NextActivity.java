@@ -15,6 +15,7 @@ public class NextActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_next);
+        setTitle("übergebene Daten");
 
         stringArray = this.getIntent().getStringArrayListExtra("MainActivity.Data");
         final ListView lv_view2 = (ListView) findViewById(R.id.lv_list2);
