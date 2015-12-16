@@ -1,4 +1,4 @@
-package com.example.jonas.firststeps;
+package com.example.jonas.firststeps.gui;
 
 
 import android.content.Intent;
@@ -14,6 +14,10 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+
+import com.example.jonas.firststeps.dbAccess.DatabaseContract;
+import com.example.jonas.firststeps.dbAccess.DatabaseHelper;
+import com.example.jonas.firststeps.R;
 
 import java.util.ArrayList;
 
@@ -131,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
 
-        db.delete(DatabaseContract.Table1.TABLE_NAME, DatabaseContract.Table1.COLUMN_NAME_COL1 + " = '"+ message +"'" , null);
+        db.delete(DatabaseContract.Table1.TABLE_NAME, DatabaseContract.Table1.COLUMN_NAME_COL1 + " = '" + message + "'", null);
 
         db.close();
     }
