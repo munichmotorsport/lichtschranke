@@ -17,9 +17,8 @@ public class NextActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_next);
-        setTitle("übergebene Daten");
-
-        stringArray = this.getIntent().getStringArrayListExtra("MainActivity.Data");
+        setTitle("gespeicherte Daten");
+        stringArray = MainActivity.getData(this);
         final ListView lv_view2 = (ListView) findViewById(R.id.lv_list2);
         ArrayAdapter<String> adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, stringArray);
         lv_view2.setAdapter(adapter);
