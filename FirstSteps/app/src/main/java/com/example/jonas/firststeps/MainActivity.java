@@ -1,6 +1,7 @@
 package com.example.jonas.firststeps;
 
 
+import android.content.Context;
 import android.content.Intent;
 
 import android.content.ContentValues;
@@ -47,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
     public void saveData(View view) {
         addData();
         stringArray.clear();
-        stringArray.addAll(getData());
+        stringArray.addAll(getData(this));
         ArrayAdapter<String> adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, stringArray);
         ListView listView = (ListView) findViewById(R.id.listView);
         listView.setAdapter(adapter);
@@ -58,32 +59,39 @@ public class MainActivity extends AppCompatActivity {
         String message = editText.getText().toString();
         deleteDataDB(message);
         stringArray.clear();
-        if(!getData().isEmpty()) {
-            stringArray.addAll(getData());
+        if(!getData(this).isEmpty()) {
+            stringArray.addAll(getData(this));
             ArrayAdapter<String> adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, stringArray);
             ListView listView = (ListView) findViewById(R.id.listView);
             listView.setAdapter(adapter);
         }
     }
 
-    public ArrayList<String> getData() {
+    public static ArrayList<String> getData(Context context) {
 
-        DatabaseHelper dbHelper = new DatabaseHelper(this);
+
+        DatabaseHelper dbHelper = new DatabaseHelper(context);
 
         // Get the database. If it does not exist, this is where it will
         // also be created.
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
+
         String selectQuery = "SELECT  * FROM " + DatabaseContract.Table1.TABLE_NAME;
 
             Cursor cursor = db.rawQuery(selectQuery, null);
             ArrayList<String> data = new ArrayList<>();
-            cursor.moveToFirst();
+
+
+
+            if(cursor.moveToFirst()) {
                 do {
                     data.add(cursor.getString(1));
                 } while (cursor.moveToNext());
-            db.close();
+                db.close();
+            }
             return data;
+
         }
 
     public void addData() {
