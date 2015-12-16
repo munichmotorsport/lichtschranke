@@ -12,7 +12,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Na, Lust etwas zu speichern?"
+        android:text="Na, Lust etwas in die Datenbank zu speichern?"
         android:id="@+id/textView" />
 
     <LinearLayout
@@ -61,7 +61,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Na, Lust etwas zu löschen?"
+            android:text="Na, Lust etwas aus der Datenbank zu löschen?"
             android:id="@+id/deleteView"
             android:layout_x="2dp"
             android:layout_y="11dp" />
@@ -106,7 +106,7 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Next"
+            android:text="Data"
             android:id="@+id/btn_next" />
     </LinearLayout>
 

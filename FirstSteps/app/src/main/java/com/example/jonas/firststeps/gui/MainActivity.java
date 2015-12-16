@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        setTitle("Listenspaß als Test");
+        setTitle("Erste Gehversuche mit Datenbanken");
 
         final Button btn_clearList = (Button) findViewById(R.id.btn_clearList);
         final Button btn_next = (Button) findViewById(R.id.btn_next);
@@ -47,16 +47,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        showData();
     }
 
 
     public void saveData(View view) {
         addData();
         stringArray.clear();
-        stringArray.addAll(getData(this));
-        ArrayAdapter<String> adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, stringArray);
-        ListView listView = (ListView) findViewById(R.id.listView);
-        listView.setAdapter(adapter);
+        showData();
     }
 
     public void deleteData(View view) {
@@ -64,12 +62,15 @@ public class MainActivity extends AppCompatActivity {
         String message = editText.getText().toString();
         deleteDataDB(message);
         stringArray.clear();
+        showData();
+    }
+
+    public void showData() {
         stringArray.addAll(getData(this));
         ArrayAdapter<String> adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, stringArray);
         ListView listView = (ListView) findViewById(R.id.listView);
         listView.setAdapter(adapter);
     }
-
 
 
     public static ArrayList<String> getData(Context context) {
