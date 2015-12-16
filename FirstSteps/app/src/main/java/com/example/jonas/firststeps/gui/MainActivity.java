@@ -1,14 +1,23 @@
-package com.example.jonas.firststeps;
+package com.example.jonas.firststeps.gui;
+
+
+import android.content.Intent;
 
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+
+import com.example.jonas.firststeps.dbAccess.DatabaseContract;
+import com.example.jonas.firststeps.dbAccess.DatabaseHelper;
+import com.example.jonas.firststeps.R;
 
 import java.util.ArrayList;
 
@@ -20,7 +29,24 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        setTitle("Listenspaß");
+        setTitle("Listenspaß als Test");
+
+        final Button btn_clearList = (Button) findViewById(R.id.btn_clearList);
+        final Button btn_next = (Button) findViewById(R.id.btn_next);
+
+        btn_clearList.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                clearList();
+            }
+        });
+
+        btn_next.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                goTo_nextActivity();
+            }
+        });
+
+        loadData();
     }
 
 
@@ -39,11 +65,15 @@ public class MainActivity extends AppCompatActivity {
         deleteDataDB(message);
         stringArray.clear();
         if(!getData().isEmpty()) {
-            stringArray.addAll(getData());
-            ArrayAdapter<String> adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, stringArray);
-            ListView listView = (ListView) findViewById(R.id.listView);
-            listView.setAdapter(adapter);
+            loadData();
         }
+    }
+
+    public void loadData() {
+        stringArray.addAll(getData());
+        ArrayAdapter<String> adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, stringArray);
+        ListView listView = (ListView) findViewById(R.id.listView);
+        listView.setAdapter(adapter);
     }
 
     public ArrayList<String> getData() {
@@ -88,6 +118,21 @@ public class MainActivity extends AppCompatActivity {
         db.close();
     }
 
+
+    public void clearList() {
+        stringArray.clear();
+        ArrayAdapter<String> adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, stringArray);
+        ListView listView = (ListView) findViewById(R.id.listView);
+        listView.setAdapter(adapter);
+    }
+
+    public void goTo_nextActivity() {
+        Intent intent = new Intent(this, NextActivity.class);
+        intent.putExtra("MainActivity.Data", stringArray);
+        startActivity(intent);
+    }
+
+
     public void deleteDataDB(String message) {
         DatabaseHelper dbHelper = new DatabaseHelper(this);
 
@@ -96,10 +141,11 @@ public class MainActivity extends AppCompatActivity {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
 
-        db.delete(DatabaseContract.Table1.TABLE_NAME, DatabaseContract.Table1.COLUMN_NAME_COL1 + " = '"+ message +"'" , null);
+        db.delete(DatabaseContract.Table1.TABLE_NAME, DatabaseContract.Table1.COLUMN_NAME_COL1 + " = '" + message + "'", null);
 
         db.close();
     }
 
-    }
+}
+
 

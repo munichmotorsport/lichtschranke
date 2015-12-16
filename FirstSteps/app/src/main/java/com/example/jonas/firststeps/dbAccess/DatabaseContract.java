@@ -1,4 +1,4 @@
-package com.example.jonas.firststeps;
+package com.example.jonas.firststeps.dbAccess;
 
 import android.provider.BaseColumns;
 

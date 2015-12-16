@@ -1,8 +1,10 @@
-package com.example.jonas.firststeps;
+package com.example.jonas.firststeps.dbAccess;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
+import com.example.jonas.firststeps.dbAccess.DatabaseContract;
 
 /**
  * Created by jonas on 14.12.15.
