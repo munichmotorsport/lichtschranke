@@ -45,6 +45,8 @@ public class MainActivity extends AppCompatActivity {
                 goTo_nextActivity();
             }
         });
+
+        loadData();
     }
 
 
@@ -63,11 +65,15 @@ public class MainActivity extends AppCompatActivity {
         deleteDataDB(message);
         stringArray.clear();
         if(!getData().isEmpty()) {
-            stringArray.addAll(getData());
-            ArrayAdapter<String> adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, stringArray);
-            ListView listView = (ListView) findViewById(R.id.listView);
-            listView.setAdapter(adapter);
+            loadData();
         }
+    }
+
+    public void loadData() {
+        stringArray.addAll(getData());
+        ArrayAdapter<String> adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, stringArray);
+        ListView listView = (ListView) findViewById(R.id.listView);
+        listView.setAdapter(adapter);
     }
 
     public ArrayList<String> getData() {
