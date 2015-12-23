@@ -22,17 +22,25 @@ import com.example.jonas.firststeps.R;
 
 import java.util.ArrayList;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
 
 public class MainActivity extends AppCompatActivity {
+
+    @Bind(R.id.btn_clearList)
+    Button btn_clearList;
+
     ArrayList<String> stringArray = new ArrayList<>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setTitle("Erste Gehversuche mit Datenbanken");
+        ButterKnife.bind(this);
 
-        final Button btn_clearList = (Button) findViewById(R.id.btn_clearList);
         final Button btn_next = (Button) findViewById(R.id.btn_next);
 
         btn_clearList.setOnClickListener(new View.OnClickListener() {
@@ -85,20 +93,19 @@ public class MainActivity extends AppCompatActivity {
 
         String selectQuery = "SELECT  * FROM " + DatabaseContract.Table1.TABLE_NAME;
 
-            Cursor cursor = db.rawQuery(selectQuery, null);
-            ArrayList<String> data = new ArrayList<>();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        ArrayList<String> data = new ArrayList<>();
 
 
-
-            if(cursor.moveToFirst()) {
-                do {
-                    data.add(cursor.getString(1));
-                } while (cursor.moveToNext());
-                db.close();
-            }
-            return data;
-
+        if (cursor.moveToFirst()) {
+            do {
+                data.add(cursor.getString(1));
+            } while (cursor.moveToNext());
+            db.close();
         }
+        return data;
+
+    }
 
     public void addData() {
         DatabaseHelper dbHelper = new DatabaseHelper(this);
