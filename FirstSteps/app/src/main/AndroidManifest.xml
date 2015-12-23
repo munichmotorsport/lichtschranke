@@ -3,6 +3,7 @@
     package="com.example.jonas.firststeps" >
 
     <application
+        android:name=".app.FirstStepsApp"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"

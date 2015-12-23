@@ -10,6 +10,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -21,9 +22,11 @@ import com.example.jonas.firststeps.dbAccess.DatabaseHelper;
 import com.example.jonas.firststeps.R;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import timber.log.Timber;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -38,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        setTitle("Erste Gehversuche mit Datenbanken");
+        setTitle("Erste Gehversuche mit Datenbanken2");
         ButterKnife.bind(this);
 
         final Button btn_next = (Button) findViewById(R.id.btn_next);
