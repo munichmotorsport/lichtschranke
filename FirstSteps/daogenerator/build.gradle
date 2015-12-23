@@ -1,0 +1,22 @@
+apply plugin: 'java'
+apply plugin:'application'
+
+mainClassName = "com.example.jonas.firststeps.dao.MyDaoGenerator"
+
+dependencies {
+    compile 'de.greenrobot:greendao-generator:2.0.0'
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+}
+
+sourceSets {
+    main {
+        java {
+            srcDir 'src'
+            srcDir 'src-gen'
+        }
+    }
+}
+
+artifacts {
+    archives jar
+}
