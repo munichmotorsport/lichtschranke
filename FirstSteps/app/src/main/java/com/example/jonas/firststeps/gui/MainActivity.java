@@ -17,6 +17,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
+import com.example.jonas.firststeps.db.Car;
+import com.example.jonas.firststeps.db.CarDao;
+import com.example.jonas.firststeps.db.DaoMaster;
+import com.example.jonas.firststeps.db.DaoSession;
 import com.example.jonas.firststeps.dbAccess.DatabaseContract;
 import com.example.jonas.firststeps.dbAccess.DatabaseHelper;
 import com.example.jonas.firststeps.R;
@@ -28,6 +32,8 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import timber.log.Timber;
 
+import static com.example.jonas.firststeps.db.DaoMaster.*;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -35,6 +41,9 @@ public class MainActivity extends AppCompatActivity {
     Button btn_clearList;
 
     ArrayList<String> stringArray = new ArrayList<>();
+    private SQLiteDatabase db;
+    private DaoMaster daoMaster;
+    private DaoSession daoSession;
 
 
     @Override
@@ -59,6 +68,28 @@ public class MainActivity extends AppCompatActivity {
         });
 
         showData();
+
+        testDao();
+    }
+
+    private void testDao() {
+        DevOpenHelper helper = new DevOpenHelper(this, "lichtschranke_db", null);
+        db = helper.getWritableDatabase();
+        daoMaster = new DaoMaster(db);
+        daoSession = daoMaster.newSession();
+        CarDao carDao = daoSession.getCarDao();
+        Car car = new Car(null, "TestCar!", "100");
+        long rowID = carDao.insert(car);
+        Timber.e("Inserted with rowID: %s", rowID);
+
+
+        carDao.deleteByKey(1L);
+
+        Timber.i("Car with id 1: %s", carDao.load(1L));
+
+        for (Car loadedCar : carDao.loadAll()) {
+            Timber.i("Cars from Db: %s id: %s", loadedCar.getName(), loadedCar.getId());
+        }
     }
 
 

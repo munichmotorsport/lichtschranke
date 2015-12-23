@@ -4,6 +4,12 @@ android {
     compileSdkVersion 23
     buildToolsVersion "23.0.2"
 
+    sourceSets {
+        main {
+            java.srcDirs = ['src/main/java', 'src-gen/main/java']
+        }
+    }
+
     defaultConfig {
         applicationId "com.example.jonas.firststeps"
         minSdkVersion 15
@@ -25,4 +31,5 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.1.1'
     compile 'com.jakewharton:butterknife:7.0.1'
     compile 'com.jakewharton.timber:timber:4.1.0'
+    compile 'de.greenrobot:greendao:2.0.0'
 }
