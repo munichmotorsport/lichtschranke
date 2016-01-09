@@ -18,6 +18,8 @@
         </activity>
         <activity android:name=".gui.NextActivity" >
         </activity>
+        <activity android:name=".gui.LiveActivity" >
+        </activity>
     </application>
 
 </manifest>

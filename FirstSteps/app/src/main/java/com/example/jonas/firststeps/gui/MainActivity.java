@@ -92,6 +92,11 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public void liveData(View view) {
+        Intent intent = new Intent(this, LiveActivity.class);
+        startActivity(intent);
+    }
+
 
     public void saveData(View view) {
         addData();
