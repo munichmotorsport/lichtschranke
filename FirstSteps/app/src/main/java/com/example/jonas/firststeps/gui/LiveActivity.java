@@ -76,6 +76,14 @@ public class LiveActivity extends AppCompatActivity {
         };
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if(asyncTask != null) {
+            asyncTask.cancel(true);
+        }
+    }
+
     public void clickContentProvider(View v) {
         Timber.d("Clicked CP");
     }
