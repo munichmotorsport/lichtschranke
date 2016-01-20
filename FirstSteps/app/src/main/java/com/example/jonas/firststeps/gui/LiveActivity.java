@@ -78,28 +78,26 @@ public class LiveActivity extends AppCompatActivity {
             }
 
 
-
-
             @Override
             protected void onProgressUpdate(LSData... newData) {
                 for (LSData data : newData) {
 //                    stringArray.add(data.toString());
-                    adapter.add(data.toString());;
+                    adapter.add(data.toString());
+                    ;
                 }
             }
         };
     }
 
 
-
     final Runnable DataInRates = new Runnable() {
         public void run() {
-           //showData();
+            //showData();
             System.out.println("Data");
         }
     };
 
-    public void showData(){
+    public void showData() {
         stringArray = MainActivity.getData(this);
         Timber.d(stringArray.toString());
         ArrayAdapter<String> Scheduledadapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, stringArray);
@@ -107,20 +105,19 @@ public class LiveActivity extends AppCompatActivity {
         listView.setAdapter(Scheduledadapter);
     }
 
-        private ScheduledFuture future;
+    private ScheduledFuture future;
 
-        public void clickContentProvider(View v) {
+    public void clickContentProvider(View v) {
         Timber.d("Clicked CP");
     }
 
     public void clickBroadcast(View v) {
         Timber.d("Clicked BC");
 
-        if(!isRunning) {
+        if (!isRunning) {
             future = scheduled.scheduleAtFixedRate(DataInRates, 0, 5, TimeUnit.SECONDS);
             isRunning = true;
-        }
-        else{
+        } else {
             future.cancel(true);
             isRunning = false;
         }
