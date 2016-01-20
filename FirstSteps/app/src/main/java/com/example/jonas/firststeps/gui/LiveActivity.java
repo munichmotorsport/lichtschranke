@@ -1,5 +1,6 @@
 package com.example.jonas.firststeps.gui;
 
+import android.app.AlarmManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -17,6 +18,7 @@ import com.example.jonas.firststeps.util.ThreadUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
@@ -83,7 +85,6 @@ public class LiveActivity extends AppCompatActivity {
                 for (LSData data : newData) {
 //                    stringArray.add(data.toString());
                     adapter.add(data.toString());
-                    ;
                 }
             }
         };
@@ -94,6 +95,12 @@ public class LiveActivity extends AppCompatActivity {
         public void run() {
             //showData();
             System.out.println("Data");
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    adapter.add(String.valueOf(System.currentTimeMillis()));
+                }
+            });
         }
     };
 
