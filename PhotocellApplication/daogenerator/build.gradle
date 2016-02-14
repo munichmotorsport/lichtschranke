@@ -1,7 +1,7 @@
 apply plugin: 'java'
 apply plugin:'application'
 
-mainClassName = "com.example.jonas.firststeps.dao.MyDaoGenerator"
+mainClassName = "com.generator.RaceDaoGen"
 
 dependencies {
     compile 'de.greenrobot:greendao-generator:2.0.0'
