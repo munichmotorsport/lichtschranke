@@ -6,16 +6,18 @@ import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
+
 import java.util.ArrayList;
 
 public class CreateRace extends AppCompatActivity {
-
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_race);
         Spinner spinner = (Spinner) findViewById(R.id.modus_spinner);
         ArrayList<String> modi = new ArrayList<>();
+
         modi.add("Acceleration");
         modi.add("Auto Cross");
         modi.add("Endurance");
