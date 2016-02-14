@@ -20,7 +20,9 @@ public class CreateRace extends AppCompatActivity {
         modi.add("Auto Cross");
         modi.add("Endurance");
         modi.add("Skit Pad");
-        ArrayAdapter
+        ArrayAdapter<String> dropDown = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1);
+        dropDown.addAll(modi);
+        spinner.setAdapter(dropDown);
     }
 
 
