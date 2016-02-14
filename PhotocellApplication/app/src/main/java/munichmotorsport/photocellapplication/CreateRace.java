@@ -44,6 +44,7 @@ public class CreateRace extends AppCompatActivity {
         daoSession = daoMaster.newSession();
         raceDao = daoSession.getRaceDao();
         Race race = new Race(null, "testType", "testName");
-
+        raceDao.insert(race);
+        System.out.println(raceDao.getKey(race));
     }
 }
