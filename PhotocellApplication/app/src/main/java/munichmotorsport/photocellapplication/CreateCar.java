@@ -9,5 +9,6 @@ public class CreateCar extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_car);
+        setTitle("Neues Auto erstellen");
     }
 }

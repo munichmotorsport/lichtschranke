@@ -16,5 +16,14 @@
     android:onClick="createRace"
     android:id="@+id/create_race"/>
 
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Create Race"
+        android:onClick="createCar"
+        android:id="@+id/createCar"
+        android:layout_below="@+id/create_race"
+        android:layout_centerHorizontal="true" />
+
 
 </RelativeLayout>

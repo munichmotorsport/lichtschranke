@@ -18,4 +18,9 @@ public class StartScreen extends AppCompatActivity {
         Intent intent = new Intent(this, CreateRace.class);
         startActivity(intent);
     }
+
+    public void createCar(View view){
+        Intent intent = new Intent(this, CreateCar.class);
+        startActivity(intent);
+    }
 }
