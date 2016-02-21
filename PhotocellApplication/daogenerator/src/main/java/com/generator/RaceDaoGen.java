@@ -21,7 +21,7 @@ static Entity team;
         createConfig(schema);
         createRace(schema);
         createLap(schema);
-        new DaoGenerator().generateAll(schema, "./app/src-gen/main/java");
+        new DaoGenerator().generateAll(schema, "app/src-gen/main/java");
     }
 
     private static void createRace(Schema schema) {
