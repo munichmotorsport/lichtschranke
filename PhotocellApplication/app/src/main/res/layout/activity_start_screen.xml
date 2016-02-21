@@ -19,7 +19,7 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Create Race"
+        android:text="Create Car"
         android:onClick="createCar"
         android:id="@+id/createCar"
         android:layout_below="@+id/create_race"

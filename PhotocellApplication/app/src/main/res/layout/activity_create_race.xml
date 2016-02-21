@@ -42,7 +42,7 @@
         android:layout_alignParentStart="true">
 
         <TextView
-            android:text="Konfiguration: "
+            android:text="Beschreibung: "
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
@@ -50,8 +50,8 @@
             android:layout_alignParentStart="true" />
 
         <EditText
-            android:id="@+id/configuration"
-            android:hint="z.B Torque Vectoring auf 4"
+            android:id="@+id/description"
+            android:hint="z.B 2. Run Autocross"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"

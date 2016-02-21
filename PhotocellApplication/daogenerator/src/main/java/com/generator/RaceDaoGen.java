@@ -28,7 +28,7 @@ static Entity team;
         race = schema.addEntity("Race");
         race.addIdProperty().autoincrement().primaryKey();
         race.addStringProperty("type").notNull();
-        race.addStringProperty("name");
+        race.addStringProperty("description");
     }
 
     private static void createLap(Schema schema){

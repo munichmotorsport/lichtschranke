@@ -53,13 +53,13 @@ public class CreateRace extends AppCompatActivity {
 
         String type = spinner.getSelectedItem().toString();
 
-        EditText editText = (EditText) findViewById(R.id.configuration);
-        String configuration = editText.getText().toString();
-        Race race = new Race(null, configuration, type);
+        EditText editText = (EditText) findViewById(R.id.description);
+        String description = editText.getText().toString();
+        Race race = new Race(null, description, type);
         long RaceID = raceDao.insert(race);
 
         Timber.e("Created Race with ID: %s", RaceID);
-        Timber.e("Created Race with Configuration: %s", race.getName());
+        Timber.e("Created Race with Description: %s", race.getName());
         Timber.e("Created Race with Modus: %s", race.getType());
     }
 }
