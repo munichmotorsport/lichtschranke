@@ -4,11 +4,14 @@ import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.Spinner;
 
 import db.DaoMaster;
 import db.DaoSession;
+import db.Team;
 import db.TeamDao;
+import timber.log.Timber;
 
 public class CreateTeam extends AppCompatActivity {
 
@@ -24,8 +27,23 @@ public class CreateTeam extends AppCompatActivity {
         setTitle("Neues Team erstellen");
     }
 
+    /**
+     * Team erstellen
+     * @param view
+     */
     public void createTeam(View view){
-        // TODO: Team in DB schreiben
+        DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(this, "photocell_db", null);
+        db = helper.getWritableDatabase();
+        daoMaster = new DaoMaster(db);
+        daoSession = daoMaster.newSession();
+        teamDao = daoSession.getTeamDao();
+
+        EditText editText = (EditText) findViewById(R.id.teamName);
+        String teamName = editText.getText().toString();
+        Team team = new Team(null, teamName);
+
+        // TODO: team in DB schreiben
+
         finish();
     }
 }

@@ -44,14 +44,16 @@ public class CreateRace extends AppCompatActivity {
         spinner.setAdapter(dropDown);
     }
 
+    /**
+     * Rennen erstellen
+     * @param view
+     */
     public void createRace(View view){
         DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(this, "photocell_db", null);
         db = helper.getWritableDatabase();
         daoMaster = new DaoMaster(db);
         daoSession = daoMaster.newSession();
         raceDao = daoSession.getRaceDao();
-
-
 
         String type = spinner.getSelectedItem().toString();
 
@@ -60,6 +62,7 @@ public class CreateRace extends AppCompatActivity {
         Race race = new Race(null, description, type);
         long RaceID = raceDao.insert(race);
 
+        // Logging
         Timber.e("Created Race with ID: %s", RaceID);
         Timber.e("Created Race with Description: %s", race.getDescription());
         Timber.e("Created Race with Modus: %s", race.getType());

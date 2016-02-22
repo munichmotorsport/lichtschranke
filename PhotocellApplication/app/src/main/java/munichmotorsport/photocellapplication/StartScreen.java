@@ -13,12 +13,19 @@ public class StartScreen extends AppCompatActivity {
         setContentView(R.layout.activity_start_screen);
     }
 
-
+    /**
+     * zur Activity "Rennen erstellen"
+     * @param view
+     */
     public void createRace(View view){
         Intent intent = new Intent(this, CreateRace.class);
         startActivity(intent);
     }
 
+    /**
+     * zur Activity "Auto erstellen"
+     * @param view
+     */
     public void createCar(View view){
         Intent intent = new Intent(this, CreateCar.class);
         startActivity(intent);

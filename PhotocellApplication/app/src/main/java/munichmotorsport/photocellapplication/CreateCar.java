@@ -39,10 +39,18 @@ public class CreateCar extends AppCompatActivity {
         spinner.setAdapter(dropDown);
     }
 
+    /**
+     * Auto erstellen
+     * @param view
+     */
     public void createCar(View view){
         // TODO: Auto in DB schreiben
     }
 
+    /**
+     * zur Activity "Team erstellen"
+     * @param view
+     */
     public void createTeam(View view){
         Intent intent = new Intent(this, CreateTeam.class);
         startActivity(intent);
