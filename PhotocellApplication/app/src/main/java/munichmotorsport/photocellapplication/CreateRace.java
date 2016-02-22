@@ -31,6 +31,8 @@ public class CreateRace extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_race);
+        setTitle("Neues Rennen erstellen");
+
         spinner = (Spinner) findViewById(R.id.modus_spinner);
         ArrayList<String> modi = new ArrayList<>();
         modi.add("Acceleration");
@@ -59,7 +61,7 @@ public class CreateRace extends AppCompatActivity {
         long RaceID = raceDao.insert(race);
 
         Timber.e("Created Race with ID: %s", RaceID);
-        Timber.e("Created Race with Description: %s", race.getName());
+        Timber.e("Created Race with Description: %s", race.getDescription());
         Timber.e("Created Race with Modus: %s", race.getType());
     }
 }
