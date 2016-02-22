@@ -19,6 +19,8 @@
         <activity android:name=".CreateRace" />
         <activity android:name=".CreateCar" >
         </activity>
+        <activity android:name=".CreateTeam" >
+        </activity>
     </application>
 
 </manifest>

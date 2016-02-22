@@ -36,7 +36,8 @@
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:weightSum="1">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -45,19 +46,33 @@
                 android:id="@+id/textView3" />
 
             <Spinner
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/teams" />
 
         </LinearLayout>
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Erstellen"
-            android:id="@+id/button"
-            android:onClick="createCar"
-            android:layout_gravity="center_horizontal" />
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Button
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Neues Team"
+                android:onClick="createTeam"
+                android:id="@+id/createTeam" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Erstellen"
+                android:id="@+id/button"
+                android:onClick="createCar"
+                android:layout_gravity="center_horizontal" />
+        </LinearLayout>
 
     </LinearLayout>
 

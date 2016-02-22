@@ -1,14 +1,25 @@
 package munichmotorsport.photocellapplication;
 
+import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
 import java.util.ArrayList;
 
+import db.CarDao;
+import db.DaoMaster;
+import db.DaoSession;
+
 public class CreateCar extends AppCompatActivity {
 
+    CarDao carDao;
+    private SQLiteDatabase db;
+    private DaoMaster daoMaster;
+    private DaoSession daoSession;
     Spinner spinner;
 
     @Override
@@ -27,4 +38,14 @@ public class CreateCar extends AppCompatActivity {
         dropDown.addAll(teams);
         spinner.setAdapter(dropDown);
     }
+
+    public void createCar(View view){
+        // TODO: Auto in DB schreiben
+    }
+
+    public void createTeam(View view){
+        Intent intent = new Intent(this, CreateTeam.class);
+        startActivity(intent);
+    }
+
 }
