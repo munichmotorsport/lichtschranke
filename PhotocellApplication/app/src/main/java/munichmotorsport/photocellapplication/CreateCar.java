@@ -30,6 +30,7 @@ public class CreateCar extends AppCompatActivity {
     private DaoMaster daoMaster;
     private DaoSession daoSession;
     Spinner spinner;
+    ArrayList<Long> teamIdList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,15 +53,14 @@ public class CreateCar extends AppCompatActivity {
         daoMaster = new DaoMaster(db);
         daoSession = daoMaster.newSession();
         TeamDao teamDao = daoSession.getTeamDao();
-        Query query = teamDao.queryBuilder().build();
-
-        String query2 = "SELECT Name FROM Team";
+        String query2 = "SELECT _id, Name FROM Team ORDER BY Name ASC";
         Cursor cursor = db.rawQuery(query2, null);
 
         if (cursor.moveToFirst()) {
             do {
-                teams_array.add(cursor.getString(0));
-                System.out.println(cursor.getString(0));
+                teamIdList.add(cursor.getLong(0));
+                teams_array.add(cursor.getString(1));
+                System.out.println(cursor.getString(1));
             } while (cursor.moveToNext());
             db.close();
         }
@@ -75,7 +75,7 @@ public class CreateCar extends AppCompatActivity {
      * @param view
      */
     public void createCar(View view){
-        int teamID = 0; // TODO: load team ID into this var
+        long teamID = teamIdList.get(spinner.getSelectedItemPosition());
 
         DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(this, "photocell_db", null);
         db = helper.getWritableDatabase();
