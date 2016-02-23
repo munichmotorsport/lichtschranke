@@ -1,5 +1,6 @@
 package munichmotorsport.photocellapplication;
 
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -11,12 +12,15 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import db.Car;
 import db.CarDao;
 import db.DaoMaster;
 import db.DaoSession;
 import db.Team;
+import db.TeamDao;
+import de.greenrobot.dao.query.Query;
 import timber.log.Timber;
 
 public class CreateCar extends AppCompatActivity {
@@ -41,10 +45,28 @@ public class CreateCar extends AppCompatActivity {
      */
     public void loadTeams() {
         spinner = (Spinner) findViewById(R.id.teams);
-        ArrayList<String> teams = new ArrayList<>();
-        teams.add("municHMotorsport"); // TODO: load teams from DB and add to array
+        ArrayList<String> teams_array = new ArrayList<>();
+
+        DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(this, "photocell_db", null);
+        db = helper.getWritableDatabase();
+        daoMaster = new DaoMaster(db);
+        daoSession = daoMaster.newSession();
+        TeamDao teamDao = daoSession.getTeamDao();
+        Query query = teamDao.queryBuilder().build();
+
+        String query2 = "SELECT Name FROM Team";
+        Cursor cursor = db.rawQuery(query2, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                teams_array.add(cursor.getString(0));
+                System.out.println(cursor.getString(0));
+            } while (cursor.moveToNext());
+            db.close();
+        }
+
         ArrayAdapter<String> dropDown = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1);
-        dropDown.addAll(teams);
+        dropDown.addAll(teams_array);
         spinner.setAdapter(dropDown);
     }
 
