@@ -1,18 +1,23 @@
 package munichmotorsport.photocellapplication;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.Spinner;
 
 import java.util.ArrayList;
 
+import db.Car;
 import db.CarDao;
 import db.DaoMaster;
 import db.DaoSession;
+import db.Team;
+import timber.log.Timber;
 
 public class CreateCar extends AppCompatActivity {
 
@@ -28,12 +33,16 @@ public class CreateCar extends AppCompatActivity {
         setContentView(R.layout.activity_create_car);
         setTitle("Neues Auto erstellen");
 
-        spinner = (Spinner) findViewById(R.id.teams);
+        loadTeams();
+    }
 
+    /**
+     * load Teams from DB and put them into spinner
+     */
+    public void loadTeams() {
+        spinner = (Spinner) findViewById(R.id.teams);
         ArrayList<String> teams = new ArrayList<>();
-        // TODO: load teams
-        // TODO: add teams to  teams
-        teams.add("municHMotorsport");  // Bsp:
+        teams.add("municHMotorsport"); // TODO: load teams from DB and add to array
         ArrayAdapter<String> dropDown = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1);
         dropDown.addAll(teams);
         spinner.setAdapter(dropDown);
@@ -44,7 +53,25 @@ public class CreateCar extends AppCompatActivity {
      * @param view
      */
     public void createCar(View view){
-        // TODO: Auto in DB schreiben
+        int teamID = 0; // TODO: load team ID into this var
+
+        DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(this, "photocell_db", null);
+        db = helper.getWritableDatabase();
+        daoMaster = new DaoMaster(db);
+        daoSession = daoMaster.newSession();
+        carDao = daoSession.getCarDao();
+
+        EditText editText = (EditText) findViewById(R.id.editText);
+        String carName = editText.getText().toString();
+        Car car = new Car(null, carName, teamID);
+        long carID = carDao.insert(car);
+
+        // Logging
+        Timber.e("Created Car with ID: %s", carID);
+        Timber.e("Created Car with Name: %s", car.getName());
+        Timber.e("Created Car for Team: %s", car.getTeamID());
+
+        finish();
     }
 
     /**
