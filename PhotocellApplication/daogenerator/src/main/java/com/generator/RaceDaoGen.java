@@ -15,7 +15,7 @@ static Entity config;
 static Entity team;
 
     public static void main(String[] args) throws Exception {
-        Schema schema = new Schema(1, "db");
+        Schema schema = new Schema(2, "db");
         createTeam(schema);
         createCar(schema);
         createConfig(schema);

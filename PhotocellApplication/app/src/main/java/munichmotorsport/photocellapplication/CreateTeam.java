@@ -41,8 +41,10 @@ public class CreateTeam extends AppCompatActivity {
         EditText editText = (EditText) findViewById(R.id.teamName);
         String teamName = editText.getText().toString();
         Team team = new Team(null, teamName);
+        long teamID = teamDao.insert(team);
 
-        // TODO: team in DB schreiben
+        Timber.e("Created Team with ID: %s", teamID);
+        Timber.e("Created Team with Name: %s", team.getName());
 
         finish();
     }
