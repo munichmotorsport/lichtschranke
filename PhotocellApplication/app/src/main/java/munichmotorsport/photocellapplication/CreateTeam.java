@@ -43,9 +43,10 @@ public class CreateTeam extends AppCompatActivity {
         Team team = new Team(null, teamName);
         long teamID = teamDao.insert(team);
 
+        finish();
+
+        // Logging
         Timber.e("Created Team with ID: %s", teamID);
         Timber.e("Created Team with Name: %s", team.getName());
-
-        finish();
     }
 }
