@@ -1,6 +1,5 @@
 package munichmotorsport.photocellapplication;
 
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -12,25 +11,24 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import db.Car;
 import db.CarDao;
 import db.DaoMaster;
 import db.DaoSession;
-import db.Team;
-import db.TeamDao;
-import de.greenrobot.dao.query.Query;
 import timber.log.Timber;
 
 public class CreateCar extends AppCompatActivity {
 
-    CarDao carDao;
+    private CarDao carDao;
     private SQLiteDatabase db;
     private DaoMaster daoMaster;
     private DaoSession daoSession;
-    Spinner spinner;
-    ArrayList<Long> teamIdList = new ArrayList<>();
+    private Spinner spinner;
+    private EditText editText;
+    private ArrayList<String> teamList_names;
+    private ArrayList<Long> teamList_Ids;
+    private ArrayAdapter<String> stringArrayAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +36,35 @@ public class CreateCar extends AppCompatActivity {
         setContentView(R.layout.activity_create_car);
         setTitle("Neues Auto erstellen");
 
+        // elements
+        spinner = (Spinner) findViewById(R.id.teams);
+        editText = (EditText) findViewById(R.id.editText);
+        teamList_names = new ArrayList<>();
+        teamList_Ids = new ArrayList<>();
+        stringArrayAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1);
+
+        // database
+        DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(this, "photocell_db", null);
+        db = helper.getWritableDatabase();
+        daoMaster = new DaoMaster(db);
+        daoSession = daoMaster.newSession();
+        carDao = daoSession.getCarDao();
+    }
+
+    @Override
+    protected void onResume () {
+        super.onResume();
+        resetTeamLists();
+    }
+
+    /**
+     *  reset Teamlists
+     */
+    private void resetTeamLists() {
+        stringArrayAdapter.clear();
+        teamList_names.clear();
+        teamList_Ids.clear();
+        Timber.e("Lists cleared, reload teams");
         loadTeams();
     }
 
@@ -45,29 +72,19 @@ public class CreateCar extends AppCompatActivity {
      * load Teams from DB and put them into spinner
      */
     public void loadTeams() {
-        spinner = (Spinner) findViewById(R.id.teams);
-        ArrayList<String> teams_array = new ArrayList<>();
-
-        DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(this, "photocell_db", null);
-        db = helper.getWritableDatabase();
-        daoMaster = new DaoMaster(db);
-        daoSession = daoMaster.newSession();
-        TeamDao teamDao = daoSession.getTeamDao();
         String query2 = "SELECT _id, Name FROM Team ORDER BY Name ASC";
         Cursor cursor = db.rawQuery(query2, null);
 
         if (cursor.moveToFirst()) {
             do {
-                teamIdList.add(cursor.getLong(0));
-                teams_array.add(cursor.getString(1));
-                System.out.println(cursor.getString(1));
+                teamList_Ids.add(cursor.getLong(0));
+                teamList_names.add(cursor.getString(1));
+                Timber.e("Loaded Team with ID: %s, Name %s", cursor.getLong(0), cursor.getString(1));
             } while (cursor.moveToNext());
-            db.close();
         }
 
-        ArrayAdapter<String> dropDown = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1);
-        dropDown.addAll(teams_array);
-        spinner.setAdapter(dropDown);
+        stringArrayAdapter.addAll(teamList_names);
+        spinner.setAdapter(stringArrayAdapter);
     }
 
     /**
@@ -75,15 +92,8 @@ public class CreateCar extends AppCompatActivity {
      * @param view
      */
     public void createCar(View view){
-        long teamID = teamIdList.get(spinner.getSelectedItemPosition());
+        long teamID = teamList_Ids.get(spinner.getSelectedItemPosition());
 
-        DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(this, "photocell_db", null);
-        db = helper.getWritableDatabase();
-        daoMaster = new DaoMaster(db);
-        daoSession = daoMaster.newSession();
-        carDao = daoSession.getCarDao();
-
-        EditText editText = (EditText) findViewById(R.id.editText);
         String carName = editText.getText().toString();
         Car car = new Car(null, carName, teamID);
         long carID = carDao.insert(car);
@@ -93,6 +103,7 @@ public class CreateCar extends AppCompatActivity {
         Timber.e("Created Car with Name: %s", car.getName());
         Timber.e("Created Car for Team: %s", car.getTeamID());
 
+        db.close();
         finish();
     }
 
