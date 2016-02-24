@@ -22,12 +22,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Name"
-                android:id="@+id/textView2" />
+                android:id="@+id/tv_carName" />
 
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/editText"
+                android:id="@+id/et_carName"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true" />
@@ -43,12 +43,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Team"
-                android:id="@+id/textView3" />
+                android:id="@+id/tv_teams" />
 
             <Spinner
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/teams" />
+                android:id="@+id/spn_teams" />
 
         </LinearLayout>
 
@@ -63,13 +63,13 @@
                 android:layout_height="wrap_content"
                 android:text="Neues Team"
                 android:onClick="createTeam"
-                android:id="@+id/createTeam" />
+                android:id="@+id/btn_newTeam" />
 
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Erstellen"
-                android:id="@+id/button"
+                android:id="@+id/btn_createCar"
                 android:onClick="createCar"
                 android:layout_gravity="center_horizontal" />
         </LinearLayout>

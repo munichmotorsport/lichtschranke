@@ -28,7 +28,7 @@
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/teamName" />
+                android:id="@+id/et_teamName" />
 
         </LinearLayout>
 
@@ -41,7 +41,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Erstellen"
-                android:id="@+id/button2"
+                android:id="@+id/btn_createTeam"
                 android:onClick="createTeam"
                 android:layout_gravity="center_horizontal" />
         </LinearLayout>

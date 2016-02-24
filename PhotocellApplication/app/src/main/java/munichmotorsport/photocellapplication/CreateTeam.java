@@ -5,7 +5,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Spinner;
 
 import db.DaoMaster;
 import db.DaoSession;
@@ -38,8 +37,8 @@ public class CreateTeam extends AppCompatActivity {
         daoSession = daoMaster.newSession();
         teamDao = daoSession.getTeamDao();
 
-        EditText editText = (EditText) findViewById(R.id.teamName);
-        String teamName = editText.getText().toString();
+        EditText et_teamName = (EditText) findViewById(R.id.et_teamName);
+        String teamName = et_teamName.getText().toString();
         Team team = new Team(null, teamName);
         long teamID = teamDao.insert(team);
 

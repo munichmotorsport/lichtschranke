@@ -13,8 +13,8 @@ public class StartScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start_screen);
 
-        ImageView imageView = (ImageView) findViewById(R.id.imageView);
-        imageView.setImageResource(R.drawable.logo_rw);
+        ImageView iv_backgroundimg = (ImageView) findViewById(R.id.iv_backgroundimg);
+        iv_backgroundimg.setImageResource(R.drawable.logo_rw);
     }
 
     /**

@@ -1,6 +1,5 @@
 package munichmotorsport.photocellapplication;
 
-import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -25,7 +24,7 @@ public class CreateRace extends AppCompatActivity {
     private SQLiteDatabase db;
     private DaoMaster daoMaster;
     private DaoSession daoSession;
-    Spinner spinner;
+    Spinner spn_modus;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +32,7 @@ public class CreateRace extends AppCompatActivity {
         setContentView(R.layout.activity_create_race);
         setTitle("Neues Rennen erstellen");
 
-        spinner = (Spinner) findViewById(R.id.modus_spinner);
+        spn_modus = (Spinner) findViewById(R.id.spn_modus);
         ArrayList<String> modi = new ArrayList<>();
         modi.add("Acceleration");
         modi.add("Auto Cross");
@@ -41,7 +40,7 @@ public class CreateRace extends AppCompatActivity {
         modi.add("Skit Pad");
         ArrayAdapter<String> dropDown = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1);
         dropDown.addAll(modi);
-        spinner.setAdapter(dropDown);
+        spn_modus.setAdapter(dropDown);
     }
 
     /**
@@ -55,10 +54,10 @@ public class CreateRace extends AppCompatActivity {
         daoSession = daoMaster.newSession();
         raceDao = daoSession.getRaceDao();
 
-        String type = spinner.getSelectedItem().toString();
+        String type = spn_modus.getSelectedItem().toString();
 
-        EditText editText = (EditText) findViewById(R.id.description);
-        String description = editText.getText().toString();
+        EditText et_description = (EditText) findViewById(R.id.et_description);
+        String description = et_description.getText().toString();
         Race race = new Race(null, description, type);
         long RaceID = raceDao.insert(race);
 

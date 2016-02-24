@@ -24,8 +24,8 @@ public class CreateCar extends AppCompatActivity {
     private SQLiteDatabase db;
     private DaoMaster daoMaster;
     private DaoSession daoSession;
-    private Spinner spinner;
-    private EditText editText;
+    private Spinner spn_teams;
+    private EditText et_carName;
     private ArrayList<String> teamList_names;
     private ArrayList<Long> teamList_Ids;
     private ArrayAdapter<String> stringArrayAdapter;
@@ -37,8 +37,8 @@ public class CreateCar extends AppCompatActivity {
         setTitle("Neues Auto erstellen");
 
         // elements
-        spinner = (Spinner) findViewById(R.id.teams);
-        editText = (EditText) findViewById(R.id.editText);
+        spn_teams = (Spinner) findViewById(R.id.spn_teams);
+        et_carName = (EditText) findViewById(R.id.et_carName);
         teamList_names = new ArrayList<>();
         teamList_Ids = new ArrayList<>();
         stringArrayAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1);
@@ -84,7 +84,7 @@ public class CreateCar extends AppCompatActivity {
         }
 
         stringArrayAdapter.addAll(teamList_names);
-        spinner.setAdapter(stringArrayAdapter);
+        spn_teams.setAdapter(stringArrayAdapter);
     }
 
     /**
@@ -92,9 +92,9 @@ public class CreateCar extends AppCompatActivity {
      * @param view
      */
     public void createCar(View view){
-        long teamID = teamList_Ids.get(spinner.getSelectedItemPosition());
+        long teamID = teamList_Ids.get(spn_teams.getSelectedItemPosition());
 
-        String carName = editText.getText().toString();
+        String carName = et_carName.getText().toString();
         Car car = new Car(null, carName, teamID);
         long carID = carDao.insert(car);
 
