@@ -13,24 +13,22 @@ import android.widget.Spinner;
 import java.util.ArrayList;
 
 import db.Car;
-import db.CarDao;
 import db.DaoMaster;
-import db.DaoSession;
 import munichmotorsport.photocellapplication.R;
+import munichmotorsport.photocellapplication.utils.DaoFactory;
+import munichmotorsport.photocellapplication.utils.DaoTypes;
 import munichmotorsport.photocellapplication.utils.Utils;
 import timber.log.Timber;
 
 public class CreateCar extends AppCompatActivity {
 
-    private CarDao carDao;
     private SQLiteDatabase db;
-    private DaoMaster daoMaster;
-    private DaoSession daoSession;
     private Spinner spn_teams;
     private EditText et_carName;
     private ArrayList<String> teamList_names;
     private ArrayList<Long> teamList_Ids;
     private ArrayAdapter<String> stringArrayAdapter;
+    private DaoFactory daoFactory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,11 +44,9 @@ public class CreateCar extends AppCompatActivity {
         stringArrayAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1);
 
         // database
+        daoFactory = new DaoFactory(this);
         DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(this, "photocell_db", null);
         db = helper.getWritableDatabase();
-        daoMaster = new DaoMaster(db);
-        daoSession = daoMaster.newSession();
-        carDao = daoSession.getCarDao();
     }
 
     @Override
@@ -84,6 +80,7 @@ public class CreateCar extends AppCompatActivity {
                 Timber.e("Loaded Team with ID: %s, Name %s", cursor.getLong(0), cursor.getString(1));
             } while (cursor.moveToNext());
         }
+        cursor.close();
 
         stringArrayAdapter.addAll(teamList_names);
         spn_teams.setAdapter(stringArrayAdapter);
@@ -100,7 +97,7 @@ public class CreateCar extends AppCompatActivity {
         if (Utils.nameCheck(carName) && position >= 0) {
             long teamID = teamList_Ids.get(position);
             Car car = new Car(null, carName, teamID);
-            long carID = carDao.insert(car);
+            long carID = daoFactory.getDao(DaoTypes.CAR).insert(car);
 
             // Logging
             Timber.e("Created Car with ID: %s", carID);

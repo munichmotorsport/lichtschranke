@@ -1,30 +1,27 @@
 package munichmotorsport.photocellapplication.gui;
 
-import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 
-import db.DaoMaster;
-import db.DaoSession;
 import db.Team;
-import db.TeamDao;
 import munichmotorsport.photocellapplication.R;
+import munichmotorsport.photocellapplication.utils.DaoFactory;
+import munichmotorsport.photocellapplication.utils.DaoTypes;
 import timber.log.Timber;
 
 public class CreateTeam extends AppCompatActivity {
 
-    private TeamDao teamDao;
-    private SQLiteDatabase db;
-    private DaoMaster daoMaster;
-    private DaoSession daoSession;
+    private DaoFactory daoFactory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_team);
         setTitle("Neues Team erstellen");
+
+        daoFactory = new DaoFactory(this);
     }
 
     /**
@@ -32,16 +29,10 @@ public class CreateTeam extends AppCompatActivity {
      * @param view
      */
     public void createTeam(View view){
-        DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(this, "photocell_db", null);
-        db = helper.getWritableDatabase();
-        daoMaster = new DaoMaster(db);
-        daoSession = daoMaster.newSession();
-        teamDao = daoSession.getTeamDao();
-
         EditText et_teamName = (EditText) findViewById(R.id.et_teamName);
         String teamName = et_teamName.getText().toString();
         Team team = new Team(null, teamName);
-        long teamID = teamDao.insert(team);
+        long teamID = daoFactory.getDao(DaoTypes.TEAM).insert(team);
 
         finish();
 

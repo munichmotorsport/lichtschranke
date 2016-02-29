@@ -1,6 +1,5 @@
 package munichmotorsport.photocellapplication.gui;
 
-import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -10,28 +9,26 @@ import android.widget.Spinner;
 
 import java.util.ArrayList;
 
-import db.DaoMaster;
-import db.DaoSession;
 import db.Race;
-import db.RaceDao;
 
 import munichmotorsport.photocellapplication.R;
+import munichmotorsport.photocellapplication.utils.DaoFactory;
+import munichmotorsport.photocellapplication.utils.DaoTypes;
 import timber.log.Timber;
 
 
 public class CreateRace extends AppCompatActivity {
 
-    RaceDao raceDao;
-    private SQLiteDatabase db;
-    private DaoMaster daoMaster;
-    private DaoSession daoSession;
     Spinner spn_modus;
+    private DaoFactory daoFactory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_race);
         setTitle("Neues Rennen erstellen");
+
+        daoFactory = new DaoFactory(this);
 
         spn_modus = (Spinner) findViewById(R.id.spn_modus);
         ArrayList<String> modi = new ArrayList<>();
@@ -49,18 +46,12 @@ public class CreateRace extends AppCompatActivity {
      * @param view
      */
     public void createRace(View view){
-        DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(this, "photocell_db", null);
-        db = helper.getWritableDatabase();
-        daoMaster = new DaoMaster(db);
-        daoSession = daoMaster.newSession();
-        raceDao = daoSession.getRaceDao();
-
         String type = spn_modus.getSelectedItem().toString();
 
         EditText et_description = (EditText) findViewById(R.id.et_description);
         String description = et_description.getText().toString();
         Race race = new Race(null, description, type);
-        long RaceID = raceDao.insert(race);
+        long RaceID = daoFactory.getDao(DaoTypes.RACE).insert(race);
 
         // Logging
         Timber.e("Created Race with ID: %s", RaceID);
