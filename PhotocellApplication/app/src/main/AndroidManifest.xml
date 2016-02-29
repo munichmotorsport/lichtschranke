@@ -9,17 +9,17 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme" >
-        <activity android:name=".StartScreen" >
+        <activity android:name=".gui.StartScreen" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".CreateRace" />
-        <activity android:name=".CreateCar" >
+        <activity android:name=".gui.CreateRace" />
+        <activity android:name=".gui.CreateCar" >
         </activity>
-        <activity android:name=".CreateTeam" >
+        <activity android:name=".gui.CreateTeam" >
         </activity>
     </application>
 

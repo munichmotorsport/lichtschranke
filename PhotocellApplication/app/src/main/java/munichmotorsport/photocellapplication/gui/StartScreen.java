@@ -1,10 +1,14 @@
-package munichmotorsport.photocellapplication;
+package munichmotorsport.photocellapplication.gui;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+
+import munichmotorsport.photocellapplication.R;
+import munichmotorsport.photocellapplication.gui.CreateCar;
+import munichmotorsport.photocellapplication.gui.CreateRace;
 
 public class StartScreen extends AppCompatActivity {
 

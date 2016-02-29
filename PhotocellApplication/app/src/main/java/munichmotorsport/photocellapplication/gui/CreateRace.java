@@ -1,4 +1,4 @@
-package munichmotorsport.photocellapplication;
+package munichmotorsport.photocellapplication.gui;
 
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
@@ -15,6 +15,7 @@ import db.DaoSession;
 import db.Race;
 import db.RaceDao;
 
+import munichmotorsport.photocellapplication.R;
 import timber.log.Timber;
 
 

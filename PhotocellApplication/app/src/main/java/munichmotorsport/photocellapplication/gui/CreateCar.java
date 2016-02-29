@@ -1,4 +1,4 @@
-package munichmotorsport.photocellapplication;
+package munichmotorsport.photocellapplication.gui;
 
 import android.content.Intent;
 import android.database.Cursor;
@@ -16,6 +16,8 @@ import db.Car;
 import db.CarDao;
 import db.DaoMaster;
 import db.DaoSession;
+import munichmotorsport.photocellapplication.R;
+import munichmotorsport.photocellapplication.utils.Utils;
 import timber.log.Timber;
 
 public class CreateCar extends AppCompatActivity {
@@ -92,19 +94,22 @@ public class CreateCar extends AppCompatActivity {
      * @param view
      */
     public void createCar(View view){
-        long teamID = teamList_Ids.get(spn_teams.getSelectedItemPosition());
-
+        int position = spn_teams.getSelectedItemPosition();
         String carName = et_carName.getText().toString();
-        Car car = new Car(null, carName, teamID);
-        long carID = carDao.insert(car);
 
-        // Logging
-        Timber.e("Created Car with ID: %s", carID);
-        Timber.e("Created Car with Name: %s", car.getName());
-        Timber.e("Created Car for Team: %s", car.getTeamID());
+        if (Utils.nameCheck(carName) && position >= 0) {
+            long teamID = teamList_Ids.get(position);
+            Car car = new Car(null, carName, teamID);
+            long carID = carDao.insert(car);
 
-        db.close();
-        finish();
+            // Logging
+            Timber.e("Created Car with ID: %s", carID);
+            Timber.e("Created Car with Name: %s", car.getName());
+            Timber.e("Created Car for Team: %s", car.getTeamID());
+
+            db.close();
+            finish();
+        }
     }
 
     /**
