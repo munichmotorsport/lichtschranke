@@ -11,3 +11,10 @@
 - Andi (iteratec)
 - De Long (iteratec)
 - Daniel (iteratec)
+
+# Konventionen:
+- Activities used: empty
+
+# Build:
+- build folder "src-gen/main/java" in folder "app"
+- run RaceDaoGen.java. This will build/actualize the Dao-Files
