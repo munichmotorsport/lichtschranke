@@ -26,14 +26,23 @@
         android:layout_below="@+id/btn_screen_createRace"
         android:layout_centerHorizontal="true" />
 
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Car Manager"
+        android:onClick="carManager"
+        android:id="@+id/btn_Manager"
+        android:layout_below="@+id/btn_screen_createCar"
+        android:layout_centerHorizontal="true" />
+
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/iv_backgroundimg"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_alignRight="@+id/btn_screen_createCar"
-        android:layout_alignEnd="@+id/btn_screen_createCar"
+        android:layout_alignRight="@+id/btn_Manager"
+        android:layout_alignEnd="@+id/btn_Manager"
         android:layout_alignParentBottom="true"
         android:layout_alignParentTop="true"
         android:baselineAlignBottom="false" />

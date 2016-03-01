@@ -66,6 +66,15 @@ public class StartScreen extends AppCompatActivity {
     }
 
     /**
+     * zur Activity "CarManager"
+     * @param view
+     */
+    public void carManager(View view) {
+        Intent intent = new Intent(this, CarManager.class);
+        startActivity(intent);
+    }
+
+    /**
      * Zeige aktuelles Rennen im TextView, ggf Button "CreateCar" deaktivieren
      */
     public void showCurrentRace() {
