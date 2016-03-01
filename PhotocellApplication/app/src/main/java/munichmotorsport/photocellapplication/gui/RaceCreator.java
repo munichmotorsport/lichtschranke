@@ -1,5 +1,6 @@
 package munichmotorsport.photocellapplication.gui;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -17,7 +18,7 @@ import munichmotorsport.photocellapplication.utils.DaoTypes;
 import timber.log.Timber;
 
 
-public class CreateRace extends AppCompatActivity {
+public class RaceCreator extends AppCompatActivity {
 
     Spinner spn_modus;
     private DaoFactory daoFactory;
@@ -50,12 +51,21 @@ public class CreateRace extends AppCompatActivity {
 
         EditText et_description = (EditText) findViewById(R.id.et_description);
         String description = et_description.getText().toString();
-        Race race = new Race(null, description, type);
+        Race race = new Race(null, type, description);
         long RaceID = daoFactory.getDao(DaoTypes.RACE).insert(race);
-
         // Logging
         Timber.e("Created Race with ID: %s", RaceID);
         Timber.e("Created Race with Description: %s", race.getDescription());
         Timber.e("Created Race with Modus: %s", race.getType());
+
+        toStartScreen();
+    }
+
+    /**
+     * Switch to StartScreen Activity
+     */
+    private void toStartScreen() {
+        Intent intent = new Intent(this, StartScreen.class);
+        startActivity(intent);
     }
 }

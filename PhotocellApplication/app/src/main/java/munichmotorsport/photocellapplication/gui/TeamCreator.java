@@ -11,7 +11,7 @@ import munichmotorsport.photocellapplication.utils.DaoFactory;
 import munichmotorsport.photocellapplication.utils.DaoTypes;
 import timber.log.Timber;
 
-public class CreateTeam extends AppCompatActivity {
+public class TeamCreator extends AppCompatActivity {
 
     private DaoFactory daoFactory;
 

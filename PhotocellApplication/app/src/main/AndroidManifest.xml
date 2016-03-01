@@ -16,10 +16,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".gui.CreateRace" />
-        <activity android:name=".gui.CreateCar" >
+        <activity android:name=".gui.RaceCreator" />
+        <activity android:name=".gui.CarCreator" >
         </activity>
-        <activity android:name=".gui.CreateTeam" >
+        <activity android:name=".gui.TeamCreator" >
         </activity>
     </application>
 
