@@ -51,7 +51,7 @@ public class RaceCreator extends AppCompatActivity {
 
         EditText et_description = (EditText) findViewById(R.id.et_description);
         String description = et_description.getText().toString();
-        Race race = new Race(null, type, description);
+        Race race = new Race(null, type, description, false);
         long RaceID = daoFactory.getDao(DaoTypes.RACE).insert(race);
         // Logging
         Timber.e("Created Race with ID: %s", RaceID);

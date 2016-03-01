@@ -6,8 +6,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.PopupWindow;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.List;
@@ -21,11 +19,10 @@ import munichmotorsport.photocellapplication.utils.DaoTypes;
 public class StartScreen extends AppCompatActivity {
 
     private DaoFactory factory;
-    private Button newCar;
+    private Button newRace;
+    private Button finishRace;
     private TextView currentRace;
     boolean click = true;
-    PopupWindow popUp;
-
 
 
     @Override
@@ -35,7 +32,8 @@ public class StartScreen extends AppCompatActivity {
 
         factory = new DaoFactory(this);
         currentRace = (TextView) findViewById(R.id.currentRace);
-        newCar = (Button) findViewById(R.id.btn_screen_createCar);
+        newRace = (Button) findViewById(R.id.btn_screen_createRace);
+        finishRace = (Button) findViewById(R.id.finishRace);
         ImageView iv_backgroundimg = (ImageView) findViewById(R.id.iv_backgroundimg);
         iv_backgroundimg.setImageResource(R.drawable.logo_rw);
 
@@ -47,26 +45,30 @@ public class StartScreen extends AppCompatActivity {
         super.onResume();
         showCurrentRace();
     }
+
     /**
      * zur Activity "Rennen erstellen"
+     *
      * @param view
      */
-    public void createRace(View view){
+    public void createRace(View view) {
         Intent intent = new Intent(this, RaceCreator.class);
         startActivity(intent);
     }
 
     /**
      * zur Activity "Auto erstellen"
+     *
      * @param view
      */
-    public void createCar(View view){
+    public void createCar(View view) {
         Intent intent = new Intent(this, CarCreator.class);
         startActivity(intent);
     }
 
     /**
      * zur Activity "CarManager"
+     *
      * @param view
      */
     public void carManager(View view) {
@@ -75,45 +77,39 @@ public class StartScreen extends AppCompatActivity {
     }
 
     /**
-     * Zeige aktuelles Rennen im TextView, ggf Button "CreateCar" deaktivieren
+     * Zeige aktuelles Rennen im TextView, ggf Button "CreateRace" deaktivieren
      */
     public void showCurrentRace() {
         AbstractDao raceDao = factory.getDao(DaoTypes.RACE);
         List<Race> races = raceDao.queryBuilder().list();
-        if(races.isEmpty()) {
-            newCar.setEnabled(false);
-            newCar.setAlpha(0.5f);
-            currentRace.setText("Kein Rennen vorhanden, bitte erstellen Sie eines.");
-        }
-        else {
-            newCar.setEnabled(true);
-            newCar.setAlpha(1);
-            currentRace.setText("Aktuelles Rennen: " + races.get(races.size() - 1).getDescription() + " (im Modus: " + races.get(races.size() - 1).getType() + ")");
+        if (!races.isEmpty() && races.get(races.size() - 1).getFinished() == false) {
+            finishRace.setEnabled(true);
+            finishRace.setAlpha(1);
+            newRace.setEnabled(false);
+            newRace.setAlpha(0.5f);
+            newRace.setText("Current race has to be completed first. Please press 'Finish Current Race'");
+            currentRace.setText("Current race: " + races.get(races.size() - 1).getDescription() + " (in mod: " + races.get(races.size() - 1).getType() + ")");
+        } else {
+            newRace.setEnabled(true);
+            newRace.setAlpha(1);
+            newRace.setText("Create Race");
+            currentRace.setText("No race used, please create one.");
         }
     }
+
 
     /**
-     * noch in Entwicklung
+     * Beendet aktuelles Rennen
+     *
+     * @param view
      */
-    public void showPopUp(){
-        popUp = new PopupWindow(this);
-        final RelativeLayout layout = (RelativeLayout) findViewById(R.id.popUp);
-        Button but = new Button(this);
-        but.setText("Click Me");
-        but.setOnClickListener(new View.OnClickListener() {
-
-            public void onClick(View v) {
-                if (click) {
-
-                    popUp.showAtLocation(layout, layout.getGravity(), layout.getWidth(), layout.getHeight());
-                    popUp.update(50, 50, 300, 80);
-                    click = false;
-                } else {
-                    popUp.dismiss();
-                    click = true;
-                }
-            }
-
-        });
+    public void finishCurrentRace(View view) {
+        List<Race> races = factory.getDao(DaoTypes.RACE).queryBuilder().list();
+        races.get(races.size() - 1).setFinished(true);
+        finishRace.setEnabled(false);
+        finishRace.setAlpha(0.5f);
+        showCurrentRace();
     }
+
 }
+
