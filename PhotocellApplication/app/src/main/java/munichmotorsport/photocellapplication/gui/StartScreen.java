@@ -56,16 +56,6 @@ public class StartScreen extends AppCompatActivity {
     }
 
     /**
-     * zur Activity "Auto erstellen"
-     *
-     * @param view
-     */
-    public void createCar(View view) {
-        Intent intent = new Intent(this, CarCreator.class);
-        startActivity(intent);
-    }
-
-    /**
      * zur Activity "CarManager"
      *
      * @param view
