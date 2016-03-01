@@ -58,14 +58,14 @@ public class RaceCreator extends AppCompatActivity {
         Timber.e("Created Race with Description: %s", race.getDescription());
         Timber.e("Created Race with Modus: %s", race.getType());
 
-        toStartScreen();
+        toCarSelector();
     }
 
     /**
-     * Switch to StartScreen Activity
+     * Switch to CarSelector Activity
      */
-    private void toStartScreen() {
-        Intent intent = new Intent(this, StartScreen.class);
+    private void toCarSelector() {
+        Intent intent = new Intent(this, CarSelector.class);
         startActivity(intent);
     }
 
