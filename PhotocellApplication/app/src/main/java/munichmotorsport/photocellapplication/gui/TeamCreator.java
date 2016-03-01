@@ -9,6 +9,7 @@ import db.Team;
 import munichmotorsport.photocellapplication.R;
 import munichmotorsport.photocellapplication.utils.DaoFactory;
 import munichmotorsport.photocellapplication.utils.DaoTypes;
+import munichmotorsport.photocellapplication.utils.Utils;
 import timber.log.Timber;
 
 public class TeamCreator extends AppCompatActivity {
@@ -31,14 +32,17 @@ public class TeamCreator extends AppCompatActivity {
     public void createTeam(View view){
         EditText et_teamName = (EditText) findViewById(R.id.et_teamName);
         String teamName = et_teamName.getText().toString();
-        Team team = new Team(null, teamName);
-        long teamID = daoFactory.getDao(DaoTypes.TEAM).insert(team);
 
-        finish();
+        if (Utils.nameCheck(teamName)) {
+            Team team = new Team(null, teamName);
+            long teamID = daoFactory.getDao(DaoTypes.TEAM).insert(team);
 
-        // Logging
-        Timber.e("Created Team with ID: %s", teamID);
-        Timber.e("Created Team with Name: %s", team.getName());
+            finish();
+
+            // Logging
+            Timber.e("Created Team with ID: %s", teamID);
+            Timber.e("Created Team with Name: %s", team.getName());
+        }
     }
 
     /**
