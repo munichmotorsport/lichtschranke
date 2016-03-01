@@ -46,12 +46,12 @@ public class StartScreen extends AppCompatActivity {
     }
 
     /**
-     * zur Activity "Rennen erstellen"
+     * zur Activity "RaceManager"
      *
      * @param view
      */
-    public void createRace(View view) {
-        Intent intent = new Intent(this, RaceCreator.class);
+    public void toRaceManager(View view) {
+        Intent intent = new Intent(this, RaceManager.class);
         startActivity(intent);
     }
 
@@ -81,7 +81,7 @@ public class StartScreen extends AppCompatActivity {
         } else {
             newRace.setEnabled(true);
             newRace.setAlpha(1);
-            newRace.setText("Create Race");
+//            newRace.setText("Create Race");
             currentRace.setText("No race used, please create one.");
         }
     }

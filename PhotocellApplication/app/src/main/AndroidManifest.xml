@@ -21,7 +21,8 @@
         <activity android:name=".gui.TeamCreator" />
         <activity android:name=".gui.CarManager" />
         <activity android:name=".gui.CarViewer" />
-        <activity android:name=".gui.CarSelector"></activity>
+        <activity android:name=".gui.CarSelector" />
+        <activity android:name=".gui.RaceManager"></activity>
     </application>
 
 </manifest>
