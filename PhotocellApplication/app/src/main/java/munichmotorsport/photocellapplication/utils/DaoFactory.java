@@ -7,9 +7,6 @@ import db.DaoMaster;
 import db.DaoSession;
 import de.greenrobot.dao.AbstractDao;
 
-/**
- * Created by Nils Grünewald on 29.02.2016.
- */
 public class DaoFactory {
 
     private SQLiteDatabase db;

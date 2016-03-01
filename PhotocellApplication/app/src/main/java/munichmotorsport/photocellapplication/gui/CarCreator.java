@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.Spinner;
 
 import java.util.ArrayList;
@@ -24,7 +23,6 @@ import timber.log.Timber;
 
 public class CarCreator extends AppCompatActivity {
 
-  //  private SQLiteDatabase db;
     private Spinner spn_teams;
     private EditText et_carName;
     private ArrayList<String> teamList_names;
@@ -39,7 +37,6 @@ public class CarCreator extends AppCompatActivity {
         setContentView(R.layout.activity_create_car);
         setTitle("Neues Auto erstellen");
 
-
         // elements
         spn_teams = (Spinner) findViewById(R.id.spn_teams);
         et_carName = (EditText) findViewById(R.id.et_carName);
@@ -48,11 +45,9 @@ public class CarCreator extends AppCompatActivity {
         teamNames = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
         carNames = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
 
-
         // database
         daoFactory = new DaoFactory(this);
         DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(this, "photocell_db", null);
-        //db = helper.getWritableDatabase();
     }
 
     @Override
@@ -94,18 +89,6 @@ public class CarCreator extends AppCompatActivity {
             Timber.e("Loaded Team with ID: %s, Name: %s", teams.get(i).getId(), teams.get(i).getName());
         }
 
-       /* String query2 = "SELECT _id, Name FROM Team ORDER BY Name ASC";
-        Cursor cursor = db.rawQuery(query2, null);
-
-        if (cursor.moveToFirst()) {
-            do {
-                teamList_Ids.add(cursor.getLong(0));
-                teamList_names.add(cursor.getString(1));
-                Timber.e("Loaded Team with ID: %s, Name: %s", cursor.getLong(0), cursor.getString(1));
-            } while (cursor.moveToNext());
-        }
-        cursor.close();*/
-
         teamNames.addAll(teamList_names);
         spn_teams.setAdapter(teamNames);
     }
@@ -129,7 +112,6 @@ public class CarCreator extends AppCompatActivity {
             Timber.e("Created Car for Team: %s", car.getTeamID());
             //vielleicht noch den Teamnamen loggen
 
-         //   db.close();
             finish();
         }
     }

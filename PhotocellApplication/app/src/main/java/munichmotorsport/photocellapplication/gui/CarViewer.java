@@ -31,7 +31,7 @@ public class CarViewer extends AppCompatActivity {
     }
 
     /**
-     * Bereits vorhandene Autos im ListView anzeigen
+     *  Load existing Cars from DB
      */
     public void showExistingCars() {
         carNames.clear();

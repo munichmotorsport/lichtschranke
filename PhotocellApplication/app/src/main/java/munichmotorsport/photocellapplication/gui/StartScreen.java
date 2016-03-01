@@ -86,7 +86,6 @@ public class StartScreen extends AppCompatActivity {
         }
     }
 
-
     /**
      * Beendet aktuelles Rennen
      *
