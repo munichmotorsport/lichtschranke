@@ -3,7 +3,6 @@ package munichmotorsport.photocellapplication.gui;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -14,12 +13,10 @@ import android.widget.TextView;
 import java.util.List;
 
 import db.Race;
-import db.RaceDao;
 import de.greenrobot.dao.AbstractDao;
 import munichmotorsport.photocellapplication.R;
 import munichmotorsport.photocellapplication.utils.DaoFactory;
 import munichmotorsport.photocellapplication.utils.DaoTypes;
-import munichmotorsport.photocellapplication.utils.ShowPopUp;
 
 public class StartScreen extends AppCompatActivity {
 

@@ -19,7 +19,6 @@
         <activity android:name=".gui.RaceCreator" />
         <activity android:name=".gui.CarCreator" >
         </activity>
-        <activity android:name=".utils.ShowPopUp"/>
         <activity android:name=".gui.TeamCreator" >
         </activity>
     </application>
