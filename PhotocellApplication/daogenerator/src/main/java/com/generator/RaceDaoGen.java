@@ -15,7 +15,7 @@ static Entity config;
 static Entity team;
 
     public static void main(String[] args) throws Exception {
-        Schema schema = new Schema(6, "db");
+        Schema schema = new Schema(7, "db");
         createTeam(schema);
         createCar(schema);
         createConfig(schema);
@@ -29,6 +29,7 @@ static Entity team;
         race.addIdProperty().autoincrement().primaryKey();
         race.addStringProperty("type").notNull();
         race.addStringProperty("description");
+        race.addBooleanProperty("finished");
     }
 
     private static void createLap(Schema schema){
