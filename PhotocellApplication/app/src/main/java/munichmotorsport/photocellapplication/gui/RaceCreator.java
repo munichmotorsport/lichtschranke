@@ -68,4 +68,12 @@ public class RaceCreator extends AppCompatActivity {
         Intent intent = new Intent(this, StartScreen.class);
         startActivity(intent);
     }
+
+    /**
+     * Löscht alle Rennen aus der Datenbank, nur zum Testen
+     * @param view
+     */
+    public void deleteRaces(View view) {
+        daoFactory.getDao(DaoTypes.RACE).deleteAll();
+    }
 }

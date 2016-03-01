@@ -65,20 +65,26 @@
             android:layout_height="58dp">
 
             <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Erstellen"
+                android:id="@+id/btn_createCar"
+                android:onClick="createCar" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="deleteCars"
+                android:text="Autos löschen"
+                android:id="@+id/deleteCars" />
+
+            <Button
                 style="?android:attr/buttonStyleSmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Neues Team"
                 android:onClick="createTeam"
                 android:id="@+id/btn_newTeam" />
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Erstellen"
-                android:id="@+id/btn_createCar"
-                android:onClick="createCar"
-                android:layout_gravity="center_horizontal" />
 
         </LinearLayout>
 

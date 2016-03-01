@@ -77,6 +77,16 @@ public class CarCreator extends AppCompatActivity {
     }
 
     /**
+     * Löscht alle Autos aus der Datenbank, nur zum Testen
+     * @param view
+     */
+    public void deleteCars(View view) {
+        daoFactory.getDao(DaoTypes.CAR).deleteAll();
+        showExistingCars();
+        carNames.notifyDataSetChanged();
+    }
+
+    /**
      * load Teams from DB and put them into spinner
      */
     public void loadTeams() {
@@ -133,6 +143,7 @@ public class CarCreator extends AppCompatActivity {
      * Bereits vorhandene Autos im ListView anzeigen
      */
     public void showExistingCars() {
+        carNames.clear();
         AbstractDao carDao = daoFactory.getDao(DaoTypes.CAR);
         List<Car> cars = carDao.queryBuilder().list();
         for(int i = 0; i < cars.size(); i++){

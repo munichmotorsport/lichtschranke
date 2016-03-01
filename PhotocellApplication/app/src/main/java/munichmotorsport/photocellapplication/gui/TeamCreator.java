@@ -40,4 +40,13 @@ public class TeamCreator extends AppCompatActivity {
         Timber.e("Created Team with ID: %s", teamID);
         Timber.e("Created Team with Name: %s", team.getName());
     }
+
+    /**
+     * Löscht alle Teams aus der Datenbank, nur zum Testen
+     * @param view
+     */
+    public void deleteTeams(View view) {
+        daoFactory.getDao(DaoTypes.TEAM).deleteAll();
+    }
+
 }
