@@ -22,7 +22,6 @@ public class StartScreen extends AppCompatActivity {
     private Button newRace;
     private Button finishRace;
     private TextView currentRace;
-    boolean click = true;
 
 
     @Override
