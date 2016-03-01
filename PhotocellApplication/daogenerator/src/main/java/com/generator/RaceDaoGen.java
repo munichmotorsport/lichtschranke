@@ -8,11 +8,11 @@ import de.greenrobot.daogenerator.ToMany;
 import de.greenrobot.daogenerator.ToOne;
 
 public class RaceDaoGen {
-static Entity car;
-static Entity race;
-static Entity lap;
-static Entity config;
-static Entity team;
+    static Entity car;
+    static Entity race;
+    static Entity lap;
+    static Entity config;
+    static Entity team;
 
     public static void main(String[] args) throws Exception {
         Schema schema = new Schema(7, "db");
@@ -32,7 +32,7 @@ static Entity team;
         race.addBooleanProperty("finished");
     }
 
-    private static void createLap(Schema schema){
+    private static void createLap(Schema schema) {
         lap = schema.addEntity("Lap");
         lap.addIdProperty().autoincrement().primaryKey();
         lap.addLongProperty("Time").notNull();
