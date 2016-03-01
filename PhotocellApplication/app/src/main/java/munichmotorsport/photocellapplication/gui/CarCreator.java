@@ -53,15 +53,12 @@ public class CarCreator extends AppCompatActivity {
         daoFactory = new DaoFactory(this);
         DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(this, "photocell_db", null);
         //db = helper.getWritableDatabase();
-
-        showExistingCars();
     }
 
     @Override
     protected void onResume () {
         super.onResume();
         resetTeamLists();
-        //showExistingCars();
         Timber.e("onResume() called");
     }
 
@@ -82,7 +79,6 @@ public class CarCreator extends AppCompatActivity {
      */
     public void deleteCars(View view) {
         daoFactory.getDao(DaoTypes.CAR).deleteAll();
-        showExistingCars();
         carNames.notifyDataSetChanged();
     }
 
@@ -134,23 +130,8 @@ public class CarCreator extends AppCompatActivity {
             //vielleicht noch den Teamnamen loggen
 
          //   db.close();
-            showExistingCars();
             finish();
         }
-    }
-
-    /**
-     * Bereits vorhandene Autos im ListView anzeigen
-     */
-    public void showExistingCars() {
-        carNames.clear();
-        AbstractDao carDao = daoFactory.getDao(DaoTypes.CAR);
-        List<Car> cars = carDao.queryBuilder().list();
-        for(int i = 0; i < cars.size(); i++){
-            carNames.add(cars.get(i).getName());
-        }
-        ListView listView = (ListView) findViewById(R.id.carList);
-        listView.setAdapter(carNames);
     }
 
     /**
