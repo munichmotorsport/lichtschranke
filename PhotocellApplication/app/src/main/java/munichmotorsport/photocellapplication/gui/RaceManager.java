@@ -13,6 +13,7 @@ public class RaceManager extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_race_manager);
+        setTitle("Race Manager");
     }
 
     /**

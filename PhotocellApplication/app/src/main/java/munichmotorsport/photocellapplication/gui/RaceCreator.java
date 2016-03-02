@@ -20,7 +20,7 @@ import timber.log.Timber;
 
 public class RaceCreator extends AppCompatActivity {
 
-    Spinner spn_modus;
+    private Spinner spn_modus;
     private DaoFactory daoFactory;
 
     @Override

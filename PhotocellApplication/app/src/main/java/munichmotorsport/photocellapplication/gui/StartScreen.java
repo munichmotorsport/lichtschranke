@@ -19,9 +19,9 @@ import munichmotorsport.photocellapplication.utils.DaoTypes;
 public class StartScreen extends AppCompatActivity {
 
     private DaoFactory factory;
-    private Button newRace;
-    private Button finishRace;
-    private TextView currentRace;
+    private Button btn_newRace;
+    private Button btn_finishRace;
+    private TextView tv_currentRace;
 
 
     @Override
@@ -30,9 +30,9 @@ public class StartScreen extends AppCompatActivity {
         setContentView(R.layout.activity_start_screen);
 
         factory = new DaoFactory(this);
-        currentRace = (TextView) findViewById(R.id.currentRace);
-        newRace = (Button) findViewById(R.id.btn_screen_createRace);
-        finishRace = (Button) findViewById(R.id.finishRace);
+        tv_currentRace = (TextView) findViewById(R.id.currentRace);
+        btn_newRace = (Button) findViewById(R.id.btn_screen_createRace);
+        btn_finishRace = (Button) findViewById(R.id.finishRace);
         ImageView iv_backgroundimg = (ImageView) findViewById(R.id.iv_backgroundimg);
         iv_backgroundimg.setImageResource(R.drawable.logo_rw);
 
@@ -72,17 +72,17 @@ public class StartScreen extends AppCompatActivity {
         AbstractDao raceDao = factory.getDao(DaoTypes.RACE);
         List<Race> races = raceDao.queryBuilder().list();
         if (!races.isEmpty() && races.get(races.size() - 1).getFinished() == false) {
-            finishRace.setEnabled(true);
-            finishRace.setAlpha(1);
-            newRace.setEnabled(false);
-            newRace.setAlpha(0.5f);
-            newRace.setText("Current race has to be completed first. Please press 'Finish Current Race'");
-            currentRace.setText("Current race: " + races.get(races.size() - 1).getDescription() + " (in mod: " + races.get(races.size() - 1).getType() + ")");
+            btn_finishRace.setEnabled(true);
+            btn_finishRace.setAlpha(1);
+            btn_newRace.setEnabled(false);
+            btn_newRace.setAlpha(0.5f);
+            btn_newRace.setText("Current race has to be completed first. Please press 'Finish Current Race'");
+            tv_currentRace.setText("Current race: " + races.get(races.size() - 1).getDescription() + " (in mod: " + races.get(races.size() - 1).getType() + ")");
         } else {
-            newRace.setEnabled(true);
-            newRace.setAlpha(1);
-//            newRace.setText("Create Race");
-            currentRace.setText("No race used, please create one.");
+            btn_newRace.setEnabled(true);
+            btn_newRace.setAlpha(1);
+            btn_newRace.setText("Race Manager");
+            tv_currentRace.setText("No race used, please create one.");
         }
     }
 
@@ -94,8 +94,8 @@ public class StartScreen extends AppCompatActivity {
     public void finishCurrentRace(View view) {
         List<Race> races = factory.getDao(DaoTypes.RACE).queryBuilder().list();
         races.get(races.size() - 1).setFinished(true);
-        finishRace.setEnabled(false);
-        finishRace.setAlpha(0.5f);
+        btn_finishRace.setEnabled(false);
+        btn_finishRace.setAlpha(0.5f);
         showCurrentRace();
     }
 

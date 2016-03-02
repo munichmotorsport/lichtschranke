@@ -11,6 +11,7 @@ import android.widget.ScrollView;
 import java.util.List;
 
 import db.Car;
+import db.Lap;
 import de.greenrobot.dao.AbstractDao;
 import munichmotorsport.photocellapplication.R;
 import munichmotorsport.photocellapplication.utils.DaoFactory;
@@ -48,5 +49,11 @@ public class CarSelector extends AppCompatActivity {
             cb_newCar.setId(cars.get(i).getId().intValue());
             ll_cars.addView(cb_newCar);
         }
+    }
+
+    public void addCarsToRace() {
+        // public Lap(Long id, long Time, int Number, long raceID, long configID)
+        // Config(Long id, Integer Barcode, String Comment, long carID)
+        Lap lap = new Lap(null, 0, 1, 0, 0);
     }
 }

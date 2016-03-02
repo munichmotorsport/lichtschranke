@@ -110,7 +110,6 @@ public class CarCreator extends AppCompatActivity {
             Timber.e("Created Car with ID: %s", carID);
             Timber.e("Created Car with Name: %s", car.getName());
             Timber.e("Created Car for Team: %s", car.getTeamID());
-            //vielleicht noch den Teamnamen loggen
 
             finish();
         }
