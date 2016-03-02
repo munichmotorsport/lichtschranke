@@ -11,6 +11,7 @@ import android.widget.ScrollView;
 import java.util.List;
 
 import db.Car;
+import db.Config;
 import db.Lap;
 import de.greenrobot.dao.AbstractDao;
 import munichmotorsport.photocellapplication.R;
@@ -22,6 +23,7 @@ public class CarSelector extends AppCompatActivity {
     private ArrayAdapter<String> carNames;
     private DaoFactory daoFactory;
     private LinearLayout ll_cars;
+    private long RaceID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +34,8 @@ public class CarSelector extends AppCompatActivity {
         ll_cars = (LinearLayout) findViewById(R.id.ll_cars);
         carNames = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
         daoFactory = new DaoFactory(this);
+
+        RaceID = getIntent().getLongExtra("RaceCreator.RaceID", RaceID);
 
         showExistingCars();
     }
@@ -52,8 +56,12 @@ public class CarSelector extends AppCompatActivity {
     }
 
     public void addCarsToRace() {
-        // public Lap(Long id, long Time, int Number, long raceID, long configID)
         // Config(Long id, Integer Barcode, String Comment, long carID)
-        Lap lap = new Lap(null, 0, 1, 0, 0);
+        Config config = new Config(null, null, null, 0);
+        long configID = daoFactory.getDao(DaoTypes.CONFIG).insert(config);
+
+        // public Lap(Long id, long Time, int Number, long raceID, long configID)
+        Lap lap = new Lap(null, null, 1, RaceID, configID);
+        long lapID = daoFactory.getDao(DaoTypes.LAP).insert(lap);
     }
 }

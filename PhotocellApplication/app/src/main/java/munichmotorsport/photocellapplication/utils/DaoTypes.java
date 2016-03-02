@@ -1,5 +1,5 @@
 package munichmotorsport.photocellapplication.utils;
 
 public enum DaoTypes {
-    RACE, CAR, TEAM
+    RACE, CAR, TEAM, CONFIG, LAP
 }
