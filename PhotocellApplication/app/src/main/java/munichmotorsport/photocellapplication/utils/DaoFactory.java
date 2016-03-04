@@ -32,6 +32,11 @@ public class DaoFactory {
             case TEAM:
                 dao = daoSession.getTeamDao();
                 break;
+            case CONFIG:
+                dao = daoSession.getConfigDao();
+                break;
+            case LAP:
+                dao = daoSession.getLapDao();
         }
         return dao;
     }

@@ -2,6 +2,7 @@ package munichmotorsport.photocellapplication.gui;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
@@ -17,6 +18,7 @@ import de.greenrobot.dao.AbstractDao;
 import munichmotorsport.photocellapplication.R;
 import munichmotorsport.photocellapplication.utils.DaoFactory;
 import munichmotorsport.photocellapplication.utils.DaoTypes;
+import timber.log.Timber;
 
 public class CarSelector extends AppCompatActivity {
 
@@ -55,13 +57,36 @@ public class CarSelector extends AppCompatActivity {
         }
     }
 
-    public void addCarsToRace() {
-        // Config(Long id, Integer Barcode, String Comment, long carID)
-        Config config = new Config(null, null, null, 0);
-        long configID = daoFactory.getDao(DaoTypes.CONFIG).insert(config);
+    /**
+     * gets all selected cars
+     *
+     * @param view
+     */
+    public void getTickledBoxesAndSave(View view) {
+        for (int i=0; i<ll_cars.getChildCount(); i++) {
+            CheckBox checkBox = (CheckBox) ll_cars.getChildAt(i);
+            if (checkBox.isChecked()) {
+                addCarsToRace(checkBox.getId());
+            }
+        }
+    }
 
-        // public Lap(Long id, long Time, int Number, long raceID, long configID)
+    /**
+     * connects a car to the current race and saves into DB
+     *
+     * @param carID
+     */
+    public void addCarsToRace(int carID) {
+        Timber.e("Connecting Car %s to current Race %s", carID, RaceID);
+
+        // Config(Long id, Integer Barcode, String Comment, long carID)
+        Config config = new Config(null, null, null, carID);
+        long configID = daoFactory.getDao(DaoTypes.CONFIG).insert(config);
+        Timber.e("Created Config with ID: %s", configID);
+
+        // Lap(Long id, long Time, int Number, long raceID, long configID)
         Lap lap = new Lap(null, null, 1, RaceID, configID);
         long lapID = daoFactory.getDao(DaoTypes.LAP).insert(lap);
+        Timber.e("Created Lap with ID: %s", lapID);
     }
 }

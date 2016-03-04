@@ -36,7 +36,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="OK"
-                android:onClick="addCarsToRace"
+                android:onClick="getTickledBoxesAndSave"
                 android:id="@+id/btn_selectCars"
                 android:layout_gravity="center_horizontal" />
         </LinearLayout>
