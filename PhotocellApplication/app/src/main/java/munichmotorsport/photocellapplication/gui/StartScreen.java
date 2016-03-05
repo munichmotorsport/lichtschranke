@@ -96,7 +96,7 @@ public class StartScreen extends AppCompatActivity {
      */
     public void finishCurrentRace(View view) {
         AbstractDao dao = factory.getDao(DaoTypes.RACE);
-        List<Race> races = factory.getDao(DaoTypes.RACE).queryBuilder().list();
+        List<Race> races = dao.queryBuilder().list();
         Race race = races.get(races.size() - 1);
         race.setFinished(true);
         dao.insertOrReplace(race);
