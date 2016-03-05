@@ -1,5 +1,6 @@
 package munichmotorsport.photocellapplication.gui;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -32,6 +33,7 @@ public class CarSelector extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_car_selector);
         setTitle("Select Cars");
+        Timber.e("Select Cars");
 
         ll_cars = (LinearLayout) findViewById(R.id.ll_cars);
         carNames = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
@@ -88,6 +90,19 @@ public class CarSelector extends AppCompatActivity {
         Lap lap = new Lap(null, null, 1, RaceID, configID);
         long lapID = daoFactory.getDao(DaoTypes.LAP).insert(lap);
         Timber.e("Created Lap with ID: %s", lapID);
+
+        toRaceStarter(getCurrentFocus());
+    }
+
+    /**
+     * zur Activity "RaceStarter"
+     *
+     * @param view
+     */
+    public void toRaceStarter(View view) {
+        Intent intent = new Intent(this, RaceStarter.class);
+        intent.putExtra("CarSelector.RaceID", RaceID);
+        startActivity(intent);
     }
 }
 
