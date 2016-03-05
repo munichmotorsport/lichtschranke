@@ -26,6 +26,18 @@
         android:layout_below="@+id/btn_screen_createRace"
         android:layout_centerHorizontal="true" />
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Team Manager"
+        android:id="@+id/btn_teamManager"
+        android:onClick="teamManager"
+        android:layout_alignRight="@+id/btn_screen_createRace"
+        android:layout_alignEnd="@+id/btn_screen_createRace"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/btn_Manager" />
+
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

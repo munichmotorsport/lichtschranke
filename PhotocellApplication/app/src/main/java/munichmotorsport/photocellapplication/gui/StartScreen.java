@@ -67,6 +67,16 @@ public class StartScreen extends AppCompatActivity {
     }
 
     /**
+     * zur Activity "TeamManager"
+     *
+     * @param view
+     */
+    public void teamManager(View view) {
+        Intent intent = new Intent(this, TeamManager.class);
+        startActivity(intent);
+    }
+
+    /**
      * Zeige aktuelles Rennen im TextView, ggf Button "CreateRace" deaktivieren
      */
     public void showCurrentRace() {

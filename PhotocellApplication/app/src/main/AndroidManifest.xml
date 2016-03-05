@@ -25,6 +25,10 @@
         <activity android:name=".gui.RaceManager" />
         <activity android:name=".gui.RaceStarter" >
         </activity>
+        <activity android:name=".gui.TeamManager" >
+        </activity>
+        <activity android:name=".gui.TeamViewer" >
+        </activity>
     </application>
 
 </manifest>
