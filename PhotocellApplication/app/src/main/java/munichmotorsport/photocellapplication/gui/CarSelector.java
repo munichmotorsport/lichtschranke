@@ -85,7 +85,7 @@ public class CarSelector extends AppCompatActivity {
         Timber.e("Created Config with ID: %s", configID);
 
         // Lap(Long id, long Time, int Number, long raceID, long configID)
-        Lap lap = new Lap(null, 0L, 1, RaceID, configID);
+        Lap lap = new Lap(null, null, 1, RaceID, configID);
         long lapID = daoFactory.getDao(DaoTypes.LAP).insert(lap);
         Timber.e("Created Lap with ID: %s", lapID);
     }
