@@ -15,6 +15,7 @@ import de.greenrobot.dao.AbstractDao;
 import munichmotorsport.photocellapplication.R;
 import munichmotorsport.photocellapplication.utils.DaoFactory;
 import munichmotorsport.photocellapplication.utils.DaoTypes;
+import timber.log.Timber;
 
 public class StartScreen extends AppCompatActivity {
 
@@ -81,6 +82,8 @@ public class StartScreen extends AppCompatActivity {
         } else {
             newRace.setEnabled(true);
             newRace.setAlpha(1);
+            finishRace.setEnabled(false);
+            finishRace.setAlpha(0.5f);
             newRace.setText("Create Race");
             currentRace.setText("No race used, please create one.");
         }
@@ -92,10 +95,15 @@ public class StartScreen extends AppCompatActivity {
      * @param view
      */
     public void finishCurrentRace(View view) {
+        AbstractDao dao = factory.getDao(DaoTypes.RACE);
         List<Race> races = factory.getDao(DaoTypes.RACE).queryBuilder().list();
-        races.get(races.size() - 1).setFinished(true);
-        finishRace.setEnabled(false);
-        finishRace.setAlpha(0.5f);
+        Race race = races.get(races.size() - 1);
+        race.setFinished(true);
+        dao.insertOrReplace(race);
+        Timber.e("All Races in Database: ");
+        for(int i = 0; i < races.size(); i++) {
+            Timber.e("Rennen: '%s' (Typ: %s) , finished: %s" , races.get(i).getDescription(), races.get(i).getType(), races.get(i).getFinished().toString());
+        }
         showCurrentRace();
     }
 

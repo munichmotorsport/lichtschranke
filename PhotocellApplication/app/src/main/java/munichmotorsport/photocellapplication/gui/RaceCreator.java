@@ -9,6 +9,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import java.util.ArrayList;
+import java.util.Timer;
 
 import db.Race;
 
@@ -54,9 +55,7 @@ public class RaceCreator extends AppCompatActivity {
         Race race = new Race(null, type, description, false);
         long RaceID = daoFactory.getDao(DaoTypes.RACE).insert(race);
         // Logging
-        Timber.e("Created Race with ID: %s", RaceID);
-        Timber.e("Created Race with Description: %s", race.getDescription());
-        Timber.e("Created Race with Modus: %s", race.getType());
+        Timber.e("Created Race with ID: %s, Description: '%s', Modus: %s", RaceID, race.getDescription(), race.getType());
 
         toStartScreen();
     }
