@@ -13,6 +13,7 @@ import de.greenrobot.dao.AbstractDao;
 import munichmotorsport.photocellapplication.R;
 import munichmotorsport.photocellapplication.utils.DaoFactory;
 import munichmotorsport.photocellapplication.utils.DaoTypes;
+import timber.log.Timber;
 
 public class TeamViewer extends AppCompatActivity {
 
@@ -35,11 +36,13 @@ public class TeamViewer extends AppCompatActivity {
      *  Load existing Teams from DB
      */
     public void showExistingTeams() {
+        Timber.e("showExistingTeams()");
         teamNames.clear();
         AbstractDao teamDao = daoFactory.getDao(DaoTypes.TEAM);
         List<Team> teams = teamDao.queryBuilder().list();
         for(int i = 0; i < teams.size(); i++){
             teamNames.add(teams.get(i).getName());
+            Timber.e("Found Team: %s", teams.get(i).getName());
         }
         ListView listView = (ListView) findViewById(R.id.lv_teams);
         listView.setAdapter(teamNames);
