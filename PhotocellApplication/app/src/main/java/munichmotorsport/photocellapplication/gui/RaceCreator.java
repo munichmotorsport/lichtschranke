@@ -21,8 +21,9 @@ import timber.log.Timber;
 
 public class RaceCreator extends AppCompatActivity {
 
-    Spinner spn_modus;
+    private Spinner spn_modus;
     private DaoFactory daoFactory;
+    private long RaceID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,18 +54,19 @@ public class RaceCreator extends AppCompatActivity {
         EditText et_description = (EditText) findViewById(R.id.et_description);
         String description = et_description.getText().toString();
         Race race = new Race(null, type, description, false);
-        long RaceID = daoFactory.getDao(DaoTypes.RACE).insert(race);
+        RaceID = daoFactory.getDao(DaoTypes.RACE).insert(race);
         // Logging
         Timber.e("Created Race with ID: %s, Description: '%s', Modus: %s", RaceID, race.getDescription(), race.getType());
 
-        toStartScreen();
+        toCarSelector();
     }
 
     /**
-     * Switch to StartScreen Activity
+     * Switch to CarSelector Activity
      */
-    private void toStartScreen() {
-        Intent intent = new Intent(this, StartScreen.class);
+    private void toCarSelector() {
+        Intent intent = new Intent(this, CarSelector.class);
+        intent.putExtra("RaceCreator.RaceID", RaceID);
         startActivity(intent);
     }
 

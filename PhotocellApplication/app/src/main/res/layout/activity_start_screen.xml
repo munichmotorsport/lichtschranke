@@ -13,8 +13,8 @@
     <Button
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:text="Create Race"
-    android:onClick="createRace"
+    android:text="Race Manager"
+    android:onClick="toRaceManager"
     android:id="@+id/btn_screen_createRace"/>
 
     <Button
