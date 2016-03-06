@@ -14,7 +14,9 @@ import java.util.List;
 
 import db.Car;
 import db.Config;
+import db.ConfigDao;
 import db.Lap;
+import db.LapDao;
 import de.greenrobot.dao.AbstractDao;
 import munichmotorsport.photocellapplication.R;
 import munichmotorsport.photocellapplication.utils.DaoFactory;
@@ -65,10 +67,32 @@ public class CarSelector extends AppCompatActivity {
      * @param view
      */
     public void getTickledBoxesAndSave(View view) {
+        refreshDatabase();
         for (int i=0; i<ll_cars.getChildCount(); i++) {
             CheckBox checkBox = (CheckBox) ll_cars.getChildAt(i);
             if (checkBox.isChecked()) {
                 addCarsToRace(checkBox.getId());
+            }
+        }
+        toRaceStarter(getCurrentFocus());
+    }
+
+    /**
+     *  deleting existing Laps & Configs for this Race
+     */
+    public void refreshDatabase() {
+        AbstractDao lapDao = daoFactory.getDao(DaoTypes.LAP);
+        AbstractDao configDao = daoFactory.getDao(DaoTypes.CONFIG);
+
+        List<Lap> lapsAlreadyCreated = lapDao.queryBuilder().where(LapDao.Properties.RaceID.eq(RaceID)).list();
+        Timber.e("Size of already Created Laps for this race: %s", lapsAlreadyCreated.size());
+        if (lapsAlreadyCreated.size() > 0) {
+            for (int i=0; i<lapsAlreadyCreated.size(); i++) {
+                long configID = lapsAlreadyCreated.get(i).getConfigID();
+                Timber.e("ConfigID to be deleted: %s", configID);
+                List<Config> config =  configDao.queryBuilder().where(ConfigDao.Properties.Id.eq(configID)).list();
+                configDao.delete(config.get(0));
+                lapDao.delete(lapsAlreadyCreated.get(i));
             }
         }
     }
@@ -90,8 +114,6 @@ public class CarSelector extends AppCompatActivity {
         Lap lap = new Lap(null, null, 1, RaceID, configID);
         long lapID = daoFactory.getDao(DaoTypes.LAP).insert(lap);
         Timber.e("Created Lap with ID: %s", lapID);
-
-        toRaceStarter(getCurrentFocus());
     }
 
     /**

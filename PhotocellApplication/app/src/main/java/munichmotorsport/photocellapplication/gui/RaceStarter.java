@@ -14,7 +14,6 @@ import db.ConfigDao;
 import db.Lap;
 import db.LapDao;
 import de.greenrobot.dao.AbstractDao;
-import de.greenrobot.dao.query.WhereCondition;
 import munichmotorsport.photocellapplication.R;
 import munichmotorsport.photocellapplication.utils.DaoFactory;
 import munichmotorsport.photocellapplication.utils.DaoTypes;
