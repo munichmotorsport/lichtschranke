@@ -9,7 +9,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import java.util.ArrayList;
-import java.util.Timer;
+import java.util.Date;
 
 import db.Race;
 
@@ -49,14 +49,15 @@ public class RaceCreator extends AppCompatActivity {
      * @param view
      */
     public void createRace(View view){
+        Date date = new Date();
         String type = spn_modus.getSelectedItem().toString();
 
         EditText et_description = (EditText) findViewById(R.id.et_description);
         String description = et_description.getText().toString();
-        Race race = new Race(null, type, description, false);
+        Race race = new Race(null, type, description, false, date);
         RaceID = daoFactory.getDao(DaoTypes.RACE).insert(race);
         // Logging
-        Timber.e("Created Race with ID: %s, Description: '%s', Modus: %s", RaceID, race.getDescription(), race.getType());
+        Timber.e("Created Race with ID: %s, Description: '%s', Modus: %s, Date: %s", RaceID, race.getDescription(), race.getType(), date);
 
         toCarSelector();
     }
