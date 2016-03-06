@@ -29,6 +29,8 @@
         </activity>
         <activity android:name=".gui.TeamViewer" >
         </activity>
+        <activity android:name=".gui.RaceViewer" >
+        </activity>
     </application>
 
 </manifest>

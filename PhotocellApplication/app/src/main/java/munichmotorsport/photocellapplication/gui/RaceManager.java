@@ -24,4 +24,13 @@ public class RaceManager extends AppCompatActivity {
         Intent intent = new Intent(this, RaceCreator.class);
         startActivity(intent);
     }
+
+    /**
+     * go to Activity "RaceCreator"
+     * @param view
+     */
+    public void toRaceViewer(View view) {
+        Intent intent = new Intent(this, RaceViewer.class);
+        startActivity(intent);
+    }
 }

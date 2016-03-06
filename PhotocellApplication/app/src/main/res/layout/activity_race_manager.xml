@@ -26,6 +26,7 @@
         android:layout_height="wrap_content"
         android:text="Show Races"
         android:id="@+id/btn_toRaceViewer"
+        android:onClick="toRaceViewer"
         android:layout_below="@+id/btn_toRaceCreator"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
