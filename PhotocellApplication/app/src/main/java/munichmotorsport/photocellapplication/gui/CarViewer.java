@@ -12,6 +12,7 @@ import de.greenrobot.dao.AbstractDao;
 import munichmotorsport.photocellapplication.R;
 import munichmotorsport.photocellapplication.utils.DaoFactory;
 import munichmotorsport.photocellapplication.utils.DaoTypes;
+import timber.log.Timber;
 
 public class CarViewer extends AppCompatActivity {
 
@@ -34,6 +35,7 @@ public class CarViewer extends AppCompatActivity {
      *  Load existing Cars from DB
      */
     public void showExistingCars() {
+        Timber.e("showExistingCars()");
         carNames.clear();
         AbstractDao carDao = daoFactory.getDao(DaoTypes.CAR);
         List<Car> cars = carDao.queryBuilder().list();
