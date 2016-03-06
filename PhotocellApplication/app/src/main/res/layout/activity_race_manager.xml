@@ -32,4 +32,40 @@
         android:layout_alignParentStart="true"
         android:layout_alignRight="@+id/btn_toRaceCreator"
         android:layout_alignEnd="@+id/btn_toRaceCreator" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Finish Race"
+        android:id="@+id/btn_finishRace"
+        android:onClick="finishCurrentRace"
+        android:layout_below="@+id/btn_toRaceViewer"
+        android:layout_alignRight="@+id/btn_toRaceViewer"
+        android:layout_alignEnd="@+id/btn_toRaceViewer"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="View current race"
+        android:id="@+id/btn_toCurrentRace"
+        android:onClick="toCurrentRace"
+        android:layout_below="@+id/btn_finishRace"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Reset current race"
+        android:onClick="resetCurrentRace"
+        android:id="@+id/btn_resetCurrentRace"
+        android:layout_below="@+id/btn_toCurrentRace"
+        android:layout_alignRight="@+id/btn_toCurrentRace"
+        android:layout_alignEnd="@+id/btn_toCurrentRace"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 </RelativeLayout>
