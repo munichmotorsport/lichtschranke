@@ -88,6 +88,13 @@
 
         </LinearLayout>
 
+        <TextView
+            android:layout_width="278dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/tv_error"
+            android:textColor="#FF0000"
+            android:layout_gravity="center_horizontal" />
+
     </LinearLayout>
 
 </RelativeLayout>

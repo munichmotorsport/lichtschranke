@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +31,7 @@ public class CarCreator extends AppCompatActivity {
     private ArrayAdapter<String> teamNames;
     private ArrayAdapter<String> carNames;
     private DaoFactory daoFactory;
+    private TextView tv_error;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +46,7 @@ public class CarCreator extends AppCompatActivity {
         teamList_Ids = new ArrayList<>();
         teamNames = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
         carNames = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
+        tv_error = (TextView) findViewById(R.id.tv_error);
 
         // database
         daoFactory = new DaoFactory(this);
@@ -112,6 +115,10 @@ public class CarCreator extends AppCompatActivity {
             Timber.e("Created Car for Team: %s", car.getTeamID());
 
             finish();
+            tv_error.setText("");
+        }
+        else {
+            tv_error.setText("You have to select a team. If the matching team is missing, create it.");
         }
     }
 
