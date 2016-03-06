@@ -6,8 +6,8 @@
 
 # Team: 
 
-- Jonas (Munich Motor Sports)
-- Nils (Munich Motor Sports)
+- Jonas (MunichMotorsport)
+- Nils (MunichMotorsport)
 - Andi (iteratec)
 - De Long (iteratec)
 - Daniel (iteratec)
