@@ -17,7 +17,7 @@ import timber.log.Timber;
 public class CarViewer extends AppCompatActivity {
 
     private ArrayAdapter<String> carNames;
-    private DaoFactory daoFactory;
+    private DaoFactory factory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +26,7 @@ public class CarViewer extends AppCompatActivity {
         setTitle("View Cars");
 
         carNames = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
-        daoFactory = new DaoFactory(this);
+        factory = new DaoFactory(this);
 
         showExistingCars();
     }
@@ -37,12 +37,14 @@ public class CarViewer extends AppCompatActivity {
     public void showExistingCars() {
         Timber.e("showExistingCars()");
         carNames.clear();
-        AbstractDao carDao = daoFactory.getDao(DaoTypes.CAR);
+        AbstractDao carDao = factory.getDao(DaoTypes.CAR);
         List<Car> cars = carDao.queryBuilder().list();
         for(int i = 0; i < cars.size(); i++){
             carNames.add(cars.get(i).getName());
         }
         ListView listView = (ListView) findViewById(R.id.carList);
         listView.setAdapter(carNames);
+        factory.getDaoSession().clear();
+
     }
 }

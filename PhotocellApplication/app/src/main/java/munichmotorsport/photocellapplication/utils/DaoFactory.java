@@ -41,4 +41,8 @@ public class DaoFactory {
         return dao;
     }
 
+    public DaoSession getDaoSession() {
+        return daoSession;
+    }
+
 }

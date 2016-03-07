@@ -71,11 +71,11 @@ public class RaceManager extends AppCompatActivity {
      * @param view
      */
     public void finishCurrentRace(View view) {
-        AbstractDao dao = factory.getDao(DaoTypes.RACE);
-        List<Race> races = dao.queryBuilder().list();
+        AbstractDao raceDao = factory.getDao(DaoTypes.RACE);
+        List<Race> races = raceDao.queryBuilder().list();
         Race race = races.get(races.size() - 1);
         race.setFinished(true);
-        dao.insertOrReplace(race);
+        raceDao.insertOrReplace(race);
         Timber.e("All Races in Database: ");
         for (int i = 0; i < races.size(); i++) {
             Timber.e("Rennen: '%s' (Typ: %s) , finished: %s", races.get(i).getDescription(), races.get(i).getType(), races.get(i).getFinished().toString());

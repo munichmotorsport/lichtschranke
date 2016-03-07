@@ -14,12 +14,13 @@ import de.greenrobot.dao.AbstractDao;
 import munichmotorsport.photocellapplication.R;
 import munichmotorsport.photocellapplication.utils.DaoFactory;
 import munichmotorsport.photocellapplication.utils.DaoTypes;
+import timber.log.Timber;
 
 public class StartScreen extends AppCompatActivity {
 
     private DaoFactory factory;
     private TextView tv_currentRace;
-
+    private AbstractDao raceDao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +31,7 @@ public class StartScreen extends AppCompatActivity {
         tv_currentRace = (TextView) findViewById(R.id.currentRace);
         ImageView iv_backgroundimg = (ImageView) findViewById(R.id.iv_backgroundimg);
         iv_backgroundimg.setImageResource(R.drawable.logo_rw);
+        raceDao = factory.getDao(DaoTypes.RACE);
 
         showCurrentRace();
     }
@@ -37,6 +39,12 @@ public class StartScreen extends AppCompatActivity {
     @Override
     public void onResume() {
         super.onResume();
+        showCurrentRace();
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
         showCurrentRace();
     }
 
@@ -71,18 +79,22 @@ public class StartScreen extends AppCompatActivity {
     }
 
     /**
-     * Zeige aktuelles Rennen im TextView, ggf Button "CreateRace" deaktivieren
+     * show current race in textview
      */
     public void showCurrentRace() {
-        AbstractDao raceDao = factory.getDao(DaoTypes.RACE);
+
+
         List<Race> races = raceDao.queryBuilder().list();
+
+
         if (!races.isEmpty() && races.get(races.size() - 1).getFinished() == false) {
             tv_currentRace.setText("Current race: " + races.get(races.size() - 1).getDescription() + " (in mod: " + races.get(races.size() - 1).getType() + ")");
+            Timber.e("Last Race: %s with status finished: %s", races.get(races.size() - 1).getDescription(), races.get(races.size() - 1).getFinished().toString());
         } else {
             tv_currentRace.setText("No race used, please create one.");
         }
+        factory.getDaoSession().clear();
     }
-
 
 
 }

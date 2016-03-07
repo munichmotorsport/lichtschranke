@@ -7,7 +7,6 @@ import android.widget.ListView;
 
 import java.util.List;
 
-import db.Car;
 import db.Team;
 import de.greenrobot.dao.AbstractDao;
 import munichmotorsport.photocellapplication.R;
@@ -18,7 +17,7 @@ import timber.log.Timber;
 public class TeamViewer extends AppCompatActivity {
 
     private ArrayAdapter<String> teamNames;
-    private DaoFactory daoFactory;
+    private DaoFactory factory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,7 +26,7 @@ public class TeamViewer extends AppCompatActivity {
         setTitle("View Teams");
 
         teamNames = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
-        daoFactory = new DaoFactory(this);
+        factory = new DaoFactory(this);
 
         showExistingTeams();
     }
@@ -38,7 +37,7 @@ public class TeamViewer extends AppCompatActivity {
     public void showExistingTeams() {
         Timber.e("showExistingTeams()");
         teamNames.clear();
-        AbstractDao teamDao = daoFactory.getDao(DaoTypes.TEAM);
+        AbstractDao teamDao = factory.getDao(DaoTypes.TEAM);
         List<Team> teams = teamDao.queryBuilder().list();
         for(int i = 0; i < teams.size(); i++){
             teamNames.add(teams.get(i).getName());
@@ -46,5 +45,6 @@ public class TeamViewer extends AppCompatActivity {
         }
         ListView listView = (ListView) findViewById(R.id.lv_teams);
         listView.setAdapter(teamNames);
+        factory.getDaoSession().clear();
     }
 }
