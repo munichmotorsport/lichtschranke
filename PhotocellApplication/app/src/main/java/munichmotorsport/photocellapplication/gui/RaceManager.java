@@ -10,14 +10,12 @@ import android.widget.Button;
 
 import java.util.List;
 
-import db.CarDao;
 import db.LapDao;
 import db.Race;
 import de.greenrobot.dao.AbstractDao;
 import munichmotorsport.photocellapplication.R;
 import munichmotorsport.photocellapplication.utils.DaoFactory;
 import munichmotorsport.photocellapplication.utils.DaoTypes;
-import munichmotorsport.photocellapplication.utils.WarningDialogFragment;
 import timber.log.Timber;
 
 public class RaceManager extends AppCompatActivity {
