@@ -22,7 +22,7 @@ import timber.log.Timber;
 public class RaceCreator extends AppCompatActivity {
 
     private Spinner spn_modus;
-    private DaoFactory daoFactory;
+    private DaoFactory factory;
     private long RaceID;
 
     @Override
@@ -31,7 +31,7 @@ public class RaceCreator extends AppCompatActivity {
         setContentView(R.layout.activity_create_race);
         setTitle("Neues Rennen erstellen");
 
-        daoFactory = new DaoFactory(this);
+        factory = new DaoFactory(this);
 
         spn_modus = (Spinner) findViewById(R.id.spn_modus);
         ArrayList<String> modi = new ArrayList<>();
@@ -39,23 +39,24 @@ public class RaceCreator extends AppCompatActivity {
         modi.add("Auto Cross");
         modi.add("Endurance");
         modi.add("Skit Pad");
-        ArrayAdapter<String> dropDown = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1);
+        ArrayAdapter<String> dropDown = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
         dropDown.addAll(modi);
         spn_modus.setAdapter(dropDown);
     }
 
     /**
      * Rennen erstellen
+     *
      * @param view
      */
-    public void createRace(View view){
+    public void createRace(View view) {
         Date date = new Date();
         String type = spn_modus.getSelectedItem().toString();
 
         EditText et_description = (EditText) findViewById(R.id.et_description);
         String description = et_description.getText().toString();
         Race race = new Race(null, type, description, false, date);
-        RaceID = daoFactory.getDao(DaoTypes.RACE).insert(race);
+        RaceID = factory.getDao(DaoTypes.RACE).insert(race);
         // Logging
         Timber.e("Created Race with ID: %s, Description: '%s', Modus: %s, Date: %s", RaceID, race.getDescription(), race.getType(), date);
 
@@ -71,11 +72,5 @@ public class RaceCreator extends AppCompatActivity {
         startActivity(intent);
     }
 
-    /**
-     * Löscht alle Rennen aus der Datenbank, nur zum Testen
-     * @param view
-     */
-    public void deleteRaces(View view) {
-        daoFactory.getDao(DaoTypes.RACE).deleteAll();
-    }
+
 }

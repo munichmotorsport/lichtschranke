@@ -32,14 +32,14 @@ public class RaceViewer extends AppCompatActivity {
     }
 
     /**
-     *  Load existing Teams from DB
+     * Load existing Teams from DB
      */
     public void showExistingRaces() {
         Timber.e("showExistingRaces()");
         raceDescriptions.clear();
         AbstractDao raceDao = factory.getDao(DaoTypes.RACE);
         List<Race> races = raceDao.queryBuilder().list();
-        for(int i = 0; i < races.size(); i++){
+        for (int i = 0; i < races.size(); i++) {
             raceDescriptions.add(races.get(i).getDescription());
             Timber.e("Found Race: %s finished: %s", races.get(i).getDescription(), races.get(i).getFinished().toString());
         }

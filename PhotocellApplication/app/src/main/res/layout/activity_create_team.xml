@@ -44,15 +44,6 @@
                 android:id="@+id/btn_createTeam"
                 android:onClick="createTeam" />
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="deleteTeams"
-                android:text="Alle Teams löschen"
-                android:id="@+id/deleteTeams"
-                android:layout_alignParentTop="true"
-                android:layout_toRightOf="@+id/btn_createTeam"
-                android:layout_toEndOf="@+id/btn_createTeam" />
 
         </RelativeLayout>
     </LinearLayout>

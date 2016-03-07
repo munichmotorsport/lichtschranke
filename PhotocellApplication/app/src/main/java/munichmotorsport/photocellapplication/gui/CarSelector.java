@@ -47,13 +47,13 @@ public class CarSelector extends AppCompatActivity {
     }
 
     /**
-     *  Load existing Cars from DB
+     * Load existing Cars from DB
      */
     public void showExistingCars() {
         carNames.clear();
         AbstractDao carDao = daoFactory.getDao(DaoTypes.CAR);
         List<Car> cars = carDao.queryBuilder().list();
-        for (int i=0; i<cars.size(); i++) {
+        for (int i = 0; i < cars.size(); i++) {
             CheckBox cb_newCar = new CheckBox(this);
             cb_newCar.setText(cars.get(i).getName());
             cb_newCar.setId(cars.get(i).getId().intValue());
@@ -68,7 +68,7 @@ public class CarSelector extends AppCompatActivity {
      */
     public void getTickledBoxesAndSave(View view) {
         refreshDatabase();
-        for (int i=0; i<ll_cars.getChildCount(); i++) {
+        for (int i = 0; i < ll_cars.getChildCount(); i++) {
             CheckBox checkBox = (CheckBox) ll_cars.getChildAt(i);
             if (checkBox.isChecked()) {
                 addCarsToRace(checkBox.getId());
@@ -78,7 +78,7 @@ public class CarSelector extends AppCompatActivity {
     }
 
     /**
-     *  deleting existing Laps & Configs for this Race
+     * deleting existing Laps & Configs for this Race
      */
     public void refreshDatabase() {
         AbstractDao lapDao = daoFactory.getDao(DaoTypes.LAP);
@@ -87,10 +87,10 @@ public class CarSelector extends AppCompatActivity {
         List<Lap> lapsAlreadyCreated = lapDao.queryBuilder().where(LapDao.Properties.RaceID.eq(RaceID)).list();
         Timber.e("Size of already Created Laps for this race: %s", lapsAlreadyCreated.size());
         if (lapsAlreadyCreated.size() > 0) {
-            for (int i=0; i<lapsAlreadyCreated.size(); i++) {
+            for (int i = 0; i < lapsAlreadyCreated.size(); i++) {
                 long configID = lapsAlreadyCreated.get(i).getConfigID();
                 Timber.e("ConfigID to be deleted: %s", configID);
-                List<Config> config =  configDao.queryBuilder().where(ConfigDao.Properties.Id.eq(configID)).list();
+                List<Config> config = configDao.queryBuilder().where(ConfigDao.Properties.Id.eq(configID)).list();
                 configDao.delete(config.get(0));
                 lapDao.delete(lapsAlreadyCreated.get(i));
             }

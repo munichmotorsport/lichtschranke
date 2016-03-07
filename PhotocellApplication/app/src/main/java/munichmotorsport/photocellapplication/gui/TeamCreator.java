@@ -27,9 +27,10 @@ public class TeamCreator extends AppCompatActivity {
 
     /**
      * Team erstellen
+     *
      * @param view
      */
-    public void createTeam(View view){
+    public void createTeam(View view) {
         EditText et_teamName = (EditText) findViewById(R.id.et_teamName);
         String teamName = et_teamName.getText().toString();
 
@@ -43,14 +44,6 @@ public class TeamCreator extends AppCompatActivity {
             Timber.e("Created Team with ID: %s", teamID);
             Timber.e("Created Team with Name: %s", team.getName());
         }
-    }
-
-    /**
-     * Löscht alle Teams aus der Datenbank, nur zum Testen
-     * @param view
-     */
-    public void deleteTeams(View view) {
-        daoFactory.getDao(DaoTypes.TEAM).deleteAll();
     }
 
 }

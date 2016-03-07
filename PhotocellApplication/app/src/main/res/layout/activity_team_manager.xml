@@ -25,5 +25,15 @@
             android:text="View Teams"
             android:onClick="goToTeamViewer"
             android:id="@+id/btn_goToTeamViewer" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="deleteTeams"
+            android:text="delete all teams"
+            android:id="@+id/deleteTeams"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/btn_createTeam"
+            android:layout_toEndOf="@+id/btn_createTeam" />
     </LinearLayout>
 </RelativeLayout>

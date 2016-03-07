@@ -32,14 +32,14 @@ public class CarViewer extends AppCompatActivity {
     }
 
     /**
-     *  Load existing Cars from DB
+     * Load existing Cars from DB
      */
     public void showExistingCars() {
         Timber.e("showExistingCars()");
         carNames.clear();
         AbstractDao carDao = factory.getDao(DaoTypes.CAR);
         List<Car> cars = carDao.queryBuilder().list();
-        for(int i = 0; i < cars.size(); i++){
+        for (int i = 0; i < cars.size(); i++) {
             carNames.add(cars.get(i).getName());
         }
         ListView listView = (ListView) findViewById(R.id.carList);

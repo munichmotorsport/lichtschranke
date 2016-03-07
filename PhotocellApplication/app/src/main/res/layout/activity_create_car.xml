@@ -72,13 +72,6 @@
                 android:onClick="createCar" />
 
             <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="deleteCars"
-                android:text="Autos löschen"
-                android:id="@+id/deleteCars" />
-
-            <Button
                 style="?android:attr/buttonStyleSmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

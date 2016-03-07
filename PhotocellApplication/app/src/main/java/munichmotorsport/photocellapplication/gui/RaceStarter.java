@@ -45,7 +45,7 @@ public class RaceStarter extends AppCompatActivity {
         AbstractDao lapDao = daoFactory.getDao(DaoTypes.LAP);
 
         List<Lap> laps = lapDao.queryBuilder().where(LapDao.Properties.RaceID.eq(raceID)).list();
-        for(int i = 0; i < laps.size(); i++){
+        for (int i = 0; i < laps.size(); i++) {
             AbstractDao configDao = daoFactory.getDao(DaoTypes.CONFIG);
             long configID = laps.get(i).getConfigID();
             List<Config> config = configDao.queryBuilder().where(ConfigDao.Properties.Id.eq(configID)).list();

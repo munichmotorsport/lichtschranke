@@ -38,7 +38,7 @@ public class RaceManager extends AppCompatActivity {
         manageButtons();
     }
 
-    public void onResume(){
+    public void onResume() {
         super.onResume();
         manageButtons();
     }
@@ -83,7 +83,6 @@ public class RaceManager extends AppCompatActivity {
 
     /**
      * change the look and availability of the buttons
-     *
      */
     public void manageButtons() {
         AbstractDao raceDao = factory.getDao(DaoTypes.RACE);
@@ -111,11 +110,11 @@ public class RaceManager extends AppCompatActivity {
         }
     }
 
-    public void toCurrentRace(View view){
+    public void toCurrentRace(View view) {
         ;
     }
 
-    public void resetCurrentRace (View view) {
+    public void resetCurrentRace(View view) {
         new AlertDialog.Builder(this)
                 .setTitle("Reset Race")
                 .setMessage("Are you sure you want to delete all measured lap times for this race?")
@@ -136,6 +135,15 @@ public class RaceManager extends AppCompatActivity {
                 })
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .show();
+    }
+
+    /**
+     * Löscht alle Rennen aus der Datenbank, nur zum Testen
+     *
+     * @param view
+     */
+    public void deleteRaces(View view) {
+        factory.getDao(DaoTypes.RACE).deleteAll();
     }
 
 }

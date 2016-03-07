@@ -29,7 +29,6 @@ public class CarCreator extends AppCompatActivity {
     private ArrayList<String> teamList_names;
     private ArrayList<Long> teamList_Ids;
     private ArrayAdapter<String> teamNames;
-    private ArrayAdapter<String> carNames;
     private DaoFactory daoFactory;
     private TextView tv_error;
 
@@ -45,7 +44,6 @@ public class CarCreator extends AppCompatActivity {
         teamList_names = new ArrayList<>();
         teamList_Ids = new ArrayList<>();
         teamNames = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
-        carNames = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
         tv_error = (TextView) findViewById(R.id.tv_error);
 
         // database
@@ -54,14 +52,14 @@ public class CarCreator extends AppCompatActivity {
     }
 
     @Override
-    protected void onResume () {
+    protected void onResume() {
         super.onResume();
         resetTeamLists();
         Timber.e("onResume() called");
     }
 
     /**
-     *  reset Teamlists
+     * reset Teamlists
      */
     private void resetTeamLists() {
         teamNames.clear();
@@ -71,22 +69,14 @@ public class CarCreator extends AppCompatActivity {
         loadTeams();
     }
 
-    /**
-     * Löscht alle Autos aus der Datenbank, nur zum Testen
-     * @param view
-     */
-    public void deleteCars(View view) {
-        daoFactory.getDao(DaoTypes.CAR).deleteAll();
-        carNames.notifyDataSetChanged();
-    }
 
     /**
      * load Teams from DB and put them into spinner
      */
     public void loadTeams() {
-       AbstractDao teamDao = daoFactory.getDao(DaoTypes.TEAM);
+        AbstractDao teamDao = daoFactory.getDao(DaoTypes.TEAM);
         List<Team> teams = teamDao.queryBuilder().list();
-        for(int i = 0; i < teams.size(); i++){
+        for (int i = 0; i < teams.size(); i++) {
             teamList_names.add(teams.get(i).getName());
             teamList_Ids.add(teams.get(i).getId());
             Timber.e("Loaded Team with ID: %s, Name: %s", teams.get(i).getId(), teams.get(i).getName());
@@ -98,9 +88,10 @@ public class CarCreator extends AppCompatActivity {
 
     /**
      * Auto erstellen
+     *
      * @param view
      */
-    public void createCar(View view){
+    public void createCar(View view) {
         int position = spn_teams.getSelectedItemPosition();
         String carName = et_carName.getText().toString();
 
@@ -116,17 +107,17 @@ public class CarCreator extends AppCompatActivity {
 
             finish();
             tv_error.setText("");
-        }
-        else {
+        } else {
             tv_error.setText("You have to select a team. If the matching team is missing, create it.");
         }
     }
 
     /**
      * zur Activity "Team erstellen"
+     *
      * @param view
      */
-    public void createTeam(View view){
+    public void createTeam(View view) {
         Intent intent = new Intent(this, TeamCreator.class);
         startActivity(intent);
     }

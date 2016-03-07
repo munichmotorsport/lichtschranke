@@ -6,14 +6,19 @@ import android.os.Bundle;
 import android.view.View;
 
 import munichmotorsport.photocellapplication.R;
+import munichmotorsport.photocellapplication.utils.DaoFactory;
+import munichmotorsport.photocellapplication.utils.DaoTypes;
 
 public class CarManager extends AppCompatActivity {
+
+    private DaoFactory factory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_car_manager);
         setTitle("Car Manager");
+        factory = new DaoFactory(this);
     }
 
     /**
@@ -34,5 +39,14 @@ public class CarManager extends AppCompatActivity {
     public void carViewer(View view) {
         Intent intent = new Intent(this, CarViewer.class);
         startActivity(intent);
+    }
+
+    /**
+     * Löscht alle Autos aus der Datenbank, nur zum Testen
+     *
+     * @param view
+     */
+    public void deleteCars(View view) {
+        factory.getDao(DaoTypes.CAR).deleteAll();
     }
 }
