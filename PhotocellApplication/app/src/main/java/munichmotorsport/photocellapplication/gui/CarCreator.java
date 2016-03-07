@@ -55,7 +55,6 @@ public class CarCreator extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         resetTeamLists();
-        Timber.e("onResume() called");
     }
 
     /**
@@ -71,7 +70,7 @@ public class CarCreator extends AppCompatActivity {
 
 
     /**
-     * load Teams from DB and put them into spinner
+     * load teams from DB and put them into spinner
      */
     public void loadTeams() {
         AbstractDao teamDao = daoFactory.getDao(DaoTypes.TEAM);
@@ -87,7 +86,7 @@ public class CarCreator extends AppCompatActivity {
     }
 
     /**
-     * Auto erstellen
+     * Create car and write it into DB
      *
      * @param view
      */
@@ -113,7 +112,7 @@ public class CarCreator extends AppCompatActivity {
     }
 
     /**
-     * zur Activity "Team erstellen"
+     * to activity "TeamCreator"
      *
      * @param view
      */

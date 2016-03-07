@@ -40,6 +40,9 @@ public class RaceStarter extends AppCompatActivity {
         showCurrentCars();
     }
 
+    /**
+     *
+     */
     public void showCurrentCars() {
         carNames.clear();
         AbstractDao lapDao = daoFactory.getDao(DaoTypes.LAP);

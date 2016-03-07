@@ -22,7 +22,7 @@ public class TeamManager extends AppCompatActivity {
     }
 
     /**
-     * Zur Activity "TeamCreator"
+     * to activity "TeamCreator"
      *
      * @param view
      */
@@ -32,7 +32,7 @@ public class TeamManager extends AppCompatActivity {
     }
 
     /**
-     * Zur Activity "TeamCreator"
+     * to activity "TeamCreator"
      *
      * @param view
      */
@@ -42,7 +42,7 @@ public class TeamManager extends AppCompatActivity {
     }
 
     /**
-     * Löscht alle Teams aus der Datenbank, nur zum Testen
+     * deletes all teams in the database, just for testing
      *
      * @param view
      */

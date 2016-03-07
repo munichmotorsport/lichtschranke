@@ -26,7 +26,7 @@ public class TeamCreator extends AppCompatActivity {
     }
 
     /**
-     * Team erstellen
+     * create a team and writes it into DB
      *
      * @param view
      */

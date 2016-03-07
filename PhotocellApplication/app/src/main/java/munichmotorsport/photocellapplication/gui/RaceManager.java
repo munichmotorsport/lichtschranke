@@ -114,6 +114,10 @@ public class RaceManager extends AppCompatActivity {
         ;
     }
 
+    /**
+     * delete all measured laps for this race
+     * @param view
+     */
     public void resetCurrentRace(View view) {
         new AlertDialog.Builder(this)
                 .setTitle("Reset Race")
@@ -138,7 +142,7 @@ public class RaceManager extends AppCompatActivity {
     }
 
     /**
-     * Löscht alle Rennen aus der Datenbank, nur zum Testen
+     * deletes all races from the DB, just for testing
      *
      * @param view
      */

@@ -45,7 +45,7 @@ public class RaceCreator extends AppCompatActivity {
     }
 
     /**
-     * Rennen erstellen
+     * create a race and write it into DB
      *
      * @param view
      */

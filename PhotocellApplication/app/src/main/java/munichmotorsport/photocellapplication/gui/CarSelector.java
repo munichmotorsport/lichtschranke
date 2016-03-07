@@ -7,8 +7,6 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.ScrollView;
 
 import java.util.List;
 
@@ -62,7 +60,7 @@ public class CarSelector extends AppCompatActivity {
     }
 
     /**
-     * gets all selected cars
+     * load all selected cars
      *
      * @param view
      */
@@ -78,7 +76,7 @@ public class CarSelector extends AppCompatActivity {
     }
 
     /**
-     * deleting existing Laps & Configs for this Race
+     * delete existing Laps & Configs for this Race
      */
     public void refreshDatabase() {
         AbstractDao lapDao = daoFactory.getDao(DaoTypes.LAP);
@@ -98,7 +96,7 @@ public class CarSelector extends AppCompatActivity {
     }
 
     /**
-     * connects a car to the current race and saves into DB
+     * connect a car to the current race and writes into DB
      *
      * @param carID
      */
@@ -117,7 +115,7 @@ public class CarSelector extends AppCompatActivity {
     }
 
     /**
-     * zur Activity "RaceStarter"
+     * to activity "RaceStarter"
      *
      * @param view
      */

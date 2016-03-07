@@ -21,6 +21,11 @@ public class DaoFactory {
         daoSession = daoMaster.newSession();
     }
 
+    /**
+     * creates a dao for writing and reading operations on the DB
+     * @param daoType
+     * @return matching dao for the input type
+     */
     public AbstractDao getDao(DaoTypes daoType) {
         switch (daoType) {
             case RACE:
@@ -41,6 +46,10 @@ public class DaoFactory {
         return dao;
     }
 
+    /**
+     * reach the daosession from the used factory
+     * @return matching daoSession
+     */
     public DaoSession getDaoSession() {
         return daoSession;
     }

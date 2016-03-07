@@ -22,7 +22,7 @@ public class CarManager extends AppCompatActivity {
     }
 
     /**
-     * zur Activity "CarCreator"
+     * To activity "CarCreator"
      *
      * @param view
      */

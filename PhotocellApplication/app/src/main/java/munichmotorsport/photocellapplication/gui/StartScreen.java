@@ -59,7 +59,7 @@ public class StartScreen extends AppCompatActivity {
     }
 
     /**
-     * zur Activity "CarManager"
+     * to activity "CarManager"
      *
      * @param view
      */
@@ -69,7 +69,7 @@ public class StartScreen extends AppCompatActivity {
     }
 
     /**
-     * zur Activity "TeamManager"
+     * to activity "TeamManager"
      *
      * @param view
      */
