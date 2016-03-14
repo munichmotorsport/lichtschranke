@@ -1,5 +1,7 @@
 package com.generator;
 
+import java.io.File;
+
 import de.greenrobot.daogenerator.DaoGenerator;
 import de.greenrobot.daogenerator.Entity;
 import de.greenrobot.daogenerator.Property;
@@ -21,6 +23,8 @@ public class RaceDaoGen {
         createConfig(schema);
         createRace(schema);
         createLap(schema);
+
+        new File("app/src-gen/main/java").mkdirs();
         new DaoGenerator().generateAll(schema, "app/src-gen/main/java");
     }
 
