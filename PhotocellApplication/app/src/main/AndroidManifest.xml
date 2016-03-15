@@ -31,6 +31,8 @@
         </activity>
         <activity android:name=".gui.RaceViewer" >
         </activity>
+        <activity android:name=".gui.RaceTable" >
+        </activity>
     </application>
 
 </manifest>
