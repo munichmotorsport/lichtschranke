@@ -111,7 +111,8 @@ public class RaceManager extends AppCompatActivity {
     }
 
     public void toCurrentRace(View view) {
-        ;
+        Intent intent = new Intent(this, RaceTable.class);
+        this.startActivity(intent);
     }
 
     /**
