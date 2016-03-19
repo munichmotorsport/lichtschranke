@@ -10,8 +10,10 @@ import android.widget.Button;
 
 import java.util.List;
 
+import db.Lap;
 import db.LapDao;
 import db.Race;
+import db.RaceDao;
 import de.greenrobot.dao.AbstractDao;
 import munichmotorsport.photocellapplication.R;
 import munichmotorsport.photocellapplication.utils.DaoFactory;
@@ -117,6 +119,7 @@ public class RaceManager extends AppCompatActivity {
 
     /**
      * delete all measured laps for this race
+     *
      * @param view
      */
     public void resetCurrentRace(View view) {
@@ -140,6 +143,33 @@ public class RaceManager extends AppCompatActivity {
                 })
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .show();
+    }
+
+    /**
+     * Add dummy Laps to the DB
+     * @param view
+     */
+    public void addLaps(View view) {
+        long time = 23000L;
+        int lap = 1;
+        String car = "PWe7.16";
+        AbstractDao dao = factory.getDao(DaoTypes.LAP);
+        List<Race> races = factory.getDao(DaoTypes.RACE).queryBuilder().list();
+        for (int i = 0; i < 100; i++) {
+            Lap dummy = new Lap(null, time, lap, races.get(races.size()-1).getId(), 0);
+            dao.insert(dummy);
+            time = time + 100L;
+            lap++;
+        }
+        Timber.e("Laps in DB: %s", dao.count());
+    }
+
+    /**
+     * Delete dummy laps from the DB
+     * @param view
+     */
+    public void deleteLaps(View view) {
+        factory.getDao(DaoTypes.LAP).deleteAll();
     }
 
     /**
