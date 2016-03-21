@@ -54,7 +54,20 @@ public class RaceTable extends AppCompatActivity {
     }
 
     public void fillTable() {
-        List<Race> races = factory.getDao(DaoTypes.RACE).queryBuilder().list();
+
+        List<Race> existingRaces = factory.getDao(DaoTypes.RACE).queryBuilder().list();
+        Timber.e("All Races in Database: ");
+        for (int i = 0; i < existingRaces.size(); i++) {
+            Timber.e("Rennen: '%s' (Typ: %s) , finished: %s", existingRaces.get(i).getDescription(), existingRaces.get(i).getType(), existingRaces.get(i).getFinished().toString());
+        }
+
+
+        List<Race> races = factory.getDao(DaoTypes.RACE).queryBuilder().where(RaceDao.Properties.Finished.eq(false)).list();
+
+        Timber.e("All Races in races: ");
+        for (int i = 0; i < races.size(); i++) {
+            Timber.e("Rennen: '%s' (Typ: %s) , finished: %s", races.get(i).getDescription(), races.get(i).getType(), races.get(i).getFinished().toString());
+        }
 
         List<Lap> laps = factory.getDao(DaoTypes.LAP).queryBuilder().where(LapDao.Properties.RaceID.eq(races.get(races.size()-1).getId())).list();
         if(laps.size() != 0) {

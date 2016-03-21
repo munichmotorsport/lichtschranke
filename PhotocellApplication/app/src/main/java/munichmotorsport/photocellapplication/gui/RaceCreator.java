@@ -10,9 +10,11 @@ import android.widget.Spinner;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import db.Race;
 
+import de.greenrobot.dao.AbstractDao;
 import munichmotorsport.photocellapplication.R;
 import munichmotorsport.photocellapplication.utils.DaoFactory;
 import munichmotorsport.photocellapplication.utils.DaoTypes;
@@ -42,6 +44,19 @@ public class RaceCreator extends AppCompatActivity {
         ArrayAdapter<String> dropDown = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
         dropDown.addAll(modi);
         spn_modus.setAdapter(dropDown);
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        AbstractDao raceDao = factory.getDao(DaoTypes.RACE);
+        List<Race> races = raceDao.queryBuilder().list();
+        for(Race t:races) {
+            if(t.getFinished() == false){
+                Intent intent = new Intent(this, RaceManager.class);
+                startActivity(intent);
+            }
+        }
     }
 
     /**

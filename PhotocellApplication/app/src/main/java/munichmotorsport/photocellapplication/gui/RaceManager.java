@@ -154,14 +154,17 @@ public class RaceManager extends AppCompatActivity {
         int lap = 1;
         String car = "PWe7.16";
         AbstractDao dao = factory.getDao(DaoTypes.LAP);
-        List<Race> races = factory.getDao(DaoTypes.RACE).queryBuilder().list();
-        for (int i = 0; i < 100; i++) {
-            Lap dummy = new Lap(null, time, lap, races.get(races.size()-1).getId(), 0);
-            dao.insert(dummy);
-            time = time + 100L;
-            lap++;
+        List<Race> races = factory.getDao(DaoTypes.RACE).queryBuilder().where(RaceDao.Properties.Finished.eq(false)).list();
+
+        if(races.size() != 0) {
+            for (int i = 0; i < 100; i++) {
+                Lap dummy = new Lap(null, time, lap, races.get(races.size() - 1).getId(), 0);
+                dao.insert(dummy);
+                time = time + 100L;
+                lap++;
+            }
         }
-        Timber.e("Laps in DB: %s", dao.count());
+        Timber.e("Laps in DB: %s", races.get(races.size()-1).getLapList().size());
     }
 
     /**
@@ -169,7 +172,14 @@ public class RaceManager extends AppCompatActivity {
      * @param view
      */
     public void deleteLaps(View view) {
-        factory.getDao(DaoTypes.LAP).deleteAll();
+        AbstractDao lapDao = factory.getDao(DaoTypes.LAP);
+        List<Race> races = factory.getDao(DaoTypes.RACE).queryBuilder().where(RaceDao.Properties.Finished.eq(false)).list();
+        if(races.size() != 0) {
+           List<Lap> laps = lapDao.queryBuilder().where(LapDao.Properties.RaceID.eq(races.get(0).getId())).list();
+            for(Lap t:laps){
+                lapDao.delete(t);
+            }
+        }
     }
 
     /**
@@ -179,6 +189,7 @@ public class RaceManager extends AppCompatActivity {
      */
     public void deleteRaces(View view) {
         factory.getDao(DaoTypes.RACE).deleteAll();
+        manageButtons();
     }
 
 }
