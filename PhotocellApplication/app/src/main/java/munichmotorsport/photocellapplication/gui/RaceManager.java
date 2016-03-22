@@ -10,6 +10,7 @@ import android.widget.Button;
 
 import java.util.List;
 
+import db.DaoSession;
 import db.Lap;
 import db.LapDao;
 import db.Race;
@@ -26,6 +27,8 @@ public class RaceManager extends AppCompatActivity {
     Button btn_newRace;
     Button btn_toCurrentRace;
     Button btn_resetCurrentRace;
+    Button btn_deleteLapsFromCurrentRace;
+    Button btn_addLaps;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +40,9 @@ public class RaceManager extends AppCompatActivity {
         btn_newRace = (Button) findViewById(R.id.btn_toRaceCreator);
         btn_toCurrentRace = (Button) findViewById(R.id.btn_toCurrentRace);
         btn_resetCurrentRace = (Button) findViewById(R.id.btn_resetCurrentRace);
+        btn_deleteLapsFromCurrentRace = (Button) findViewById(R.id.btn_deleteLapsFromCurrentRace);
+        btn_addLaps = (Button) findViewById(R.id.btn_addLaps);
+
         manageButtons();
     }
 
@@ -98,6 +104,10 @@ public class RaceManager extends AppCompatActivity {
             btn_toCurrentRace.setAlpha(1);
             btn_resetCurrentRace.setEnabled(true);
             btn_resetCurrentRace.setAlpha(1);
+            btn_deleteLapsFromCurrentRace.setAlpha(1);
+            btn_deleteLapsFromCurrentRace.setEnabled(true);
+            btn_addLaps.setEnabled(true);
+            btn_addLaps.setAlpha(1);
             btn_newRace.setText("Current race has to be completed first. Please press 'Finish Current Race'");
         } else {
             btn_newRace.setEnabled(true);
@@ -108,6 +118,10 @@ public class RaceManager extends AppCompatActivity {
             btn_toCurrentRace.setAlpha(0.5f);
             btn_resetCurrentRace.setEnabled(false);
             btn_resetCurrentRace.setAlpha(0.5f);
+            btn_deleteLapsFromCurrentRace.setAlpha(0.5f);
+            btn_deleteLapsFromCurrentRace.setEnabled(false);
+            btn_addLaps.setEnabled(false);
+            btn_addLaps.setAlpha(0.5f);
             btn_newRace.setText("Create Race");
         }
     }
@@ -146,7 +160,8 @@ public class RaceManager extends AppCompatActivity {
     }
 
     /**
-     * Add dummy Laps to the DB
+     * add dummy Laps to the DB
+     *
      * @param view
      */
     public void addLaps(View view) {
@@ -155,30 +170,44 @@ public class RaceManager extends AppCompatActivity {
         String car = "PWe7.16";
         AbstractDao dao = factory.getDao(DaoTypes.LAP);
         List<Race> races = factory.getDao(DaoTypes.RACE).queryBuilder().where(RaceDao.Properties.Finished.eq(false)).list();
-
-        if(races.size() != 0) {
+        if (races.size() != 0) {
             for (int i = 0; i < 100; i++) {
                 Lap dummy = new Lap(null, time, lap, races.get(races.size() - 1).getId(), 0);
                 dao.insert(dummy);
                 time = time + 100L;
                 lap++;
             }
+            Timber.e("Laps in DB: %s", getLapCount());
         }
-        Timber.e("Laps in DB: %s", races.get(races.size()-1).getLapList().size());
+        factory.getDaoSession().clear();
     }
 
     /**
-     * Delete dummy laps from the DB
+     * get amount of laps in db
+     *
+     * @return
+     */
+    public long getLapCount() {
+        long amount = factory.getDao(DaoTypes.LAP).count();
+        DaoSession session = factory.getDaoSession();
+        session.clear();
+        return amount;
+    }
+
+    /**
+     * delete dummy laps from the DB
+     *
      * @param view
      */
     public void deleteLaps(View view) {
         AbstractDao lapDao = factory.getDao(DaoTypes.LAP);
         List<Race> races = factory.getDao(DaoTypes.RACE).queryBuilder().where(RaceDao.Properties.Finished.eq(false)).list();
-        if(races.size() != 0) {
-           List<Lap> laps = lapDao.queryBuilder().where(LapDao.Properties.RaceID.eq(races.get(0).getId())).list();
-            for(Lap t:laps){
+        if (races.size() != 0) {
+            List<Lap> laps = lapDao.queryBuilder().where(LapDao.Properties.RaceID.eq(races.get(0).getId())).list();
+            for (Lap t : laps) {
                 lapDao.delete(t);
             }
+            Timber.e("Laps in DB after Deleting: %s", getLapCount());
         }
     }
 
@@ -192,6 +221,10 @@ public class RaceManager extends AppCompatActivity {
         manageButtons();
     }
 
+    public void deleteAllLaps(View view) {
+        factory.getDao(DaoTypes.LAP).deleteAll();
+        getLapCount();
+    }
 }
 
 

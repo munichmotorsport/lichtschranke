@@ -21,12 +21,12 @@ import munichmotorsport.photocellapplication.utils.DaoTypes;
 import timber.log.Timber;
 
 public class RaceTable extends AppCompatActivity {
-    long[] times = new long[100];
-    int[] laps = new int[100];
-    String[][] data = new String[100][100];
-    DaoFactory factory;
-    String car = "PWe7.16";
-    TableView tableView;
+    private long[] times = new long[100];
+    private int[] laps = new int[100];
+    private String[][] data = new String[100][100];
+    private DaoFactory factory;
+    private String car = "PWe7.16";
+    private TableView tableView;
 
 
     @Override
@@ -53,6 +53,9 @@ public class RaceTable extends AppCompatActivity {
         tableView.setDataAdapter(laps);*/
     }
 
+    /**
+     * fills the tableView with Lap Times from the DB
+     */
     public void fillTable() {
 
         List<Race> existingRaces = factory.getDao(DaoTypes.RACE).queryBuilder().list();
@@ -64,13 +67,14 @@ public class RaceTable extends AppCompatActivity {
 
         List<Race> races = factory.getDao(DaoTypes.RACE).queryBuilder().where(RaceDao.Properties.Finished.eq(false)).list();
 
-        Timber.e("All Races in races: ");
+        Timber.e("All finished Races: ");
         for (int i = 0; i < races.size(); i++) {
-            Timber.e("Rennen: '%s' (Typ: %s) , finished: %s", races.get(i).getDescription(), races.get(i).getType(), races.get(i).getFinished().toString());
+            Timber.e("Rennen: '%s' (Typ: %s) , finished: %s , mit Anzahl Runden: %s", races.get(i).getDescription(), races.get(i).getType(), races.get(i).getFinished().toString(), races.get(0).getLapList().size());
         }
 
         List<Lap> laps = factory.getDao(DaoTypes.LAP).queryBuilder().where(LapDao.Properties.RaceID.eq(races.get(races.size()-1).getId())).list();
         if(laps.size() != 0) {
+            Timber.e("laps in list: %s", laps.size());
             for (int i = 0; i < 100; i++) {
                 for (int j = 0; j < 3; j++) {
                     switch (j) {
