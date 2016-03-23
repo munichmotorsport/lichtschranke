@@ -10,11 +10,9 @@ import db.Lap;
 import db.LapDao;
 import db.Race;
 import db.RaceDao;
-import de.codecrafters.tableview.TableDataAdapter;
 import de.codecrafters.tableview.TableView;
 import de.codecrafters.tableview.toolkit.SimpleTableDataAdapter;
 import de.codecrafters.tableview.toolkit.SimpleTableHeaderAdapter;
-import de.greenrobot.dao.AbstractDao;
 import munichmotorsport.photocellapplication.R;
 import munichmotorsport.photocellapplication.utils.DaoFactory;
 import munichmotorsport.photocellapplication.utils.DaoTypes;
@@ -23,7 +21,6 @@ import timber.log.Timber;
 public class RaceTable extends AppCompatActivity {
     private long[] times = new long[100];
     private int[] laps = new int[100];
-    private String[][] data = new String[100][100];
     private DaoFactory factory;
     private String car = "PWe7.16";
     private TableView tableView;
@@ -58,6 +55,8 @@ public class RaceTable extends AppCompatActivity {
      */
     public void fillTable() {
 
+        int index = 0;
+
         List<Race> existingRaces = factory.getDao(DaoTypes.RACE).queryBuilder().list();
         Timber.e("All Races in Database: ");
         for (int i = 0; i < existingRaces.size(); i++) {
@@ -72,63 +71,34 @@ public class RaceTable extends AppCompatActivity {
             Timber.e("Rennen: '%s' (Typ: %s) , finished: %s , mit Anzahl Runden: %s", races.get(i).getDescription(), races.get(i).getType(), races.get(i).getFinished().toString(), races.get(0).getLapList().size());
         }
 
-        List<Lap> laps = factory.getDao(DaoTypes.LAP).queryBuilder().where(LapDao.Properties.RaceID.eq(races.get(races.size()-1).getId())).list();
-        if(laps.size() != 0) {
+        List<Lap> laps = factory.getDao(DaoTypes.LAP).queryBuilder().where(LapDao.Properties.Time.isNotNull(), LapDao.Properties.RaceID.eq(races.get(races.size() - 1).getId())).list();
+        String[][] data = new String[laps.size()][3];
+
+        if (laps.size() != 0) {
             Timber.e("laps in list: %s", laps.size());
-            for (int i = 0; i < 100; i++) {
+            for (Lap l : laps) {
                 for (int j = 0; j < 3; j++) {
                     switch (j) {
                         case 0:
-                            data[i][j] = car;
+                            data[index][j] = car;
                             break;
                         case 1:
-                            data[i][j] = Integer.toString(laps.get(i).getNumber());
+                            data[index][j] = Integer.toString(l.getNumber());
                             break;
                         case 2:
-                            data[i][j] = Long.toString(laps.get(i).getTime());
+                            data[index][j] = Long.toString(l.getTime());
+                            break;
                     }
                 }
+                index++;
             }
         }
-        tableView.setDataAdapter(new SimpleTableDataAdapter(this, data));
+
+
+        tableView.setDataAdapter(new
+
+                        SimpleTableDataAdapter(this, data)
+
+        );
     }
-    /*public void fillTable(){
-        TableLayout maintable = (TableLayout)findViewById(R.id.maintable);
-        TextView headerCar = (TextView) findViewById(R.id.car);
-        headerCar.getLayoutParams().width = headerCar.getWidth();
-
-        TableRow tr[]= new TableRow[40];
-        TextView tv[] = new TextView[3];
-
-        long time = 23000L;
-        int lap = 1;
-        String car = "PWe7.16";
-
-        for (int n = 0; n < 40; n++) {
-            times[n] = time;
-            time++;
-            cars[n] = car;
-            laps[n] = lap;
-            lap++;
-            tr[n] = new TableRow(this);
-            tr[n].setId(n);
-
-
-            for (int j = 0; j < 3; j++) {
-                tv[j] = new TextView(this);
-                tv[j].setId(j);
-                if(j == 0) {
-                    tv[j].setText(cars[n]);
-                }
-                if(j == 1) {
-                    tv[j].setText(Integer.toString(laps[n]));
-                }
-                if(j == 2) {
-                    tv[j].setText(Long.toString(times[n]));
-                }
-                tr[n].addView(tv[j]);
-            }
-            maintable.addView(tr[n]);
-        }
-    }*/
 }

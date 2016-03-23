@@ -53,7 +53,7 @@ public class RaceCreator extends AppCompatActivity {
         List<Race> races = raceDao.queryBuilder().list();
         for(Race t:races) {
             if(t.getFinished() == false){
-                Intent intent = new Intent(this, RaceManager.class);
+                Intent intent = new Intent(this, StartScreen.class);
                 startActivity(intent);
             }
         }
