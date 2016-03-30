@@ -16,6 +16,7 @@ import de.codecrafters.tableview.toolkit.SimpleTableHeaderAdapter;
 import munichmotorsport.photocellapplication.R;
 import munichmotorsport.photocellapplication.utils.DaoFactory;
 import munichmotorsport.photocellapplication.utils.DaoTypes;
+import munichmotorsport.photocellapplication.utils.LapTableDataAdapter;
 import timber.log.Timber;
 
 public class RaceTable extends AppCompatActivity {
@@ -94,10 +95,9 @@ public class RaceTable extends AppCompatActivity {
             }
         }
 
-
         tableView.setDataAdapter(new
 
-                        SimpleTableDataAdapter(this, data)
+                        LapTableDataAdapter(this, data)
 
         );
     }
