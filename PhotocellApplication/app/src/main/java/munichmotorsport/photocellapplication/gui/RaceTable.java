@@ -11,7 +11,6 @@ import db.LapDao;
 import db.Race;
 import db.RaceDao;
 import de.codecrafters.tableview.TableView;
-import de.codecrafters.tableview.toolkit.SimpleTableDataAdapter;
 import de.codecrafters.tableview.toolkit.SimpleTableHeaderAdapter;
 import munichmotorsport.photocellapplication.R;
 import munichmotorsport.photocellapplication.utils.DaoFactory;
@@ -23,7 +22,8 @@ public class RaceTable extends AppCompatActivity {
     private long[] times = new long[100];
     private int[] laps = new int[100];
     private DaoFactory factory;
-    private String car = "PWe7.16";
+    private String car1 = "PWe7.16";
+    private String car2 = "PWe6.15";
     private TableView tableView;
 
 
@@ -44,11 +44,6 @@ public class RaceTable extends AppCompatActivity {
             tableView.setColumnWeight(2, 2);
             fillTable();
         }
-
-    /*    String[][] DATA_TO_SHOW = { { "This", "is", "a", "test" },
-                { "and", "a", "second", "test" } };
-        SimpleTableDataAdapter laps = new SimpleTableDataAdapter(this, DATA_TO_SHOW);
-        tableView.setDataAdapter(laps);*/
     }
 
     /**
@@ -81,7 +76,12 @@ public class RaceTable extends AppCompatActivity {
                 for (int j = 0; j < 3; j++) {
                     switch (j) {
                         case 0:
-                            data[index][j] = car;
+                            if(index != 0 && data[index-1][j] == car2) {
+                                data[index][j] = car1;
+                            }
+                            else {
+                                data[index][j] = car2;
+                            }
                             break;
                         case 1:
                             data[index][j] = Integer.toString(l.getNumber());

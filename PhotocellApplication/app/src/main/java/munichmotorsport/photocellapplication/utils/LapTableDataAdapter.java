@@ -8,16 +8,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
-import db.Lap;
 import de.codecrafters.tableview.TableDataAdapter;
 import timber.log.Timber;
 
 /**
  * Created by jonas on 30.03.16.
  */
-public class LapTableDataAdapter extends TableDataAdapter<String[]>{
+public class LapTableDataAdapter extends TableDataAdapter<String[]> {
 
     private static final String LOG_TAG = LapTableDataAdapter.class.getName();
 
@@ -28,24 +28,47 @@ public class LapTableDataAdapter extends TableDataAdapter<String[]>{
     private int textSize = 18;
     private int typeface = Typeface.NORMAL;
     private int textColor = 0x99000000;
-    private int fastestLapColour = 0xffff00ff;
+    private int red = 0xffff00ff;
+    private int green = 0xff00ff00;
     private String[][] data;
-    private long fastestLap = 100000;
+    private long fastestLap = 0;
+    private Map<String, Long> fastestLaps = new HashMap<String, Long>();
 
     public LapTableDataAdapter(final Context context, final String[][] data) {
         super(context, data);
         this.data = data;
 
-        for(String[] s:data){
-        if(Long.parseLong(s[2]) < fastestLap){
-            fastestLap = Long.parseLong(s[2]);
+
+        for (String[] s : data) {
+            if (!fastestLaps.containsKey(s[0])) {
+                fastestLaps.put(s[0], Long.parseLong(s[2]));
+            } else {
+                if (Long.parseLong(s[2]) < fastestLaps.get(s[0])) {
+                    fastestLaps.put(s[0], Long.parseLong(s[2]));
+                }
+            }
+            if (fastestLap == 0 || fastestLap > Long.parseLong(s[2])) {
+                fastestLap = Long.parseLong(s[2]);
             }
         }
-        Timber.e("fastest lap: %s", fastestLap);
+
+
+        Timber.e(fastestLaps.toString());
+        Timber.e("Fastest Lap: %s", fastestLap);
+
+
+
     }
 
+    /**
+     * colorize the cell
+     * @param rowIndex
+     * @param columnIndex
+     * @param parentView
+     * @return
+     */
     @Override
-    public View getCellView(final int rowIndex, final int columnIndex, final ViewGroup parentView){
+    public View getCellView(final int rowIndex, final int columnIndex, final ViewGroup parentView) {
         final TextView textView = new TextView(getContext());
 
         textView.setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom);
@@ -53,10 +76,14 @@ public class LapTableDataAdapter extends TableDataAdapter<String[]>{
         textView.setTextSize(textSize);
 
 
-        if (columnIndex == 2 && Long.parseLong(data[rowIndex][columnIndex]) == fastestLap) {
-            textView.setTextColor(fastestLapColour);
-        }
-        else {
+        if (columnIndex == 2 && fastestLaps.containsKey(data[rowIndex][0]) && Long.parseLong(data[rowIndex][columnIndex]) == fastestLaps.get(data[rowIndex][0])) {
+            if (Long.parseLong(data[rowIndex][columnIndex]) == fastestLap) {
+                textView.setTextColor(green);
+            }
+            else {
+                textView.setTextColor(red);
+            }
+        } else {
             textView.setTextColor(textColor);
         }
 
@@ -66,8 +93,8 @@ public class LapTableDataAdapter extends TableDataAdapter<String[]>{
         try {
             final String textToShow = getItem(rowIndex)[columnIndex];
             textView.setText(textToShow);
-        } catch(final IndexOutOfBoundsException e) {
-            Log.w(LOG_TAG, "No Sting given for row " + rowIndex + ", column " + columnIndex + ". "
+        } catch (final IndexOutOfBoundsException e) {
+            Log.w(LOG_TAG, "No String given for row " + rowIndex + ", column " + columnIndex + ". "
                     + "Caught exception: " + e.toString());
             // Show no text
         }
