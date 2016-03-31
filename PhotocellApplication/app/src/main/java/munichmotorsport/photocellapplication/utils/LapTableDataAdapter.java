@@ -86,6 +86,7 @@ public class LapTableDataAdapter extends TableDataAdapter<String[]> {
         } else {
             textView.setTextColor(textColor);
         }
+        
 
         textView.setSingleLine();
         textView.setEllipsize(TextUtils.TruncateAt.END);
@@ -93,6 +94,10 @@ public class LapTableDataAdapter extends TableDataAdapter<String[]> {
         try {
             final String textToShow = getItem(rowIndex)[columnIndex];
             textView.setText(textToShow);
+            if(columnIndex == 2) {
+                Double time = Float.parseFloat(textView.getText().toString()) / 1000.0;
+                textView.setText(time+" s");
+            }
         } catch (final IndexOutOfBoundsException e) {
             Log.w(LOG_TAG, "No String given for row " + rowIndex + ", column " + columnIndex + ". "
                     + "Caught exception: " + e.toString());

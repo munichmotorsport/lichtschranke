@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import db.Lap;
 import db.LapDao;
@@ -25,11 +26,17 @@ public class RaceTable extends AppCompatActivity {
     private String car1 = "PWe7.16";
     private String car2 = "PWe6.15";
     private TableView tableView;
+    private long raceId;
+
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Bundle b = getIntent().getExtras();
+        raceId = b.getLong("RaceID");
+        Timber.e("RaceID: %s", raceId);
         setContentView(R.layout.activity_race_table);
         factory = new DaoFactory(this);
         tableView = (TableView) findViewById(R.id.laps);
@@ -67,7 +74,7 @@ public class RaceTable extends AppCompatActivity {
             Timber.e("Rennen: '%s' (Typ: %s) , finished: %s , mit Anzahl Runden: %s", races.get(i).getDescription(), races.get(i).getType(), races.get(i).getFinished().toString(), races.get(0).getLapList().size());
         }
 
-        List<Lap> laps = factory.getDao(DaoTypes.LAP).queryBuilder().where(LapDao.Properties.Time.isNotNull(), LapDao.Properties.RaceID.eq(races.get(races.size() - 1).getId())).list();
+        List<Lap> laps = factory.getDao(DaoTypes.LAP).queryBuilder().where(LapDao.Properties.Time.isNotNull(), LapDao.Properties.RaceID.eq(raceId)).list();
         String[][] data = new String[laps.size()][3];
 
         if (laps.size() != 0) {
@@ -87,7 +94,8 @@ public class RaceTable extends AppCompatActivity {
                             data[index][j] = Integer.toString(l.getNumber());
                             break;
                         case 2:
-                            data[index][j] = Long.toString(l.getTime());
+                            String time = Long.toString(l.getTime().longValue());
+                            data[index][j] = time;
                             break;
                     }
                 }
