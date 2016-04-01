@@ -176,7 +176,7 @@ public class RaceManager extends AppCompatActivity {
             for (int i = 0; i < 100; i++) {
                 Lap dummy = new Lap(null, time, lap, races.get(races.size() - 1).getId(), 0);
                 dao.insert(dummy);
-                time = time - 100L;
+                time = time - 1L;
                 lap++;
             }
             Timber.e("Laps in DB: %s", getLapCount());

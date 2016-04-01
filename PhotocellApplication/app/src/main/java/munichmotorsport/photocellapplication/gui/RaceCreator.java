@@ -30,7 +30,7 @@ public class RaceCreator extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create_race);
+        setContentView(R.layout.activity_race_creator);
         setTitle("Neues Rennen erstellen");
 
         factory = new DaoFactory(this);

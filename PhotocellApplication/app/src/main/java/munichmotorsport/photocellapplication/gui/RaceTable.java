@@ -16,6 +16,7 @@ import de.codecrafters.tableview.toolkit.SimpleTableHeaderAdapter;
 import munichmotorsport.photocellapplication.R;
 import munichmotorsport.photocellapplication.utils.DaoFactory;
 import munichmotorsport.photocellapplication.utils.DaoTypes;
+import munichmotorsport.photocellapplication.utils.LapClickListener;
 import munichmotorsport.photocellapplication.utils.LapTableDataAdapter;
 import timber.log.Timber;
 
@@ -51,6 +52,7 @@ public class RaceTable extends AppCompatActivity {
             tableView.setColumnWeight(2, 2);
             fillTable();
         }
+        tableView.addDataClickListener(new LapClickListener());
     }
 
     /**
