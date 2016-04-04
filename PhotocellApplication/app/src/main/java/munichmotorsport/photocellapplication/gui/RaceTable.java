@@ -21,8 +21,6 @@ import munichmotorsport.photocellapplication.utils.LapTableDataAdapter;
 import timber.log.Timber;
 
 public class RaceTable extends AppCompatActivity {
-    private long[] times = new long[100];
-    private int[] laps = new int[100];
     private DaoFactory factory;
     private String car1 = "PWe7.16";
     private String car2 = "PWe6.15";
@@ -52,7 +50,7 @@ public class RaceTable extends AppCompatActivity {
             tableView.setColumnWeight(2, 2);
             fillTable();
         }
-        tableView.addDataClickListener(new LapClickListener());
+        tableView.addDataClickListener(new LapClickListener(this));
     }
 
     /**
@@ -77,12 +75,12 @@ public class RaceTable extends AppCompatActivity {
         }
 
         List<Lap> laps = factory.getDao(DaoTypes.LAP).queryBuilder().where(LapDao.Properties.Time.isNotNull(), LapDao.Properties.RaceID.eq(raceId)).list();
-        String[][] data = new String[laps.size()][3];
+        String[][] data = new String[laps.size()][4];
 
         if (laps.size() != 0) {
             Timber.e("laps in list: %s", laps.size());
             for (Lap l : laps) {
-                for (int j = 0; j < 3; j++) {
+                for (int j = 0; j < 4; j++) {
                     switch (j) {
                         case 0:
                             if(index != 0 && data[index-1][j] == car2) {
@@ -98,6 +96,9 @@ public class RaceTable extends AppCompatActivity {
                         case 2:
                             String time = Long.toString(l.getTime().longValue());
                             data[index][j] = time;
+                            break;
+                        case 3:
+                            data[index][j] = l.getId().toString();
                             break;
                     }
                 }

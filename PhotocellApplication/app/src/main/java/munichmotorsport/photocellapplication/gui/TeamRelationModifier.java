@@ -72,7 +72,7 @@ public class TeamRelationModifier extends AppCompatActivity {
     }
 
     /**
-     * show existing teams in listview with current team grey
+     * show existing teams in listview with current team colored grey
      */
     public void showExistingTeams() {
         int index = 0;

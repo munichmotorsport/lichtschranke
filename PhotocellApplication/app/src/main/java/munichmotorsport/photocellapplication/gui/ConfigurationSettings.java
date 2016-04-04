@@ -23,7 +23,7 @@ public class ConfigurationSettings extends AppCompatActivity {
     private DaoFactory factory;
     private long carId;
     private String comment;
-    List<Config> currentConfig;
+    private List<Config> currentConfig;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +43,10 @@ public class ConfigurationSettings extends AppCompatActivity {
         }
     }
 
+    /**
+     * change config comment and update db
+     * @param view
+     */
     public void changeComment(View view) {
         comment = et_comment.getText().toString();
         currentConfig.get(0).setComment(comment);
@@ -52,11 +56,19 @@ public class ConfigurationSettings extends AppCompatActivity {
         factory.getDaoSession().clear();
     }
 
+    /**
+     * to activity "BarcodeChanger"
+     * @param view
+     */
     public void changeBarcode(View view) {
         Intent intent = new Intent(this, BarcodeChanger.class);
         startActivity(intent);
     }
 
+    /**
+     * to activity "DriverChanger"
+     * @param view
+     */
     public void changeDriver(View view) {
         Intent intent = new Intent(this, DriverChanger.class);
         startActivity(intent);

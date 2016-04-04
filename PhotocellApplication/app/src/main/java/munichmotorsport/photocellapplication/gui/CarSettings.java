@@ -67,4 +67,12 @@ public class CarSettings extends AppCompatActivity {
         et_carName.setHint(et_carName.getText());
         et_carName.setText("");
     }
+
+    /**
+     * delete car from db
+     * @param view
+     */
+    public void deleteCar(View view) {
+        factory.getDao(DaoTypes.CAR).delete(clickedCar.get(0));
+    }
 }

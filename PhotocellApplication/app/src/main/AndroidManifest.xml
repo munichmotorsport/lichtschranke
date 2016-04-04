@@ -32,7 +32,8 @@
         <activity android:name=".gui.ConfigurationSettings" />
         <activity android:name=".gui.TeamRelationModifier" />
         <activity android:name=".gui.BarcodeChanger" />
-        <activity android:name=".gui.DriverChanger"></activity>
+        <activity android:name=".gui.DriverChanger" />
+        <activity android:name=".gui.LapViewer"></activity>
     </application>
 
 </manifest>

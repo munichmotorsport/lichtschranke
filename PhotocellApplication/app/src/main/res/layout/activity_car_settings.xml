@@ -30,7 +30,7 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Submit"
+        android:text="Submit Name"
         android:onClick="changeCarName"
         android:id="@+id/ChangeCarName"
         android:layout_alignParentTop="true"
@@ -62,6 +62,18 @@
         android:layout_alignParentStart="true"
         android:layout_alignRight="@+id/btn_changeTeamRelation"
         android:layout_alignEnd="@+id/btn_changeTeamRelation" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Delete car"
+        android:id="@+id/btn_deleteCar"
+        android:onClick="deleteCar"
+        android:layout_below="@+id/changeConfig"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignRight="@+id/changeConfig"
+        android:layout_alignEnd="@+id/changeConfig" />
 
 
 </RelativeLayout>
