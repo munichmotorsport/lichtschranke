@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import db.Car;
+import db.Config;
 import db.DaoMaster;
 import db.Team;
 import de.greenrobot.dao.AbstractDao;
@@ -29,7 +30,7 @@ public class CarCreator extends AppCompatActivity {
     private ArrayList<String> teamList_names;
     private ArrayList<Long> teamList_Ids;
     private ArrayAdapter<String> teamNames;
-    private DaoFactory daoFactory;
+    private DaoFactory factory;
     private TextView tv_error;
 
     @Override
@@ -47,7 +48,7 @@ public class CarCreator extends AppCompatActivity {
         tv_error = (TextView) findViewById(R.id.tv_error);
 
         // database
-        daoFactory = new DaoFactory(this);
+        factory = new DaoFactory(this);
         DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(this, "photocell_db", null);
     }
 
@@ -73,7 +74,7 @@ public class CarCreator extends AppCompatActivity {
      * load teams from DB and put them into spinner
      */
     public void loadTeams() {
-        AbstractDao teamDao = daoFactory.getDao(DaoTypes.TEAM);
+        AbstractDao teamDao = factory.getDao(DaoTypes.TEAM);
         List<Team> teams = teamDao.queryBuilder().list();
         for (int i = 0; i < teams.size(); i++) {
             teamList_names.add(teams.get(i).getName());
@@ -97,12 +98,20 @@ public class CarCreator extends AppCompatActivity {
         if (Utils.nameCheck(carName) && position >= 0) {
             long teamID = teamList_Ids.get(position);
             Car car = new Car(null, carName, null, teamID);
-            long carID = daoFactory.getDao(DaoTypes.CAR).insert(car);
+            long carID = factory.getDao(DaoTypes.CAR).insert(car);
 
             // Logging
             Timber.e("Created Car with ID: %s", carID);
             Timber.e("Created Car with Name: %s", car.getName());
             Timber.e("Created Car for Team: %s", car.getTeamID());
+
+            Config config = new  Config();
+            config.setCar(car);
+            config.setComment("no comment");
+            factory.getDao(DaoTypes.CONFIG).insert(config);
+
+            Timber.e("Created Car with ConfigID: %s", config.getId());
+
 
             finish();
             tv_error.setText("");

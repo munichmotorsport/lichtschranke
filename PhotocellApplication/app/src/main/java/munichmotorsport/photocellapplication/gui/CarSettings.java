@@ -43,7 +43,6 @@ public class CarSettings extends AppCompatActivity {
     public void toConfigOptions(View view) {
         Intent intent = new Intent(this, ConfigurationSettings.class);
         intent.putExtra("CarID", carId);
-        finish();
         startActivity(intent);
     }
 

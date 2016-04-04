@@ -30,7 +30,9 @@
         <activity android:name=".gui.RaceTable" />
         <activity android:name=".gui.CarSettings" />
         <activity android:name=".gui.ConfigurationSettings" />
-        <activity android:name=".gui.TeamRelationModifier"></activity>
+        <activity android:name=".gui.TeamRelationModifier" />
+        <activity android:name=".gui.BarcodeChanger" />
+        <activity android:name=".gui.DriverChanger"></activity>
     </application>
 
 </manifest>

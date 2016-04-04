@@ -9,4 +9,52 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="munichmotorsport.photocellapplication.gui.ConfigurationSettings">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/relativeLayout3">
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/btn_submit"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:id="@+id/et_comment" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:id="@+id/btn_submit"
+            android:text="Change comment"
+            android:onClick="changeComment"/>
+    </RelativeLayout>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Change Barcode"
+        android:onClick="changeBarcode"
+        android:id="@+id/btn_changeBarcode"
+        android:layout_below="@+id/relativeLayout3"
+        android:layout_alignRight="@+id/relativeLayout3"
+        android:layout_alignEnd="@+id/relativeLayout3"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Change Driver"
+        android:onClick="changeDriver"
+        android:id="@+id/btn_changeDriver"
+        android:layout_below="@+id/btn_changeBarcode"
+        android:layout_alignRight="@+id/btn_changeBarcode"
+        android:layout_alignEnd="@+id/btn_changeBarcode"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
 </RelativeLayout>

@@ -8,7 +8,7 @@ import timber.log.Timber;
  */
 public class LapClickListener implements TableDataClickListener<String[]> {
     @Override
-    public void onDataClicked(int rowIndex, String[] clickedCar) {
-        Timber.e(clickedCar[2]);
+    public void onDataClicked(int rowIndex, String[] clickedLap) {
+        Timber.e(clickedLap[2]);
     }
 }
