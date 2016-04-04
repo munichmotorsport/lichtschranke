@@ -126,6 +126,11 @@ public class RaceManager extends AppCompatActivity {
         }
     }
 
+    /**
+     * go to Activity "Current Race"
+     *
+     * @param view
+     */
     public void toCurrentRace(View view) {
         List<Race> races = factory.getDao(DaoTypes.RACE).queryBuilder().where(RaceDao.Properties.Finished.eq(false)).list();
         Intent intent = new Intent(this, RaceTable.class);
