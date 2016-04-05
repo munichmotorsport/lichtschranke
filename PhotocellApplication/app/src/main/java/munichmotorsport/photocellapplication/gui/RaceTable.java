@@ -1,21 +1,36 @@
 package munichmotorsport.photocellapplication.gui;
 
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.ResourceAccessException;
+import org.springframework.web.client.RestTemplate;
+
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
+import db.Car;
+import db.CarDao;
+import db.Config;
+import db.ConfigDao;
 import db.Lap;
 import db.LapDao;
 import db.Race;
 import db.RaceDao;
 import de.codecrafters.tableview.TableView;
 import de.codecrafters.tableview.toolkit.SimpleTableHeaderAdapter;
+import de.greenrobot.dao.AbstractDao;
 import munichmotorsport.photocellapplication.R;
+import munichmotorsport.photocellapplication.model.Lap_Driven;
 import munichmotorsport.photocellapplication.utils.DaoFactory;
 import munichmotorsport.photocellapplication.utils.DaoTypes;
+import munichmotorsport.photocellapplication.utils.Data;
 import munichmotorsport.photocellapplication.utils.LapClickListener;
 import munichmotorsport.photocellapplication.utils.LapTableDataAdapter;
 import timber.log.Timber;
@@ -26,8 +41,6 @@ public class RaceTable extends AppCompatActivity {
     private String car2 = "PWe6.15";
     private TableView tableView;
     private long raceId;
-
-
 
 
     @Override
@@ -51,6 +64,7 @@ public class RaceTable extends AppCompatActivity {
             fillTable();
         }
         tableView.addDataClickListener(new LapClickListener(this));
+        runRace();
     }
 
     /**
@@ -112,4 +126,58 @@ public class RaceTable extends AppCompatActivity {
 
         );
     }
+
+    public void runRace() {
+        Timer timer = new Timer();
+        timer.schedule(new Task(), 0, 1000);
+    }
+
+    class Task extends TimerTask {
+        @Override
+        public void run() {
+            new HttpRequestTask().execute();
+        }
+    }
+
+    class HttpRequestTask extends AsyncTask<Void, Void, Lap_Driven> {
+
+        @Override
+        protected Lap_Driven doInBackground(Void... params) {
+
+            try {
+                final String url = Data.url_getLaps;
+                RestTemplate restTemplate = new RestTemplate();
+                restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
+                Lap_Driven lapResponse = restTemplate.getForObject(url, Lap_Driven.class);
+                return lapResponse;
+            } catch (HttpClientErrorException e) {
+                return null;
+            } catch (ResourceAccessException e) {
+                return null;
+            }
+
+        }
+        @Override
+        protected void onPostExecute(Lap_Driven lapResponse) {
+            if (lapResponse != null) {
+                // Long id, Long Time, int Number, long raceID, long configID
+                long time = lapResponse.getTime();
+                int barCode = lapResponse.getBarCode();
+
+//                List<Car> car = factory.getDao(DaoTypes.CAR).queryBuilder().where(CarDao.Properties.Barcode.eq(barCode)).list();
+//                long carId = car.get(0).getId();
+//
+//                List<Config> config = factory.getDao(DaoTypes.CONFIG).queryBuilder().where(ConfigDao.Properties.CarID.eq(carId)).list();
+//                long configId = config.get(0).getId();
+//
+//                List<Lap> laps = factory.getDao(DaoTypes.LAP).queryBuilder().where(LapDao.Properties.ConfigID.eq(configId)).list();
+//
+//                Lap lapForDB = new Lap(null, time, lap, raceId, configId);
+
+                System.out.println("Code: " + barCode);
+                System.out.println("Time: " + time);
+            }
+        }
+    }
+
 }
