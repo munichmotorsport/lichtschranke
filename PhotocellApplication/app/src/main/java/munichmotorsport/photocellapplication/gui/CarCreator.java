@@ -115,7 +115,12 @@ public class CarCreator extends AppCompatActivity {
 
             finish();
             tv_error.setText("");
-        } else {
+        }
+        else if(!Utils.nameCheck(carName)){
+            tv_error.setText("Please insert a car name.");
+
+        }
+        else {
             tv_error.setText("You have to select a team. If the matching team is missing, create it.");
         }
     }

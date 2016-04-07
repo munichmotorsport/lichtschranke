@@ -21,7 +21,8 @@
             android:layout_height="match_parent"
             android:text="Auto auswählen:"
             android:layout_weight="0.32"
-            android:textSize="70px"/>
+            android:textSize="70px"
+            android:layout_marginTop="40px" />
 
         <Spinner
             android:layout_width="20dp"
@@ -73,7 +74,8 @@
         android:layout_above="@+id/et_weather"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:textSize="70px"/>
+        android:textSize="70px"
+        android:layout_marginTop="40px" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -85,7 +87,17 @@
         android:layout_below="@+id/textView2"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:textSize="70px"/>
+        android:textSize="70px"
+        android:layout_marginTop="40px" />
 
+    <TextView
+        android:layout_width="278dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_error"
+        android:textColor="#FF0000"
+        android:layout_gravity="center_horizontal"
+        android:layout_below="@+id/btn_submit"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
 </RelativeLayout>
