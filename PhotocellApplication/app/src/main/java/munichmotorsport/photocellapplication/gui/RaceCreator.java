@@ -41,6 +41,7 @@ public class RaceCreator extends AppCompatActivity {
         modi.add("Auto Cross");
         modi.add("Endurance");
         modi.add("Skit Pad");
+        modi.add("Testing");
         ArrayAdapter<String> dropDown = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
         dropDown.addAll(modi);
         spn_modus.setAdapter(dropDown);
@@ -68,14 +69,23 @@ public class RaceCreator extends AppCompatActivity {
         Date date = new Date();
         String type = spn_modus.getSelectedItem().toString();
 
+
         EditText et_description = (EditText) findViewById(R.id.et_description);
         String description = et_description.getText().toString();
-        Race race = new Race(null, type, description, false, date);
-        RaceID = factory.getDao(DaoTypes.RACE).insert(race);
-        // Logging
-        Timber.e("Created Race with ID: %s, Description: '%s', Modus: %s, Date: %s", RaceID, race.getDescription(), race.getType(), date);
+        if(type == "Testing") {
+            Intent intent = new Intent(this, TestingRaceCreator.class);
+            intent.putExtra("raceDescription", description);
+            startActivity(intent);
+        }
+        else {
+            Race race = new Race(null, type, description, false, date);
+            RaceID = factory.getDao(DaoTypes.RACE).insert(race);
+            toCarSelector();
 
-        toCarSelector();
+            // Logging
+            Timber.e("Created Race with ID: %s, Description: '%s', Modus: %s, Date: %s", RaceID, race.getDescription(), race.getType(), date);
+
+        }
     }
 
     /**
