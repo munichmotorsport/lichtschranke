@@ -83,18 +83,18 @@ public class RaceTable extends AppCompatActivity {
 
         List<Race> races = factory.getDao(DaoTypes.RACE).queryBuilder().where(RaceDao.Properties.Finished.eq(false)).list();
 
-        Timber.e("All finished Races: ");
+     /*   Timber.e("All finished Races: ");
         for (int i = 0; i < races.size(); i++) {
             Timber.e("Rennen: '%s' (Typ: %s) , finished: %s , mit Anzahl Runden: %s", races.get(i).getDescription(), races.get(i).getType(), races.get(i).getFinished().toString(), races.get(0).getLapList().size());
-        }
+      }*/
 
         List<Lap> laps = factory.getDao(DaoTypes.LAP).queryBuilder().where(LapDao.Properties.Time.isNotNull(), LapDao.Properties.RaceID.eq(raceId)).list();
-        String[][] data = new String[laps.size()][4];
+        String[][] data = new String[laps.size()][5];
 
         if (laps.size() != 0) {
             Timber.e("laps in list: %s", laps.size());
             for (Lap l : laps) {
-                for (int j = 0; j < 4; j++) {
+                for (int j = 0; j < 5; j++) {
                     switch (j) {
                         case 0:
                             if(index != 0 && data[index-1][j] == car2) {
@@ -113,6 +113,8 @@ public class RaceTable extends AppCompatActivity {
                             break;
                         case 3:
                             data[index][j] = l.getId().toString();
+                            break;
+                        case 4: data[index][j] = l.getDate();
                             break;
                     }
                 }

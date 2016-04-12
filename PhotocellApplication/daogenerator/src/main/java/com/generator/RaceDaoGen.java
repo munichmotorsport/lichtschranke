@@ -17,7 +17,7 @@ public class RaceDaoGen {
     static Entity team;
 
     public static void main(String[] args) throws Exception {
-        Schema schema = new Schema(11, "db");
+        Schema schema = new Schema(12, "db");
         createTeam(schema);
         createCar(schema);
         createConfig(schema);
@@ -40,8 +40,9 @@ public class RaceDaoGen {
     private static void createLap(Schema schema) {
         lap = schema.addEntity("Lap");
         lap.addIdProperty().autoincrement().primaryKey();
-        lap.addLongProperty("Time");
-        lap.addIntProperty("Number").notNull();
+        lap.addStringProperty("date");
+        lap.addLongProperty("time");
+        lap.addIntProperty("number").notNull();
         Property raceID = lap.addLongProperty("raceID").notNull().getProperty();
         Property configID = lap.addLongProperty("configID").notNull().getProperty();
         ToMany configToLaps = config.addToMany(lap, configID);
@@ -51,7 +52,9 @@ public class RaceDaoGen {
     private static void createConfig(Schema schema) {
         config = schema.addEntity("Config");
         config.addIdProperty().autoincrement().primaryKey();
-        config.addStringProperty("Comment");
+        config.addStringProperty("comment");
+        config.addStringProperty("barcode");
+        config.addStringProperty("driver");
         Property carID = config.addLongProperty("carID").notNull().getProperty();
         ToOne carToConfig = config.addToOne(car, carID);
     }
@@ -60,7 +63,6 @@ public class RaceDaoGen {
         car = schema.addEntity("Car");
         car.addIdProperty().autoincrement().primaryKey();
         car.addStringProperty("name").notNull();
-        car.addStringProperty("barcode");
         Property teamID = car.addLongProperty("teamID").notNull().getProperty();
         ToMany teamToCars = team.addToMany(car, teamID);
     }
@@ -68,7 +70,7 @@ public class RaceDaoGen {
     private static void createTeam(Schema schema) {
         team = schema.addEntity("Team");
         team.addIdProperty().autoincrement().primaryKey();
-        team.addStringProperty("Name").notNull();
+        team.addStringProperty("name").notNull();
     }
 
 }

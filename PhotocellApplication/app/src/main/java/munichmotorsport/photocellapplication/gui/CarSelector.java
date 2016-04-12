@@ -104,12 +104,12 @@ public class CarSelector extends AppCompatActivity {
         Timber.e("Connecting Car %s to current Race %s", carID, RaceID);
 
         // Config(Long id, String Comment, long carID)
-        Config config = new Config(null, null, carID);
+        Config config = new Config(null, null, null, null, carID);
         long configID = daoFactory.getDao(DaoTypes.CONFIG).insert(config);
         Timber.e("Created Config with ID: %s", configID);
 
         // Lap(Long id, long Time, int Number, long raceID, long configID)
-        Lap lap = new Lap(null, null, 1, RaceID, configID);
+        Lap lap = new Lap(null, null,null, 1, RaceID, configID);
         long lapID = daoFactory.getDao(DaoTypes.LAP).insert(lap);
         Timber.e("Created Lap with ID: %s", lapID);
     }

@@ -51,4 +51,14 @@
         android:layout_below="@+id/textView3"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Date:"
+        android:id="@+id/tv_date"
+        android:textSize="100px"
+        android:layout_below="@+id/textView3"
+        android:layout_toRightOf="@+id/tv_configComment"
+        android:layout_toEndOf="@+id/tv_configComment" />
 </RelativeLayout>

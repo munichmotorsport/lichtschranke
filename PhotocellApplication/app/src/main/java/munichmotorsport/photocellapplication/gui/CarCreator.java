@@ -97,7 +97,7 @@ public class CarCreator extends AppCompatActivity {
 
         if (Utils.nameCheck(carName) && position >= 0) {
             long teamID = teamList_Ids.get(position);
-            Car car = new Car(null, carName, null, teamID);
+            Car car = new Car(null, carName, teamID);
             long carID = factory.getDao(DaoTypes.CAR).insert(car);
 
             // Logging

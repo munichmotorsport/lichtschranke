@@ -17,6 +17,7 @@ public class LapViewer extends AppCompatActivity {
     TextView tv_lapId;
     TextView tv_lapNr;
     TextView tv_configComment;
+    TextView tv_date;
     DaoFactory factory;
 
     @Override
@@ -25,11 +26,13 @@ public class LapViewer extends AppCompatActivity {
         setContentView(R.layout.activity_lap_viewer);
         tv_lapId = (TextView)findViewById(R.id.tv_lapId);
         tv_lapNr = (TextView)findViewById(R.id.tv_lapNr);
+        tv_date = (TextView)findViewById(R.id.tv_date);
         tv_configComment = (TextView)findViewById(R.id.tv_configComment);
         factory = new DaoFactory(this);
         lapInfo = getIntent().getStringArrayExtra("LapInfo");
         tv_lapId.append(lapInfo[3]);
         tv_lapNr.append(lapInfo[1]);
+        tv_date.append(lapInfo[4]);
         //List<String> drivenConfig = factory.getDao(DaoTypes.CONFIG).queryBuilder().where(ConfigDao.Properties.CarID.eq(lapInfo[0])).list();
         //tv_configComment.setText();
     }
