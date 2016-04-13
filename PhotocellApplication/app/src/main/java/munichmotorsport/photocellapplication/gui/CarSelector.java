@@ -104,7 +104,7 @@ public class CarSelector extends AppCompatActivity {
         Timber.e("Connecting Car %s to current Race %s", carID, RaceID);
 
         // Config(Long id, String Comment, long carID)
-        Config config = new Config(null, null, null, null, carID);
+        Config config = new Config(null, null, null, null, false, carID);
         long configID = daoFactory.getDao(DaoTypes.CONFIG).insert(config);
         Timber.e("Created Config with ID: %s", configID);
 

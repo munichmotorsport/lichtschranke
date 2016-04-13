@@ -17,7 +17,7 @@ public class RaceDaoGen {
     static Entity team;
 
     public static void main(String[] args) throws Exception {
-        Schema schema = new Schema(12, "db");
+        Schema schema = new Schema(13, "db");
         createTeam(schema);
         createCar(schema);
         createConfig(schema);
@@ -55,6 +55,7 @@ public class RaceDaoGen {
         config.addStringProperty("comment");
         config.addStringProperty("barcode");
         config.addStringProperty("driver");
+        config.addBooleanProperty("current").notNull();
         Property carID = config.addLongProperty("carID").notNull().getProperty();
         ToOne carToConfig = config.addToOne(car, carID);
     }

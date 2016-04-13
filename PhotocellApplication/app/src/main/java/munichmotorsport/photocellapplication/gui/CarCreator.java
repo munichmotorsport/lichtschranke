@@ -105,9 +105,7 @@ public class CarCreator extends AppCompatActivity {
             Timber.e("Created Car with Name: %s", car.getName());
             Timber.e("Created Car for Team: %s", car.getTeamID());
 
-            Config config = new  Config();
-            config.setCar(car);
-            config.setComment("no comment");
+            Config config = new Config(null, "no comment", null, null, true, car.getId());
             factory.getDao(DaoTypes.CONFIG).insert(config);
 
             Timber.e("Created Car with ConfigID: %s", config.getId());
