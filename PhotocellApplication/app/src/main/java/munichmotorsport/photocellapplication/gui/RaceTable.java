@@ -163,7 +163,9 @@ public class RaceTable extends AppCompatActivity {
         @Override
         protected void onPostExecute(Lap_Driven lapResponse) {
             if (lapResponse != null) {
-                long time = lapResponse.getTime();
+                long timestamp = lapResponse.getTime();
+                long time = 0;
+
                 int barCode = lapResponse.getBarCode();
 
                 List<Config> config = factory.getDao(DaoTypes.CONFIG).queryBuilder().where(ConfigDao.Properties.Barcode.eq(barCode)).list();
@@ -175,19 +177,27 @@ public class RaceTable extends AppCompatActivity {
                             .list();
 
                 int lapNumber = -1;
+                Lap lastlap = null;
                 for (int i = 0; i < laps.size(); i++) {
                     int actualNumber = laps.get(i).getNumber();
-                    if (actualNumber > lapNumber)
+                    if (actualNumber > lapNumber) {
                         lapNumber = actualNumber;
+                        lastlap = laps.get(i);
+                    }
                 }
 
-                Lap lapForDB = new Lap(null, time, lapNumber+1, raceId, configId);
+                if (lastlap!=null) {
+                    time = timestamp - lastlap.getTimestamp();
+                }
+
+                Lap lapForDB = new Lap(null, timestamp, time, lapNumber+1, raceId, configId);
                 factory.getDao(DaoTypes.LAP).insert(lapForDB);
 
                 fillTable();
 
-                Timber.e("Code: " + barCode);
-                Timber.e("Time: " + time);
+                Timber.e("Code: %s", barCode);
+                Timber.e("TimeStamp: %s", timestamp);
+                Timber.e("Time: %s", time);
             }
         }
     }
