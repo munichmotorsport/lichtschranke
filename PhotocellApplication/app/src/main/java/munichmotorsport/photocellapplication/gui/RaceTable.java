@@ -89,7 +89,11 @@ public class RaceTable extends AppCompatActivity {
             Timber.e("Rennen: '%s' (Typ: %s) , finished: %s , mit Anzahl Runden: %s", races.get(i).getDescription(), races.get(i).getType(), races.get(i).getFinished().toString(), races.get(0).getLapList().size());
       }*/
 
-        List<Lap> laps = factory.getDao(DaoTypes.LAP).queryBuilder().where(LapDao.Properties.Time.isNotNull(), LapDao.Properties.RaceID.eq(raceId)).list();
+        List<Lap> laps = factory.getDao(DaoTypes.LAP).queryBuilder().where(
+                LapDao.Properties.Time.isNotNull(),
+                LapDao.Properties.RaceID.eq(raceId),
+                LapDao.Properties.Number.notEq(0))
+                    .list();
         String[][] data = new String[laps.size()][5];
 
         if (laps.size() != 0) {
