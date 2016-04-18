@@ -80,6 +80,7 @@ public class ConfigurationSettings extends AppCompatActivity {
      */
     public void changeBarcode(View view) {
         Intent intent = new Intent(this, BarcodeChanger.class);
+        intent.putExtra("ConfigId", getCurrentConfig().get(0).getId());
         startActivity(intent);
     }
 

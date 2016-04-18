@@ -189,7 +189,7 @@ public class RaceManager extends AppCompatActivity {
         List<Race> races = factory.getDao(DaoTypes.RACE).queryBuilder().where(RaceDao.Properties.Finished.eq(false)).list();
         if (races.size() != 0) {
             for (int i = 0; i < 100; i++) {
-                Lap dummy = new Lap( null, formattedDate, time, lap , races.get(races.size() - 1).getId(), 0);
+                Lap dummy = new Lap( null, /*formattedDate,*/ time, lap , races.get(races.size() - 1).getId(), 0);
                 dao.insert(dummy);
                 time = time - 1L;
                 lap++;

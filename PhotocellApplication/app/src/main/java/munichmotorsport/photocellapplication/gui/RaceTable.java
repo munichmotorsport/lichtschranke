@@ -47,6 +47,7 @@ public class RaceTable extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle b = getIntent().getExtras();
+        setTitle("Current Race");
         raceId = b.getLong("RaceID");
         Timber.e("RaceID: %s", raceId);
         setContentView(R.layout.activity_race_table);
@@ -114,8 +115,8 @@ public class RaceTable extends AppCompatActivity {
                         case 3:
                             data[index][j] = l.getId().toString();
                             break;
-                        case 4: data[index][j] = l.getDate();
-                            break;
+//                        case 4: data[index][j] = l.getDate();
+//                            break;
                     }
                 }
                 index++;
@@ -162,22 +163,31 @@ public class RaceTable extends AppCompatActivity {
         @Override
         protected void onPostExecute(Lap_Driven lapResponse) {
             if (lapResponse != null) {
-                // Long id, Long Time, int Number, long raceID, long configID
                 long time = lapResponse.getTime();
                 int barCode = lapResponse.getBarCode();
 
-//                List<Car> car = factory.getDao(DaoTypes.CAR).queryBuilder().where(CarDao.Properties.Barcode.eq(barCode)).list();
-//                long carId = car.get(0).getId();
-//
-//                List<Config> config = factory.getDao(DaoTypes.CONFIG).queryBuilder().where(ConfigDao.Properties.CarID.eq(carId)).list();
-//                long configId = config.get(0).getId();
-//
-//                List<Lap> laps = factory.getDao(DaoTypes.LAP).queryBuilder().where(LapDao.Properties.ConfigID.eq(configId)).list();
-//
-//                Lap lapForDB = new Lap(null, time, lap, raceId, configId);
+                List<Config> config = factory.getDao(DaoTypes.CONFIG).queryBuilder().where(ConfigDao.Properties.Barcode.eq(barCode)).list();
+                long configId = config.get(0).getId();
 
-                System.out.println("Code: " + barCode);
-                System.out.println("Time: " + time);
+                List<Lap> laps = factory.getDao(DaoTypes.LAP).queryBuilder().where(
+                        LapDao.Properties.RaceID.eq(raceId),
+                        LapDao.Properties.ConfigID.eq(configId))
+                            .list();
+
+                int lapNumber = 1;
+                for (int i = 0; i < laps.size(); i++) {
+                    int actualNumber = laps.get(i).getNumber();
+                    if (actualNumber > lapNumber)
+                        lapNumber = actualNumber;
+                }
+
+                Lap lapForDB = new Lap(null, time, lapNumber+1, raceId, configId);
+                factory.getDao(DaoTypes.LAP).insert(lapForDB);
+
+                fillTable();
+
+                Timber.e("Code: " + barCode);
+                Timber.e("Time: " + time);
             }
         }
     }

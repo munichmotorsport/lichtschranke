@@ -40,7 +40,7 @@ public class RaceDaoGen {
     private static void createLap(Schema schema) {
         lap = schema.addEntity("Lap");
         lap.addIdProperty().autoincrement().primaryKey();
-        lap.addStringProperty("date");
+//        lap.addStringProperty("date");
         lap.addLongProperty("time");
         lap.addIntProperty("number").notNull();
         Property raceID = lap.addLongProperty("raceID").notNull().getProperty();
