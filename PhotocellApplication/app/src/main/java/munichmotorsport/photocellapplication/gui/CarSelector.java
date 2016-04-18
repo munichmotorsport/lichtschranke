@@ -102,7 +102,7 @@ public class CarSelector extends AppCompatActivity {
      */
     public void addCarsToRace(int carID) {
         Timber.e("Connecting Car %s to current Race %s", carID, RaceID);
-
+/*
         // Config(Long id, String Comment, long carID)
         Config config = new Config(null, null, null, null, false, carID);
         long configID = daoFactory.getDao(DaoTypes.CONFIG).insert(config);
@@ -112,6 +112,7 @@ public class CarSelector extends AppCompatActivity {
         Lap lap = new Lap(null, null,null, 1, RaceID, configID);
         long lapID = daoFactory.getDao(DaoTypes.LAP).insert(lap);
         Timber.e("Created Lap with ID: %s", lapID);
+        */
     }
 
     /**
