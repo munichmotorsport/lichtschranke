@@ -80,7 +80,8 @@ public class RaceCreator extends AppCompatActivity {
         else {
             Race race = new Race(null, type, description, false, date);
             RaceID = factory.getDao(DaoTypes.RACE).insert(race);
-            toCarSelector();
+//            toCarSelector();
+            toRaceTable();
 
             // Logging
             Timber.e("Created Race with ID: %s, Description: '%s', Modus: %s, Date: %s", RaceID, race.getDescription(), race.getType(), date);
@@ -94,6 +95,15 @@ public class RaceCreator extends AppCompatActivity {
     private void toCarSelector() {
         Intent intent = new Intent(this, CarSelector.class);
         intent.putExtra("RaceCreator.RaceID", RaceID);
+        startActivity(intent);
+    }
+
+    /**
+     * Switch to RaceTable Activity
+     */
+    private void toRaceTable() {
+        Intent intent = new Intent(this, RaceTable.class);
+        intent.putExtra("RaceID", RaceID);
         startActivity(intent);
     }
 

@@ -174,7 +174,7 @@ public class RaceTable extends AppCompatActivity {
                         LapDao.Properties.ConfigID.eq(configId))
                             .list();
 
-                int lapNumber = 1;
+                int lapNumber = -1;
                 for (int i = 0; i < laps.size(); i++) {
                     int actualNumber = laps.get(i).getNumber();
                     if (actualNumber > lapNumber)
