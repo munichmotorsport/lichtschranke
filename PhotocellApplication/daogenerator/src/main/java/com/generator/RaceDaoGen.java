@@ -17,7 +17,7 @@ public class RaceDaoGen {
     static Entity team;
 
     public static void main(String[] args) throws Exception {
-        Schema schema = new Schema(14, "db");
+        Schema schema = new Schema(16, "db");
         createTeam(schema);
         createCar(schema);
         createConfig(schema);

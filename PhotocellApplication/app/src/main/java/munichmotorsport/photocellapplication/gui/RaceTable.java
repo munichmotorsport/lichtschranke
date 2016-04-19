@@ -23,6 +23,7 @@ import db.Lap;
 import db.LapDao;
 import db.Race;
 import db.RaceDao;
+import db.Team;
 import de.codecrafters.tableview.TableView;
 import de.codecrafters.tableview.toolkit.SimpleTableHeaderAdapter;
 import de.greenrobot.dao.AbstractDao;
@@ -173,7 +174,17 @@ public class RaceTable extends AppCompatActivity {
                 int barCode = lapResponse.getBarCode();
 
                 List<Config> config = factory.getDao(DaoTypes.CONFIG).queryBuilder().where(ConfigDao.Properties.Barcode.eq(barCode)).list();
-                long configId = config.get(0).getId();
+                long configId;
+                if (config.size() > 0) {
+                    configId = config.get(0).getId();
+                } else {
+                    Team dummyTeam = new Team(null, "Dummy Team");
+                    long dummyTeamId = factory.getDao(DaoTypes.TEAM).insert(dummyTeam);
+                    Car dummyCar = new Car(null, "Dummy Car", dummyTeamId);
+                    long dummyCarId = factory.getDao(DaoTypes.CAR).insert(dummyCar);
+                    Config dummyConfig = new Config(null, null, ""+barCode, null, true, dummyCarId);
+                    configId = factory.getDao(DaoTypes.CONFIG).insert(dummyConfig);
+                }
 
                 List<Lap> laps = factory.getDao(DaoTypes.LAP).queryBuilder().where(
                         LapDao.Properties.RaceID.eq(raceId),
