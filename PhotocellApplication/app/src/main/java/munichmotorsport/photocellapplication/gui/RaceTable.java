@@ -3,6 +3,8 @@ package munichmotorsport.photocellapplication.gui;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 
 
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -21,8 +23,6 @@ import db.Config;
 import db.ConfigDao;
 import db.Lap;
 import db.LapDao;
-import db.Race;
-import db.RaceDao;
 import db.Team;
 import de.codecrafters.tableview.TableView;
 import de.codecrafters.tableview.toolkit.SimpleTableHeaderAdapter;
@@ -36,18 +36,23 @@ import munichmotorsport.photocellapplication.utils.LapTableDataAdapter;
 import timber.log.Timber;
 
 public class RaceTable extends AppCompatActivity {
+
     private DaoFactory factory;
     private TableView tableView;
     private long raceId;
     private SimpleDateFormat dateFormat;
     private Calendar calendar;
-
+    private Timer timer;
+    private Boolean pollRunning = false;
+    private Button btn_togglePoll;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle b = getIntent().getExtras();
         setTitle("Current Race");
+
+
 
         dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
@@ -56,6 +61,7 @@ public class RaceTable extends AppCompatActivity {
         setContentView(R.layout.activity_race_table);
         factory = new DaoFactory(this);
         tableView = (TableView) findViewById(R.id.laps);
+        btn_togglePoll = (Button) findViewById(R.id.btn_togglePoll);
         if (tableView == null) {
             Timber.e("tableview = null");
         } else {
@@ -68,7 +74,25 @@ public class RaceTable extends AppCompatActivity {
             fillTable();
         }
         tableView.addDataClickListener(new LapClickListener(this));
-        runRace();
+        toggleButtonText();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        timer.cancel();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        timer.cancel();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        timer.cancel();
     }
 
     /**
@@ -138,9 +162,48 @@ public class RaceTable extends AppCompatActivity {
         factory.closeDb();
     }
 
-    public void runRace() {
-        Timer timer = new Timer();
+    public void togglePoll(View view) {
+        togglePoll();
+    }
+
+    private void toggleButtonText() {
+        if (pollRunning) {
+            btn_togglePoll.setText("Pause");
+        } else if (!pollRunning) {
+            btn_togglePoll.setText("Start");
+        }
+    }
+
+    /**
+     *  toggle Poll
+     */
+    private void togglePoll () {
+        if (pollRunning) {
+            stopPoll();
+            toggleButtonText();
+        } else if (!pollRunning) {
+            runPoll();
+            toggleButtonText();
+        }
+    }
+
+    /**
+     *  stops the loop
+     */
+    private void stopPoll () {
+        timer.cancel();
+        pollRunning = false;
+        Timber.e("Poll is paused");
+    }
+
+    /**
+     *  runs the loop
+     */
+    private void runPoll() {
+        timer = new Timer();
         timer.schedule(new Task(), 0, 1000);
+        pollRunning = true;
+        Timber.e("Poll is running");
     }
 
     class Task extends TimerTask {
