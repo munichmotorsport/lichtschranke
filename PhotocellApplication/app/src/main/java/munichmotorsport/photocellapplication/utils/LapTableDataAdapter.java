@@ -28,8 +28,8 @@ public class LapTableDataAdapter extends TableDataAdapter<String[]> {
     private int textSize = 18;
     private int typeface = Typeface.NORMAL;
     private int textColor = 0x99000000;
-    private int red = 0xffff00ff;
-    private int green = 0xff00ff00;
+    private int red = Data.fastestLapForCar;
+    private int green = Data.fastestLapInRace;
     private String[][] data;
     private long fastestLap = 0;
     private Map<String, Long> fastestLaps = new HashMap<String, Long>();

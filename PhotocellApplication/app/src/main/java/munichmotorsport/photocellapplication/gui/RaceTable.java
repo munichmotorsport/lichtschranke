@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -45,6 +46,8 @@ public class RaceTable extends AppCompatActivity {
     private Timer timer;
     private Boolean pollRunning = false;
     private Button btn_togglePoll;
+    private TextView tv_fastestLapInRace;
+    private TextView tv_fastestLapForCar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,8 +63,15 @@ public class RaceTable extends AppCompatActivity {
         Timber.e("RaceID: %s", raceId);
         setContentView(R.layout.activity_race_table);
         factory = new DaoFactory(this);
+
         tableView = (TableView) findViewById(R.id.laps);
         btn_togglePoll = (Button) findViewById(R.id.btn_togglePoll);
+        tv_fastestLapInRace = (TextView) findViewById(R.id.tv_fastestLapInRace);
+        tv_fastestLapForCar = (TextView) findViewById(R.id.tv_fastestLapForCar);
+
+        tv_fastestLapInRace.setTextColor(Data.fastestLapInRace);
+        tv_fastestLapForCar.setTextColor(Data.fastestLapForCar);
+
         if (tableView == null) {
             Timber.e("tableview = null");
         } else {
