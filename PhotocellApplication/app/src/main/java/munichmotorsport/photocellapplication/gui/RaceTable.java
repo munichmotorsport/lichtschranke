@@ -50,6 +50,7 @@ public class RaceTable extends AppCompatActivity {
     private Button btn_togglePoll;
     private TextView tv_fastestLapInRace;
     private TextView tv_fastestLapForCar;
+    private Race race;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,9 +87,15 @@ public class RaceTable extends AppCompatActivity {
         toggleButtonText();
 
         factory.initializeDB();
-        List<Race> race = factory.getDao(DaoTypes.RACE).queryBuilder().where(RaceDao.Properties.Id.eq(raceId)).list();
-        setTitle(race.get(0).getDescription());
+        List<Race> raceList = factory.getDao(DaoTypes.RACE).queryBuilder().where(RaceDao.Properties.Id.eq(raceId)).list();
+        race = raceList.get(0);
         factory.closeDb();
+
+        setTitle(race.getDescription());
+
+        if (race.getFinished()) {
+            btn_togglePoll.setVisibility(View.INVISIBLE);
+        }
     }
 
     @Override
@@ -215,11 +222,13 @@ public class RaceTable extends AppCompatActivity {
      *  runs the loop
      */
     private void runPoll() {
-        timer = new Timer();
-        timer.schedule(new Task(), 0, 1000);
-        pollRunning = true;
-        toggleButtonText();
-        Timber.e("Poll is running");
+        if (!race.getFinished()) {
+            timer = new Timer();
+            timer.schedule(new Task(), 0, 1000);
+            pollRunning = true;
+            toggleButtonText();
+            Timber.e("Poll is running");
+        }
     }
 
     class Task extends TimerTask {
@@ -250,7 +259,7 @@ public class RaceTable extends AppCompatActivity {
         @Override
         protected void onPostExecute(Lap_Driven lapResponse) {
             factory.initializeDB();
-            if (lapResponse != null) {
+            if (lapResponse != null && !race.getFinished()) {
                 long timestamp = lapResponse.getTime();
                 long time = 0;
 
