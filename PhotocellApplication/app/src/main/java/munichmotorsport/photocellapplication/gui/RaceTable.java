@@ -265,7 +265,7 @@ public class RaceTable extends AppCompatActivity {
 
                 int barCode = lapResponse.getBarCode();
 
-                List<Config> config = factory.getDao(DaoTypes.CONFIG).queryBuilder().where(ConfigDao.Properties.Barcode.eq(barCode), ConfigDao.Properties.Current.eq(true)).list();
+                List<Config> config = factory.getDao(DaoTypes.CONFIG).queryBuilder().where(ConfigDao.Properties.Barcode.eq(barCode)).list();
                 long configId;
                 if (config.size() > 0) {
                     configId = config.get(0).getId();
