@@ -72,6 +72,7 @@ public class ConfigurationSettings extends AppCompatActivity {
         et_comment.setText("");
         factory.getDaoSession().clear();
         currentConfig = getCurrentConfig();
+        Timber.e("Current Config ID: %s", currentConfig.get(0).getId());
     }
 
     /**

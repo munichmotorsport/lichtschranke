@@ -203,7 +203,7 @@ public class RaceTable extends AppCompatActivity {
                         LapDao.Properties.ConfigID.eq(configId))
                         .list();
 
-                Timber.e("Anzahl Laps: %s in Rennen: %s, mit Config ID: %s", laps.size(), raceId, config);
+                Timber.e("Anzahl Laps: %s in Rennen: %s, mit Config ID: %s", laps.size(), raceId, configId);
 
                 int lapNumber = -1;
                 Lap lastlap = null;
