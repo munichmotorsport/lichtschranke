@@ -6,10 +6,12 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import db.Config;
 import db.ConfigDao;
 import munichmotorsport.photocellapplication.R;
 import munichmotorsport.photocellapplication.utils.DaoFactory;
 import munichmotorsport.photocellapplication.utils.DaoTypes;
+import timber.log.Timber;
 
 public class LapViewer extends AppCompatActivity {
 
@@ -33,7 +35,8 @@ public class LapViewer extends AppCompatActivity {
         tv_lapId.append(lapInfo[3]);
         tv_lapNr.append(lapInfo[1]);
         tv_date.append(lapInfo[4]);
-        //List<String> drivenConfig = factory.getDao(DaoTypes.CONFIG).queryBuilder().where(ConfigDao.Properties.CarID.eq(lapInfo[0])).list();
-        //tv_configComment.setText();
+        List<Config> drivenConfig = factory.getDao(DaoTypes.CONFIG).queryBuilder().where(ConfigDao.Properties.Id.eq(Long.parseLong(lapInfo[5]))).list();
+        Timber.e("Driven Config: " +drivenConfig.get(0).getComment());
+        tv_configComment.setText(drivenConfig.get(0).getComment());
     }
 }

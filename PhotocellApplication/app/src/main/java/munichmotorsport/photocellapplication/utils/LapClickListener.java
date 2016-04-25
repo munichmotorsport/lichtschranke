@@ -24,6 +24,7 @@ public class LapClickListener implements TableDataClickListener<String[]>  {
     @Override
     public void onDataClicked(int rowIndex, String[] clickedLap){
         Timber.e(clickedLap[2]);
+        Timber.e(clickedLap[5]);
         Intent intent = new Intent(context, LapViewer.class);
         intent.putExtra("LapInfo", clickedLap);
         context.startActivity(intent);

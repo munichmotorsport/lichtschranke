@@ -5,6 +5,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
+import java.util.List;
+
+import db.Config;
+import db.ConfigDao;
 import munichmotorsport.photocellapplication.R;
 import munichmotorsport.photocellapplication.utils.DaoFactory;
 import munichmotorsport.photocellapplication.utils.DaoTypes;
@@ -48,5 +52,9 @@ public class CarManager extends AppCompatActivity {
      */
     public void deleteCars(View view) {
         factory.getDao(DaoTypes.CAR).deleteAll();
+        List<Config> currentConfigs = factory.getDao(DaoTypes.CONFIG).queryBuilder().where(ConfigDao.Properties.Current.eq(true)).list();
+       for(Config c:currentConfigs) {
+           factory.getDao(DaoTypes.CONFIG).delete(c);
+       }
     }
 }

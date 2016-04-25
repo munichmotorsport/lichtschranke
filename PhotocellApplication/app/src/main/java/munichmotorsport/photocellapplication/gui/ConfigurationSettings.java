@@ -44,7 +44,7 @@ public class ConfigurationSettings extends AppCompatActivity {
 
         Timber.e("current config size: %s", currentConfig.size());
 
-        if (!currentConfig.get(0).getComment().isEmpty()) {
+        if (currentConfig.get(0).getComment() != null && !currentConfig.get(0).getComment().isEmpty()) {
             et_comment.setHint(currentConfig.get(0).getComment());
         }
         else{

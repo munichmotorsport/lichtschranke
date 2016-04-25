@@ -81,29 +81,6 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Add Dummy Laps to current race"
-        android:id="@+id/btn_addLaps"
-        android:layout_below="@+id/btn_deleteRaces"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:onClick="addLaps"/>
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Delete dummy laps from current race"
-        android:id="@+id/btn_deleteLapsFromCurrentRace"
-        android:layout_below="@+id/btn_addLaps"
-        android:layout_alignRight="@+id/btn_addLaps"
-        android:layout_alignEnd="@+id/btn_addLaps"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:onClick="deleteLaps"/>
 
     <Button
         android:layout_width="wrap_content"
@@ -111,9 +88,9 @@
         android:text="Delete All Laps"
         android:id="@+id/btn_deleteAllLaps"
         android:onClick="deleteAllLaps"
-        android:layout_below="@+id/btn_deleteLapsFromCurrentRace"
-        android:layout_alignRight="@+id/btn_deleteLapsFromCurrentRace"
-        android:layout_alignEnd="@+id/btn_deleteLapsFromCurrentRace"
+        android:layout_below="@+id/btn_deleteRaces"
+        android:layout_alignRight="@+id/btn_deleteRaces"
+        android:layout_alignEnd="@+id/btn_deleteRaces"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 

@@ -42,8 +42,6 @@ public class RaceManager extends AppCompatActivity {
         btn_newRace = (Button) findViewById(R.id.btn_toRaceCreator);
         btn_toCurrentRace = (Button) findViewById(R.id.btn_toCurrentRace);
         btn_resetCurrentRace = (Button) findViewById(R.id.btn_resetCurrentRace);
-        btn_deleteLapsFromCurrentRace = (Button) findViewById(R.id.btn_deleteLapsFromCurrentRace);
-        btn_addLaps = (Button) findViewById(R.id.btn_addLaps);
 
         manageButtons();
     }
@@ -106,10 +104,6 @@ public class RaceManager extends AppCompatActivity {
             btn_toCurrentRace.setAlpha(1);
             btn_resetCurrentRace.setEnabled(true);
             btn_resetCurrentRace.setAlpha(1);
-            btn_deleteLapsFromCurrentRace.setAlpha(1);
-            btn_deleteLapsFromCurrentRace.setEnabled(true);
-            btn_addLaps.setEnabled(true);
-            btn_addLaps.setAlpha(1);
             btn_newRace.setText("Current race has to be completed first. Please press 'Finish Current Race'");
         } else {
             btn_newRace.setEnabled(true);
@@ -120,10 +114,6 @@ public class RaceManager extends AppCompatActivity {
             btn_toCurrentRace.setAlpha(0.5f);
             btn_resetCurrentRace.setEnabled(false);
             btn_resetCurrentRace.setAlpha(0.5f);
-            btn_deleteLapsFromCurrentRace.setAlpha(0.5f);
-            btn_deleteLapsFromCurrentRace.setEnabled(false);
-            btn_addLaps.setEnabled(false);
-            btn_addLaps.setAlpha(0.5f);
             btn_newRace.setText("Create Race");
         }
     }
@@ -151,11 +141,7 @@ public class RaceManager extends AppCompatActivity {
                 .setMessage("Are you sure you want to delete all measured lap times for this race?")
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        AbstractDao raceDao = factory.getDao(DaoTypes.RACE);
-                        List<Race> races = raceDao.queryBuilder().list();
-                        Race race = races.get(races.size() - 1);
-                        AbstractDao lapDao = factory.getDao(DaoTypes.LAP);
-                        lapDao.queryBuilder().where(LapDao.Properties.RaceID.eq(race.getId()));
+                        deleteLapsFromCurrentRace();
                         manageButtons();
                     }
                 })
@@ -168,37 +154,7 @@ public class RaceManager extends AppCompatActivity {
                 .show();
     }
 
-    /**
-     * add dummy Laps to the DB
-     *
-     * @param view
-     */
-    public void addLaps(View view) {
-        long time = 23000L;
-        long timestamp = 0;
-        int lap = 1;
 
-        Calendar c = Calendar.getInstance();
-        System.out.println("Current time =&gt; "+c.getTime());
-
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String formattedDate = df.format(c.getTime());
-
-        String car = "PWe7.16";
-
-        AbstractDao dao = factory.getDao(DaoTypes.LAP);
-        List<Race> races = factory.getDao(DaoTypes.RACE).queryBuilder().where(RaceDao.Properties.Finished.eq(false)).list();
-        if (races.size() != 0) {
-            for (int i = 0; i < 100; i++) {
-                Lap dummy = new Lap( null, /*formattedDate, */timestamp, time, lap , races.get(races.size() - 1).getId(), 0);
-                dao.insert(dummy);
-                time = time - 1L;
-                lap++;
-            }
-            Timber.e("Laps in DB: %s", getLapCount());
-        }
-        factory.getDaoSession().clear();
-    }
 
     /**
      * get amount of laps in db
@@ -212,12 +168,9 @@ public class RaceManager extends AppCompatActivity {
         return amount;
     }
 
-    /**
-     * delete dummy laps from the DB
-     *
-     * @param view
-     */
-    public void deleteLaps(View view) {
+
+
+    public void deleteLapsFromCurrentRace(){
         AbstractDao lapDao = factory.getDao(DaoTypes.LAP);
         List<Race> races = factory.getDao(DaoTypes.RACE).queryBuilder().where(RaceDao.Properties.Finished.eq(false)).list();
         if (races.size() != 0) {
