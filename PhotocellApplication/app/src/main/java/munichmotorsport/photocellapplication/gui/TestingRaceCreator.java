@@ -50,11 +50,13 @@ public class TestingRaceCreator extends AppCompatActivity {
             adapter.add(c.getName());
         }
         spn_cars.setAdapter(adapter);
+        factory.closeDb();
     }
 
     @Override
     public void onResume(){
         super.onResume();
+        factory.initializeDB();
         AbstractDao raceDao = factory.getDao(DaoTypes.RACE);
         List<Race> races = raceDao.queryBuilder().list();
         for(Race t:races) {
@@ -63,21 +65,24 @@ public class TestingRaceCreator extends AppCompatActivity {
                 startActivity(intent);
             }
         }
+        factory.closeDb();
     }
 
     public void createRace(View view) {
+        factory.initializeDB();
         if(!Utils.nameCheck(et_config.getText().toString()) || !Utils.nameCheck(et_weather.getText().toString())){
             Timber.e("No config or weather input");
             tv_error.setText("Please fill in all Informations for Testing");
+            factory.closeDb();
         }
         else{
             Date date = new Date();
             tv_error.setText("");
             Race race = new Race(null, "Testing", description, false, date);
             factory.getDao(DaoTypes.RACE).insert(race);
-            
             //connecting the car to race is missing
             Intent intent = new Intent(this, StartScreen.class);
+            factory.closeDb();
             startActivity(intent);
         }
     }

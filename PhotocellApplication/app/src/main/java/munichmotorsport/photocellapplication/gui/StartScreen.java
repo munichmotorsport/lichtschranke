@@ -20,7 +20,6 @@ public class StartScreen extends AppCompatActivity {
 
     private DaoFactory factory;
     private TextView tv_currentRace;
-    private AbstractDao raceDao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,8 +30,7 @@ public class StartScreen extends AppCompatActivity {
         tv_currentRace = (TextView) findViewById(R.id.currentRace);
         ImageView iv_backgroundimg = (ImageView) findViewById(R.id.iv_backgroundimg);
         iv_backgroundimg.setImageResource(R.drawable.logo_rw);
-        raceDao = factory.getDao(DaoTypes.RACE);
-
+        factory.closeDb();
         showCurrentRace();
     }
 
@@ -82,9 +80,9 @@ public class StartScreen extends AppCompatActivity {
      * show current race in textview
      */
     public void showCurrentRace() {
+        factory.initializeDB();
 
-
-        List<Race> races = raceDao.queryBuilder().list();
+        List<Race> races = factory.getDao(DaoTypes.RACE).queryBuilder().list();
 
 
         if (!races.isEmpty() && races.get(races.size() - 1).getFinished() == false) {
@@ -94,6 +92,7 @@ public class StartScreen extends AppCompatActivity {
             tv_currentRace.setText("No race used, please create one.");
         }
         factory.getDaoSession().clear();
+        factory.closeDb();
     }
 
 

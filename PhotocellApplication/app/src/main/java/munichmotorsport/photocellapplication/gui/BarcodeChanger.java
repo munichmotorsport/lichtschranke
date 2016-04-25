@@ -19,6 +19,8 @@ public class BarcodeChanger extends AppCompatActivity {
     private long configId;
     private EditText et_barCode;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,15 +28,18 @@ public class BarcodeChanger extends AppCompatActivity {
 
         factory = new DaoFactory(this);
         et_barCode = (EditText) findViewById(R.id.et_barCode);
-
         Bundle b = getIntent().getExtras();
         configId = b.getLong("ConfigId");
     }
 
+
+
     public void setBarCode(View view) {
+        factory.initializeDB();
         String barCode = et_barCode.getText().toString();
         List<Config> config = factory.getDao(DaoTypes.CONFIG).queryBuilder().where(ConfigDao.Properties.Id.eq(configId)).list();
         config.get(0).setBarcode(barCode);
         factory.getDao(DaoTypes.CONFIG).update(config.get(0));
+        factory.closeDb();
     }
 }

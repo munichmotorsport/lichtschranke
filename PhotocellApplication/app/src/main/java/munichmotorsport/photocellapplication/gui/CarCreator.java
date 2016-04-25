@@ -58,6 +58,7 @@ public class CarCreator extends AppCompatActivity {
         resetTeamLists();
     }
 
+
     /**
      * reset Teamlists
      */
@@ -74,6 +75,7 @@ public class CarCreator extends AppCompatActivity {
      * load teams from DB and put them into spinner
      */
     public void loadTeams() {
+        factory.initializeDB();
         AbstractDao teamDao = factory.getDao(DaoTypes.TEAM);
         List<Team> teams = teamDao.queryBuilder().list();
         for (int i = 0; i < teams.size(); i++) {
@@ -84,6 +86,7 @@ public class CarCreator extends AppCompatActivity {
 
         teamNames.addAll(teamList_names);
         spn_teams.setAdapter(teamNames);
+        factory.closeDb();
     }
 
     /**
@@ -92,6 +95,8 @@ public class CarCreator extends AppCompatActivity {
      * @param view
      */
     public void createCar(View view) {
+        factory.initializeDB();
+        Timber.e("Database open: %s", factory.getDaoSession().getDatabase().isOpen());
         int position = spn_teams.getSelectedItemPosition();
         String carName = et_carName.getText().toString();
 
@@ -110,8 +115,10 @@ public class CarCreator extends AppCompatActivity {
 
             Timber.e("Created Car with ConfigID: %s", config.getId());
 
+            factory.closeDb();
 
             finish();
+
             tv_error.setText("");
         }
         else if(!Utils.nameCheck(carName)){

@@ -51,10 +51,12 @@ public class CarManager extends AppCompatActivity {
      * @param view
      */
     public void deleteCars(View view) {
+        factory.initializeDB();
         factory.getDao(DaoTypes.CAR).deleteAll();
         List<Config> currentConfigs = factory.getDao(DaoTypes.CONFIG).queryBuilder().where(ConfigDao.Properties.Current.eq(true)).list();
        for(Config c:currentConfigs) {
            factory.getDao(DaoTypes.CONFIG).delete(c);
        }
+        factory.closeDb();
     }
 }

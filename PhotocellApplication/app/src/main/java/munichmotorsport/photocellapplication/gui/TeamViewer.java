@@ -35,6 +35,7 @@ public class TeamViewer extends AppCompatActivity {
      * Load existing Teams from DB
      */
     public void showExistingTeams() {
+        factory.initializeDB();
         Timber.e("showExistingTeams()");
         teamNames.clear();
         AbstractDao teamDao = factory.getDao(DaoTypes.TEAM);
@@ -46,5 +47,6 @@ public class TeamViewer extends AppCompatActivity {
         ListView listView = (ListView) findViewById(R.id.lv_teams);
         listView.setAdapter(teamNames);
         factory.getDaoSession().clear();
+        factory.closeDb();
     }
 }

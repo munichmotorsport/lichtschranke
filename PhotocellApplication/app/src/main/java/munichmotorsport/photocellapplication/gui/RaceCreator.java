@@ -50,6 +50,7 @@ public class RaceCreator extends AppCompatActivity {
     @Override
     public void onResume(){
         super.onResume();
+        factory.initializeDB();
         AbstractDao raceDao = factory.getDao(DaoTypes.RACE);
         List<Race> races = raceDao.queryBuilder().list();
         for(Race t:races) {
@@ -58,7 +59,9 @@ public class RaceCreator extends AppCompatActivity {
                 startActivity(intent);
             }
         }
+        factory.closeDb();
     }
+
 
     /**
      * create a race and write it into DB
@@ -66,6 +69,7 @@ public class RaceCreator extends AppCompatActivity {
      * @param view
      */
     public void createRace(View view) {
+        factory.initializeDB();
         Date date = new Date();
         String type = spn_modus.getSelectedItem().toString();
 
@@ -80,6 +84,7 @@ public class RaceCreator extends AppCompatActivity {
         else {
             Race race = new Race(null, type, description, false, date);
             RaceID = factory.getDao(DaoTypes.RACE).insert(race);
+            factory.closeDb();
 //            toCarSelector();
             toRaceTable();
 

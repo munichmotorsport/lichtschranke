@@ -36,6 +36,7 @@ public class CarSettings extends AppCompatActivity {
         et_carName.setHint(clickedCar.get(0).getName());
     }
 
+
     /**
      * go to activity ConfigurationSettings
      * @param view
@@ -62,10 +63,12 @@ public class CarSettings extends AppCompatActivity {
      * @param view
      */
     public void changeCarName(View view) {
+        factory.initializeDB();
         clickedCar.get(0).setName(et_carName.getText().toString());
         factory.getDao(DaoTypes.CAR).update(clickedCar.get(0));
         et_carName.setHint(et_carName.getText());
         et_carName.setText("");
+        factory.closeDb();
     }
 
     /**
@@ -73,6 +76,10 @@ public class CarSettings extends AppCompatActivity {
      * @param view
      */
     public void deleteCar(View view) {
+        factory.initializeDB();
         factory.getDao(DaoTypes.CAR).delete(clickedCar.get(0));
+        factory.closeDb();
+        Intent intent = new Intent(this, CarViewer.class);
+        startActivity(intent);
     }
 }

@@ -47,6 +47,8 @@ public class TeamManager extends AppCompatActivity {
      * @param view
      */
     public void deleteTeams(View view) {
+        factory.initializeDB();
         factory.getDao(DaoTypes.TEAM).deleteAll();
+        factory.closeDb();
     }
 }

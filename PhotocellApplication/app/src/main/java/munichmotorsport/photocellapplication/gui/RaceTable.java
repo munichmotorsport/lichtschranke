@@ -75,17 +75,8 @@ public class RaceTable extends AppCompatActivity {
      * fills the tableView with Lap Times from the DB
      */
     public void fillTable() {
-
+        factory.initializeDB();
         int index = 0;
-
-        List<Race> existingRaces = factory.getDao(DaoTypes.RACE).queryBuilder().list();
-        Timber.e("All Races in Database: ");
-        for (int i = 0; i < existingRaces.size(); i++) {
-            Timber.e("Rennen: '%s' (Typ: %s) , finished: %s", existingRaces.get(i).getDescription(), existingRaces.get(i).getType(), existingRaces.get(i).getFinished().toString());
-        }
-
-
-        List<Race> races = factory.getDao(DaoTypes.RACE).queryBuilder().where(RaceDao.Properties.Finished.eq(false)).list();
 
      /*   Timber.e("All finished Races: ");
         for (int i = 0; i < races.size(); i++) {
@@ -144,6 +135,7 @@ public class RaceTable extends AppCompatActivity {
         tableView.setDataAdapter(new
                         LapTableDataAdapter(this, sortedData)
         );
+        factory.closeDb();
     }
 
     public void runRace() {
@@ -178,6 +170,7 @@ public class RaceTable extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(Lap_Driven lapResponse) {
+            factory.initializeDB();
             if (lapResponse != null) {
                 long timestamp = lapResponse.getTime();
                 long time = 0;
@@ -226,6 +219,7 @@ public class RaceTable extends AppCompatActivity {
                 Lap lapForDB = new Lap(null, formattedDate, timestamp, time, lapNumber + 1, raceId, configId);
                 factory.getDao(DaoTypes.LAP).insert(lapForDB);
                 factory.getDaoSession().clear();
+                factory.closeDb();
 
                 fillTable();
 

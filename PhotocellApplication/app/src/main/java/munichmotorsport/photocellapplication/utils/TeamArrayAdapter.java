@@ -24,8 +24,10 @@ public class TeamArrayAdapter<String> extends ArrayAdapter<String> {
         factory = new DaoFactory(context);
     }
 
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+        factory.initializeDB();
         View v = super.getView(position, convertView, parent);
         List<Team> currentTeam = factory.getDao(DaoTypes.TEAM).queryBuilder().where(TeamDao.Properties.Name.eq(super.getItem(position))).list();
         if (currentTeam.get(0).getId() == teamId) {
@@ -36,6 +38,7 @@ public class TeamArrayAdapter<String> extends ArrayAdapter<String> {
             v.setAlpha(1);
         }
         factory.getDaoSession().clear();
+        factory.closeDb();
         return v;
     }
 }

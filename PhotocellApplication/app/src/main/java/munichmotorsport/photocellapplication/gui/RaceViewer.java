@@ -40,11 +40,12 @@ public class RaceViewer extends AppCompatActivity {
 
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
-
+                factory.initializeDB();
                 String raceDescription =(String) lv_races.getItemAtPosition(position);
                 List<Race> raceClicked = factory.getDao(DaoTypes.RACE).queryBuilder().where(RaceDao.Properties.Description.eq(raceDescription)).list();
                 Intent intent = new Intent(RaceViewer.this, RaceTable.class);
                 intent.putExtra("RaceID", raceClicked.get(0).getId());
+                factory.closeDb();
                 startActivity(intent);
             }
         });
@@ -56,6 +57,7 @@ public class RaceViewer extends AppCompatActivity {
      * Load existing Teams from DB
      */
     public void showExistingRaces() {
+        factory.initializeDB();
         Timber.e("showExistingRaces()");
         raceDescriptions.clear();
         AbstractDao raceDao = factory.getDao(DaoTypes.RACE);
@@ -67,5 +69,6 @@ public class RaceViewer extends AppCompatActivity {
         ListView listView = (ListView) findViewById(R.id.lv_races);
         listView.setAdapter(raceDescriptions);
         factory.getDaoSession().clear();
+        factory.closeDb();
     }
 }

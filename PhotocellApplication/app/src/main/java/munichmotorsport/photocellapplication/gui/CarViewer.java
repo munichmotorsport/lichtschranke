@@ -41,11 +41,12 @@ public class CarViewer extends AppCompatActivity {
 
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
-
+                factory.initializeDB();
                 String carName = (String) lv_cars.getItemAtPosition(position);
                 List<Car> carClicked = factory.getDao(DaoTypes.CAR).queryBuilder().where(CarDao.Properties.Name.eq(carName)).list();
                 Intent intent = new Intent(CarViewer.this, CarSettings.class);
                 intent.putExtra("CarID", carClicked.get(0).getId());
+                factory.closeDb();
                 startActivity(intent);
             }
         });
@@ -67,6 +68,7 @@ public class CarViewer extends AppCompatActivity {
      * Load existing Cars from DB
      */
     public void showExistingCars() {
+        factory.initializeDB();
         Timber.e("showExistingCars()");
         carNames.clear();
         AbstractDao carDao = factory.getDao(DaoTypes.CAR);
@@ -77,5 +79,6 @@ public class CarViewer extends AppCompatActivity {
         ListView listView = (ListView) findViewById(R.id.lv_cars);
         listView.setAdapter(carNames);
         factory.getDaoSession().clear();
+        factory.closeDb();
     }
 }

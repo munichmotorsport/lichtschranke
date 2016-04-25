@@ -24,7 +24,7 @@ import timber.log.Timber;
 public class CarSelector extends AppCompatActivity {
 
     private ArrayAdapter<String> carNames;
-    private DaoFactory daoFactory;
+    private DaoFactory factory;
     private LinearLayout ll_cars;
     private long RaceID;
 
@@ -37,19 +37,22 @@ public class CarSelector extends AppCompatActivity {
 
         ll_cars = (LinearLayout) findViewById(R.id.ll_cars);
         carNames = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
-        daoFactory = new DaoFactory(this);
+        factory = new DaoFactory(this);
 
         RaceID = getIntent().getLongExtra("RaceCreator.RaceID", RaceID);
 
         showExistingCars();
     }
 
+
+
     /**
      * Load existing Cars from DB
      */
     public void showExistingCars() {
+        factory.initializeDB();
         carNames.clear();
-        AbstractDao carDao = daoFactory.getDao(DaoTypes.CAR);
+        AbstractDao carDao = factory.getDao(DaoTypes.CAR);
         List<Car> cars = carDao.queryBuilder().list();
         for (int i = 0; i < cars.size(); i++) {
             CheckBox cb_newCar = new CheckBox(this);
@@ -57,6 +60,7 @@ public class CarSelector extends AppCompatActivity {
             cb_newCar.setId(cars.get(i).getId().intValue());
             ll_cars.addView(cb_newCar);
         }
+        factory.closeDb();
     }
 
     /**
@@ -79,8 +83,9 @@ public class CarSelector extends AppCompatActivity {
      * delete existing Laps & Configs for this Race
      */
     public void refreshDatabase() {
-        AbstractDao lapDao = daoFactory.getDao(DaoTypes.LAP);
-        AbstractDao configDao = daoFactory.getDao(DaoTypes.CONFIG);
+        factory.initializeDB();
+        AbstractDao lapDao = factory.getDao(DaoTypes.LAP);
+        AbstractDao configDao = factory.getDao(DaoTypes.CONFIG);
 
         List<Lap> lapsAlreadyCreated = lapDao.queryBuilder().where(LapDao.Properties.RaceID.eq(RaceID)).list();
         Timber.e("Size of already Created Laps for this race: %s", lapsAlreadyCreated.size());
@@ -93,6 +98,7 @@ public class CarSelector extends AppCompatActivity {
                 lapDao.delete(lapsAlreadyCreated.get(i));
             }
         }
+        factory.closeDb();
     }
 
     /**
@@ -105,12 +111,12 @@ public class CarSelector extends AppCompatActivity {
 /*
         // Config(Long id, String Comment, long carID)
         Config config = new Config(null, null, null, null, false, carID);
-        long configID = daoFactory.getDao(DaoTypes.CONFIG).insert(config);
+        long configID = factory.getDao(DaoTypes.CONFIG).insert(config);
         Timber.e("Created Config with ID: %s", configID);
 
         // Lap(Long id, long Time, int Number, long raceID, long configID)
         Lap lap = new Lap(null, null,null, 1, RaceID, configID);
-        long lapID = daoFactory.getDao(DaoTypes.LAP).insert(lap);
+        long lapID = factory.getDao(DaoTypes.LAP).insert(lap);
         Timber.e("Created Lap with ID: %s", lapID);
         */
     }

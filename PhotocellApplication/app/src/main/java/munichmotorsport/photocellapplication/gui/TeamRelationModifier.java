@@ -49,7 +49,7 @@ public class TeamRelationModifier extends AppCompatActivity {
 
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
-
+                factory.initializeDB();
                 String teamName = (String) lv_teams.getItemAtPosition(position);
                 List<Team> teamClicked = factory.getDao(DaoTypes.TEAM).queryBuilder().where(TeamDao.Properties.Name.eq(teamName)).list();
                 modifiedCar.get(0).setTeamID(teamClicked.get(0).getId());
@@ -57,6 +57,7 @@ public class TeamRelationModifier extends AppCompatActivity {
                 Intent intent = new Intent(TeamRelationModifier.this, CarSettings.class);
                 intent.putExtra("CarID", carId);
                 factory.getDaoSession().clear();
+                factory.closeDb();
                 finish();
                 startActivity(intent);
             }
@@ -75,7 +76,6 @@ public class TeamRelationModifier extends AppCompatActivity {
      * show existing teams in listview with current team colored grey
      */
     public void showExistingTeams() {
-        int index = 0;
         Timber.e("showExistingTeams()");
         teamNames.clear();
         AbstractDao teamDao = factory.getDao(DaoTypes.TEAM);
@@ -83,9 +83,6 @@ public class TeamRelationModifier extends AppCompatActivity {
         for (int i = 0; i < teams.size(); i++) {
             teamNames.add(teams.get(i).getName());
             Timber.e("Found Team: %s", teams.get(i).getName());
-            if (teams.get(i).getId() == modifiedCar.get(0).getTeamID()) {
-                index = i;
-            }
         }
         ListView listView = (ListView) findViewById(R.id.lv_teams);
         listView.setAdapter(teamNames);

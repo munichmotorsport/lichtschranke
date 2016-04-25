@@ -38,5 +38,6 @@ public class LapViewer extends AppCompatActivity {
         List<Config> drivenConfig = factory.getDao(DaoTypes.CONFIG).queryBuilder().where(ConfigDao.Properties.Id.eq(Long.parseLong(lapInfo[5]))).list();
         Timber.e("Driven Config: " +drivenConfig.get(0).getComment());
         tv_configComment.setText(drivenConfig.get(0).getComment());
+        factory.closeDb();
     }
 }

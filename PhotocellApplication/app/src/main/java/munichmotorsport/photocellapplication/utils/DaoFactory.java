@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import db.DaoMaster;
 import db.DaoSession;
 import de.greenrobot.dao.AbstractDao;
+import timber.log.Timber;
 
 public class DaoFactory {
 
@@ -14,8 +15,10 @@ public class DaoFactory {
     private DaoSession daoSession;
     private AbstractDao dao;
 
+    DaoMaster.DevOpenHelper helper;
+
     public DaoFactory(Context context) {
-        DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(context, "photocell_db", null);
+        helper = new DaoMaster.DevOpenHelper(context, "photocell_db", null);
         db = helper.getWritableDatabase();
         daoMaster = new DaoMaster(db);
         daoSession = daoMaster.newSession();
@@ -52,6 +55,27 @@ public class DaoFactory {
      */
     public DaoSession getDaoSession() {
         return daoSession;
+    }
+
+    public void initializeDB() {
+
+        if (db == null) {
+            db = helper.getWritableDatabase();
+            Timber.e("initializeDB->: db==null");
+        } else {
+            if (!db.isOpen()) {
+                db = helper.getWritableDatabase();
+                Timber.e("initializeDB->: db!=null && !db.isOpen()");
+            } else {
+                Timber.e("initializeDB->: db!=null && db.isOpen()");
+            }
+            daoMaster = new DaoMaster(db);
+            daoSession = daoMaster.newSession();
+        }
+    }
+
+    public void closeDb() {
+        db.close();
     }
 
 }

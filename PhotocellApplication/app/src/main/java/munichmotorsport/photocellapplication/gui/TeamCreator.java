@@ -14,7 +14,7 @@ import timber.log.Timber;
 
 public class TeamCreator extends AppCompatActivity {
 
-    private DaoFactory daoFactory;
+    private DaoFactory factory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,7 +22,7 @@ public class TeamCreator extends AppCompatActivity {
         setContentView(R.layout.activity_team_creator);
         setTitle("Neues Team erstellen");
 
-        daoFactory = new DaoFactory(this);
+        factory = new DaoFactory(this);
     }
 
     /**
@@ -31,13 +31,14 @@ public class TeamCreator extends AppCompatActivity {
      * @param view
      */
     public void createTeam(View view) {
+        factory.initializeDB();
         EditText et_teamName = (EditText) findViewById(R.id.et_teamName);
         String teamName = et_teamName.getText().toString();
 
         if (Utils.nameCheck(teamName)) {
             Team team = new Team(null, teamName);
-            long teamID = daoFactory.getDao(DaoTypes.TEAM).insert(team);
-
+            long teamID = factory.getDao(DaoTypes.TEAM).insert(team);
+            factory.closeDb();
             finish();
 
             // Logging

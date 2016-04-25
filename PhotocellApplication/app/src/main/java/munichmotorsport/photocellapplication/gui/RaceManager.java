@@ -29,8 +29,6 @@ public class RaceManager extends AppCompatActivity {
     Button btn_newRace;
     Button btn_toCurrentRace;
     Button btn_resetCurrentRace;
-    Button btn_deleteLapsFromCurrentRace;
-    Button btn_addLaps;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +75,7 @@ public class RaceManager extends AppCompatActivity {
      * @param view
      */
     public void finishCurrentRace(View view) {
+        factory.initializeDB();
         AbstractDao raceDao = factory.getDao(DaoTypes.RACE);
         List<Race> races = raceDao.queryBuilder().list();
         Race race = races.get(races.size() - 1);
@@ -86,6 +85,7 @@ public class RaceManager extends AppCompatActivity {
         for (int i = 0; i < races.size(); i++) {
             Timber.e("Rennen: '%s' (Typ: %s) , finished: %s", races.get(i).getDescription(), races.get(i).getType(), races.get(i).getFinished().toString());
         }
+        factory.closeDb();
         manageButtons();
     }
 
@@ -93,6 +93,7 @@ public class RaceManager extends AppCompatActivity {
      * change the look and availability of the buttons
      */
     public void manageButtons() {
+        factory.initializeDB();
         AbstractDao raceDao = factory.getDao(DaoTypes.RACE);
         List<Race> races = raceDao.queryBuilder().list();
         if (!races.isEmpty() && races.get(races.size() - 1).getFinished() == false) {
@@ -116,6 +117,7 @@ public class RaceManager extends AppCompatActivity {
             btn_resetCurrentRace.setAlpha(0.5f);
             btn_newRace.setText("Create Race");
         }
+        factory.closeDb();
     }
 
     /**
@@ -124,9 +126,11 @@ public class RaceManager extends AppCompatActivity {
      * @param view
      */
     public void toCurrentRace(View view) {
+        factory.initializeDB();
         List<Race> races = factory.getDao(DaoTypes.RACE).queryBuilder().where(RaceDao.Properties.Finished.eq(false)).list();
         Intent intent = new Intent(this, RaceTable.class);
         intent.putExtra("RaceID", races.get(0).getId());
+        factory.closeDb();
         this.startActivity(intent);
     }
 
@@ -155,22 +159,22 @@ public class RaceManager extends AppCompatActivity {
     }
 
 
-
     /**
      * get amount of laps in db
      *
      * @return
      */
     public long getLapCount() {
+        factory.initializeDB();
         long amount = factory.getDao(DaoTypes.LAP).count();
-        DaoSession session = factory.getDaoSession();
-        session.clear();
+        factory.getDaoSession().clear();
+        factory.closeDb();
         return amount;
     }
 
 
-
-    public void deleteLapsFromCurrentRace(){
+    public void deleteLapsFromCurrentRace() {
+        factory.initializeDB();
         AbstractDao lapDao = factory.getDao(DaoTypes.LAP);
         List<Race> races = factory.getDao(DaoTypes.RACE).queryBuilder().where(RaceDao.Properties.Finished.eq(false)).list();
         if (races.size() != 0) {
@@ -180,6 +184,7 @@ public class RaceManager extends AppCompatActivity {
             }
             Timber.e("Laps in DB after Deleting: %s", getLapCount());
         }
+        factory.closeDb();
     }
 
     /**
@@ -188,12 +193,16 @@ public class RaceManager extends AppCompatActivity {
      * @param view
      */
     public void deleteRaces(View view) {
+        factory.initializeDB();
         factory.getDao(DaoTypes.RACE).deleteAll();
+        factory.closeDb();
         manageButtons();
     }
 
     public void deleteAllLaps(View view) {
+        factory.initializeDB();
         factory.getDao(DaoTypes.LAP).deleteAll();
+        factory.closeDb();
         getLapCount();
     }
 }

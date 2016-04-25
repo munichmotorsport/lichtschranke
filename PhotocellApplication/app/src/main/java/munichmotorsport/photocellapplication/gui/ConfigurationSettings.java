@@ -56,6 +56,7 @@ public class ConfigurationSettings extends AppCompatActivity {
         else{
             et_driverName.setHint("No driver set");
         }
+        factory.closeDb();
     }
 
     /**
@@ -63,6 +64,7 @@ public class ConfigurationSettings extends AppCompatActivity {
      * @param view
      */
     public void changeComment(View view) {
+        factory.initializeDB();
         comment = et_comment.getText().toString();
         Config newConfig = new Config(null, comment, null, currentConfig.get(0).getDriver(), true, currentCar.get(0).getId());
         currentConfig.get(0).setCurrent(false);
@@ -71,6 +73,7 @@ public class ConfigurationSettings extends AppCompatActivity {
         et_comment.setHint(comment);
         et_comment.setText("");
         factory.getDaoSession().clear();
+        factory.closeDb();
         currentConfig = getCurrentConfig();
         Timber.e("Current Config ID: %s", currentConfig.get(0).getId());
     }
@@ -90,6 +93,7 @@ public class ConfigurationSettings extends AppCompatActivity {
      * @param view
      */
     public void changeDriver(View view) {
+        factory.initializeDB();
         driverName = et_driverName.getText().toString();
         Config newConfig = new Config(null, currentConfig.get(0).getComment(), null, driverName, true, currentCar.get(0).getId());
         currentConfig.get(0).setCurrent(false);
@@ -98,12 +102,15 @@ public class ConfigurationSettings extends AppCompatActivity {
         et_driverName.setHint(driverName);
         et_driverName.setText("");
         factory.getDaoSession().clear();
+        factory.closeDb();
         currentConfig = getCurrentConfig();
     }
 
     private List<Config> getCurrentConfig() {
+        factory.initializeDB();
         List<Config> config = factory.getDao(DaoTypes.CONFIG).queryBuilder().where(ConfigDao.Properties.CarID.eq(carId), ConfigDao.Properties.Current.eq(true)).list();
         factory.getDaoSession().clear();
+        factory.closeDb();
         return config;
     }
 
