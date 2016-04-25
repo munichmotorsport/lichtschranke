@@ -26,15 +26,20 @@ public class LapViewer extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lap_viewer);
+        setTitle("View Lap");
+
         tv_lapId = (TextView)findViewById(R.id.tv_lapId);
         tv_lapNr = (TextView)findViewById(R.id.tv_lapNr);
         tv_date = (TextView)findViewById(R.id.tv_date);
         tv_configComment = (TextView)findViewById(R.id.tv_configComment);
+
         factory = new DaoFactory(this);
         lapInfo = getIntent().getStringArrayExtra("LapInfo");
+
         tv_lapId.append(lapInfo[3]);
         tv_lapNr.append(lapInfo[1]);
         tv_date.append(lapInfo[4]);
+
         List<Config> drivenConfig = factory.getDao(DaoTypes.CONFIG).queryBuilder().where(ConfigDao.Properties.Id.eq(Long.parseLong(lapInfo[5]))).list();
         Timber.e("Driven Config: " +drivenConfig.get(0).getComment());
         tv_configComment.setText(drivenConfig.get(0).getComment());
