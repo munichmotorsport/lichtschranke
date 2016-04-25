@@ -62,17 +62,14 @@ public class DaoFactory {
         if (db == null) {
             db = helper.getWritableDatabase();
             Timber.e("initializeDB->: db==null");
-        } else {
-            if (!db.isOpen()) {
+        } else if (!db.isOpen()) {
                 db = helper.getWritableDatabase();
                 Timber.e("initializeDB->: db!=null && !db.isOpen()");
-            } else {
-                Timber.e("initializeDB->: db!=null && db.isOpen()");
             }
             daoMaster = new DaoMaster(db);
             daoSession = daoMaster.newSession();
         }
-    }
+
 
     public void closeDb() {
         db.close();
