@@ -33,6 +33,7 @@ public class TeamRelationModifier extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_team_relation_modifier);
+        setTitle("Relate Car to Team: ");
         factory = new DaoFactory(this);
 
         Bundle b = getIntent().getExtras();

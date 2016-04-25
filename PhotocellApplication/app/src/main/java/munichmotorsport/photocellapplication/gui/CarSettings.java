@@ -27,6 +27,7 @@ public class CarSettings extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_car_settings);
+        setTitle("Car Settings");
         factory = new DaoFactory(this);
         Bundle b = getIntent().getExtras();
         carId = b.getLong("CarID");
@@ -54,7 +55,6 @@ public class CarSettings extends AppCompatActivity {
     public void changeTeamRelation(View view) {
         Intent intent = new Intent(this, TeamRelationModifier.class);
         intent.putExtra("CarID", carId);
-        finish();
         startActivity(intent);
     }
 
