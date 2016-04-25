@@ -25,6 +25,7 @@ public class BarcodeChanger extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_barcode_changer);
+        setTitle("set BarCode");
 
         factory = new DaoFactory(this);
         et_barCode = (EditText) findViewById(R.id.et_barCode);

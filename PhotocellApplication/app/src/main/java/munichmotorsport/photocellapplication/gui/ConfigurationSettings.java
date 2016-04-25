@@ -34,6 +34,7 @@ public class ConfigurationSettings extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_configuration_settings);
+        setTitle("Change Configuration");
 
         Bundle b = getIntent().getExtras();
         carId = b.getLong("CarID");
