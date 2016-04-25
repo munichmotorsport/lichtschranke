@@ -80,19 +80,19 @@ public class RaceTable extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        timer.cancel();
+        stopPoll();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        timer.cancel();
+        stopPoll();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        timer.cancel();
+        stopPoll();
     }
 
     /**
@@ -180,10 +180,8 @@ public class RaceTable extends AppCompatActivity {
     private void togglePoll () {
         if (pollRunning) {
             stopPoll();
-            toggleButtonText();
         } else if (!pollRunning) {
             runPoll();
-            toggleButtonText();
         }
     }
 
@@ -191,9 +189,12 @@ public class RaceTable extends AppCompatActivity {
      *  stops the loop
      */
     private void stopPoll () {
-        timer.cancel();
-        pollRunning = false;
-        Timber.e("Poll is paused");
+        if (timer != null) {
+            timer.cancel();
+            pollRunning = false;
+            toggleButtonText();
+            Timber.e("Poll is paused");
+        }
     }
 
     /**
@@ -203,6 +204,7 @@ public class RaceTable extends AppCompatActivity {
         timer = new Timer();
         timer.schedule(new Task(), 0, 1000);
         pollRunning = true;
+        toggleButtonText();
         Timber.e("Poll is running");
     }
 
