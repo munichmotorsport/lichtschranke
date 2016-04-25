@@ -24,6 +24,8 @@ import db.Config;
 import db.ConfigDao;
 import db.Lap;
 import db.LapDao;
+import db.Race;
+import db.RaceDao;
 import db.Team;
 import de.codecrafters.tableview.TableView;
 import de.codecrafters.tableview.toolkit.SimpleTableHeaderAdapter;
@@ -53,9 +55,6 @@ public class RaceTable extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle b = getIntent().getExtras();
-        setTitle("Current Race");
-
-
 
         dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
@@ -85,6 +84,11 @@ public class RaceTable extends AppCompatActivity {
         }
         tableView.addDataClickListener(new LapClickListener(this));
         toggleButtonText();
+
+        factory.initializeDB();
+        List<Race> race = factory.getDao(DaoTypes.RACE).queryBuilder().where(RaceDao.Properties.Id.eq(raceId)).list();
+        setTitle(race.get(0).getDescription());
+        factory.closeDb();
     }
 
     @Override
