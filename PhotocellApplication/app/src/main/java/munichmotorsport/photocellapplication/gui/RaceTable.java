@@ -99,9 +99,11 @@ public class RaceTable extends AppCompatActivity {
                 .list();
         String[][] data = new String[laps.size()][6];
 
+
         if (laps.size() != 0) {
             Timber.e("laps in list: %s", laps.size());
             for (Lap l : laps) {
+                // Unnötig kompliziert gelöst. Konstanten nutzen statt dynamischer Zähler.
                 for (int j = 0; j < 6; j++) {
                     switch (j) {
                         case 0:
@@ -134,6 +136,7 @@ public class RaceTable extends AppCompatActivity {
             }
         }
 
+        // Datenbank sollte sortieren
         String[][] sortedData = new String[data.length][6];
         int iterator = 0;
         for (int i = data.length - 1; i >= 0; i--) {

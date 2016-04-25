@@ -21,6 +21,8 @@ public class LapTableDataAdapter extends TableDataAdapter<String[]> {
 
     private static final String LOG_TAG = LapTableDataAdapter.class.getName();
 
+    // Auslagern in Resource-Datei
+    // dip verwenden, damit die Auflösung dynamisch pro Gerät umgesetzt werden kann
     private int paddingLeft = 20;
     private int paddingTop = 15;
     private int paddingRight = 20;
@@ -34,19 +36,23 @@ public class LapTableDataAdapter extends TableDataAdapter<String[]> {
     private long fastestLap = 0;
     private Map<String, Long> fastestLaps = new HashMap<String, Long>();
 
+    // Entweder eine javadoc parameterbeschreibung oder sprechende Variablen. Was bedeutet hier S[0], S[2] etc.?
     public LapTableDataAdapter(final Context context, final String[][] data) {
         super(context, data);
         this.data = data;
 
-
+// Variablen die mehrmals genutzt werden, sollte eine eigene Variable sein String carName = s[0]
+        // Konstanten sind sprechender als 0,1,2 und erlauben eine einfache Wiederverwendung
         for (String[] s : data) {
             if (!fastestLaps.containsKey(s[0])) {
                 fastestLaps.put(s[0], Long.parseLong(s[2]));
             } else {
+                // Wieso kein else if?
                 if (Long.parseLong(s[2]) < fastestLaps.get(s[0])) {
                     fastestLaps.put(s[0], Long.parseLong(s[2]));
                 }
             }
+
             if (fastestLap == 0 || fastestLap > Long.parseLong(s[2])) {
                 fastestLap = Long.parseLong(s[2]);
             }
@@ -57,11 +63,12 @@ public class LapTableDataAdapter extends TableDataAdapter<String[]> {
         Timber.e("Fastest Lap: %s", fastestLap);
 
 
-
+// Formatter einrichten für ganzes Team, damit Code gut lesbar ist.
     }
 
     /**
      * colorize the cell
+     *
      * @param rowIndex
      * @param columnIndex
      * @param parentView
@@ -76,17 +83,17 @@ public class LapTableDataAdapter extends TableDataAdapter<String[]> {
         textView.setTextSize(textSize);
 
 
+        // Dieses && Verschachtelungen in Methoden auslagern für besseres Verständnis.
         if (columnIndex == 2 && fastestLaps.containsKey(data[rowIndex][0]) && Long.parseLong(data[rowIndex][columnIndex]) == fastestLaps.get(data[rowIndex][0])) {
             if (Long.parseLong(data[rowIndex][columnIndex]) == fastestLap) {
                 textView.setTextColor(green);
-            }
-            else {
+            } else {
                 textView.setTextColor(red);
             }
         } else {
             textView.setTextColor(textColor);
         }
-        
+
 
         textView.setSingleLine();
         textView.setEllipsize(TextUtils.TruncateAt.END);
@@ -94,9 +101,9 @@ public class LapTableDataAdapter extends TableDataAdapter<String[]> {
         try {
             final String textToShow = getItem(rowIndex)[columnIndex];
             textView.setText(textToShow);
-            if(columnIndex == 2) {
+            if (columnIndex == 2) {
                 Double time = Float.parseFloat(textView.getText().toString()) / 1000.0;
-                textView.setText(time+" s");
+                textView.setText(time + " s");
             }
         } catch (final IndexOutOfBoundsException e) {
             Log.w(LOG_TAG, "No String given for row " + rowIndex + ", column " + columnIndex + ". "

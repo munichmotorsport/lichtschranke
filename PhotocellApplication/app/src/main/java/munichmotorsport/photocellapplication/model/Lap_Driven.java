@@ -1,5 +1,6 @@
 package munichmotorsport.photocellapplication.model;
 
+// Ist diese Klasse generiert? Bzw. wird sie überhaupt noch genutzt?
 public class Lap_Driven {
 
     private int barCode;

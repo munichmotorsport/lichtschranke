@@ -9,6 +9,7 @@ import de.greenrobot.daogenerator.Schema;
 import de.greenrobot.daogenerator.ToMany;
 import de.greenrobot.daogenerator.ToOne;
 
+// Keine manuelles Ausführen dieser Main -> Sollte in den Gradle Build wandern.
 public class RaceDaoGen {
     static Entity car;
     static Entity race;
@@ -17,7 +18,7 @@ public class RaceDaoGen {
     static Entity team;
 
     public static void main(String[] args) throws Exception {
-        Schema schema = new Schema(18, "db");
+        Schema schema = new Schema(18, "db"); // Einheitliche Packagestruktur für alle Klassen. D.h. db sollte unter Munichmotorsport.PhotocellApplication
         createTeam(schema);
         createCar(schema);
         createConfig(schema);
