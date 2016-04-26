@@ -81,7 +81,8 @@ public class TestingRaceCreator extends AppCompatActivity {
             Race race = new Race(null, "Testing", description, false, date);
             factory.getDao(DaoTypes.RACE).insert(race);
             //connecting the car to race is missing
-            Intent intent = new Intent(this, StartScreen.class);
+            Intent intent = new Intent(this, RaceTable.class);
+            intent.putExtra("RaceID", race.getId());
             factory.closeDb();
             startActivity(intent);
         }
