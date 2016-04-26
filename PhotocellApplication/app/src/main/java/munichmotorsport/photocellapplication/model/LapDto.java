@@ -1,14 +1,14 @@
 package munichmotorsport.photocellapplication.model;
 
-public class Lap_Driven {
+public class LapDto {
 
     private int barCode;
     private long time;
 
-    public Lap_Driven() {
+    public LapDto() {
     }
 
-    Lap_Driven(int barCode, long time) {
+    LapDto(int barCode, long time) {
         this.barCode = barCode;
         this.time = time;
     }

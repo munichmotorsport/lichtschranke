@@ -30,7 +30,7 @@ import db.Team;
 import de.codecrafters.tableview.TableView;
 import de.codecrafters.tableview.toolkit.SimpleTableHeaderAdapter;
 import munichmotorsport.photocellapplication.R;
-import munichmotorsport.photocellapplication.model.Lap_Driven;
+import munichmotorsport.photocellapplication.model.LapDto;
 import munichmotorsport.photocellapplication.utils.DaoFactory;
 import munichmotorsport.photocellapplication.utils.DaoTypes;
 import munichmotorsport.photocellapplication.utils.Data;
@@ -238,16 +238,16 @@ public class RaceTable extends AppCompatActivity {
         }
     }
 
-    class HttpRequestTask extends AsyncTask<Void, Void, Lap_Driven> {
+    class HttpRequestTask extends AsyncTask<Void, Void, LapDto> {
 
         @Override
-        protected Lap_Driven doInBackground(Void... params) {
+        protected LapDto doInBackground(Void... params) {
 
             try {
                 final String url = Data.url_getLaps;
                 RestTemplate restTemplate = new RestTemplate();
                 restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
-                Lap_Driven lapResponse = restTemplate.getForObject(url, Lap_Driven.class);
+                LapDto lapResponse = restTemplate.getForObject(url, LapDto.class);
                 return lapResponse;
             } catch (HttpClientErrorException e) {
                 return null;
@@ -257,7 +257,7 @@ public class RaceTable extends AppCompatActivity {
         }
 
         @Override
-        protected void onPostExecute(Lap_Driven lapResponse) {
+        protected void onPostExecute(LapDto lapResponse) {
             factory.initializeDB();
             if (lapResponse != null && !race.getFinished()) {
                 long timestamp = lapResponse.getTime();
