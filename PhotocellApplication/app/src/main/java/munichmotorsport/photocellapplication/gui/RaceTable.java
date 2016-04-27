@@ -14,12 +14,14 @@ import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import db.Car;
+import db.CarDao;
 import db.Config;
 import db.ConfigDao;
 import db.Lap;
@@ -262,13 +264,15 @@ public class RaceTable extends AppCompatActivity {
             if (lapResponse != null && !race.getFinished()) {
                 long timestamp = lapResponse.getTime();
                 long time = 0;
-
                 int barCode = lapResponse.getBarCode();
+                long configId;
+                long carId;
 
                 List<Config> config = factory.getDao(DaoTypes.CONFIG).queryBuilder().where(ConfigDao.Properties.Barcode.eq(barCode), ConfigDao.Properties.Current.eq(true)).list();
-                long configId;
-                if (config.size() > 0) {
+
+                if (config.size() == 1) {
                     configId = config.get(0).getId();
+                    carId = config.get(0).getCarID();
                 } else {
                     Team dummyTeam = new Team(null, "Dummy Team");
                     long dummyTeamId = factory.getDao(DaoTypes.TEAM).insert(dummyTeam);
@@ -277,22 +281,23 @@ public class RaceTable extends AppCompatActivity {
                     Timber.e("Dummy Car ID: %s", dummyCarId);
                     Config dummyConfig = new Config(null, null, "" + barCode, null, true, dummyCarId);
                     configId = factory.getDao(DaoTypes.CONFIG).insert(dummyConfig);
+                    carId = dummyCarId;
                 }
 
-                List<Lap> laps = factory.getDao(DaoTypes.LAP).queryBuilder().where(
+                List<Lap> lapsOfCarInRace = factory.getDao(DaoTypes.LAP).queryBuilder().where(
                         LapDao.Properties.RaceID.eq(raceId),
-                        LapDao.Properties.ConfigID.eq(configId))
+                        LapDao.Properties.CarID.eq(carId))
                         .list();
 
-                Timber.e("Anzahl Laps: %s in Rennen: %s, mit Config ID: %s", laps.size(), raceId, configId);
+                Timber.e("Anzahl Laps: %s in Rennen: %s, CarID: %s", lapsOfCarInRace.size(), raceId, carId);
 
                 int lapNumber = -1;
                 Lap lastlap = null;
-                for (int i = 0; i < laps.size(); i++) {
-                    int actualNumber = laps.get(i).getNumber();
+                for (int i = 0; i < lapsOfCarInRace.size(); i++) {
+                    int actualNumber = lapsOfCarInRace.get(i).getNumber();
                     if (actualNumber > lapNumber) {
                         lapNumber = actualNumber;
-                        lastlap = laps.get(i);
+                        lastlap = lapsOfCarInRace.get(i);
                     }
                 }
 
@@ -304,7 +309,13 @@ public class RaceTable extends AppCompatActivity {
                 String formattedDate = dateFormat.format(calendar.getTime());
                 calendar.clear();
 
-                Lap lapForDB = new Lap(null, formattedDate, timestamp, time, lapNumber + 1, raceId, configId);
+                Lap lapForDB;
+                if (time > 0) {
+                    lapForDB = new Lap(null, formattedDate, timestamp, time, lapNumber + 1, raceId, configId, carId);
+                } else {
+                    lapForDB = new Lap(null, formattedDate, timestamp, null, lapNumber + 1, raceId, configId, carId);
+                }
+
                 factory.getDao(DaoTypes.LAP).insert(lapForDB);
                 factory.getDaoSession().clear();
                 factory.closeDb();
