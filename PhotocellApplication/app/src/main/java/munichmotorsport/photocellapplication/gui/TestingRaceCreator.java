@@ -16,6 +16,10 @@ import java.util.Date;
 import java.util.List;
 
 import db.Car;
+import db.CarDao;
+import db.Config;
+import db.ConfigDao;
+import db.Lap;
 import db.Race;
 import de.greenrobot.dao.AbstractDao;
 import munichmotorsport.photocellapplication.R;
@@ -40,13 +44,13 @@ public class TestingRaceCreator extends AppCompatActivity {
         et_config = (EditText) findViewById(R.id.et_config);
         et_weather = (EditText) findViewById(R.id.et_weather);
         spn_cars = (Spinner) findViewById(R.id.spn_cars);
-        tv_error = (TextView)findViewById(R.id.tv_error);
+        tv_error = (TextView) findViewById(R.id.tv_error);
         factory = new DaoFactory(this);
         description = getIntent().getExtras().getString("raceDescription");
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
 
         List<Car> cars = factory.getDao(DaoTypes.CAR).queryBuilder().list();
-        for(Car c:cars){
+        for (Car c : cars) {
             adapter.add(c.getName());
         }
         spn_cars.setAdapter(adapter);
@@ -54,13 +58,13 @@ public class TestingRaceCreator extends AppCompatActivity {
     }
 
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
         factory.initializeDB();
         AbstractDao raceDao = factory.getDao(DaoTypes.RACE);
         List<Race> races = raceDao.queryBuilder().list();
-        for(Race t:races) {
-            if(t.getFinished() == false){
+        for (Race t : races) {
+            if (t.getFinished() == false) {
                 Intent intent = new Intent(this, StartScreen.class);
                 startActivity(intent);
             }
@@ -70,17 +74,21 @@ public class TestingRaceCreator extends AppCompatActivity {
 
     public void createRace(View view) {
         factory.initializeDB();
-        if(!Utils.nameCheck(et_config.getText().toString()) || !Utils.nameCheck(et_weather.getText().toString())){
-            Timber.e("No config or weather input");
+        if (!Utils.nameCheck(et_config.getText().toString()) || !Utils.nameCheck(et_weather.getText().toString()) || spn_cars.getSelectedItem() == null) {
+            Timber.e("No config-, weather input or car selected");
             tv_error.setText("Please fill in all Informations for Testing");
             factory.closeDb();
-        }
-        else{
+        } else {
+            String carName = spn_cars.getSelectedItem().toString();
+            List<Car> connectedCar = factory.getDao(DaoTypes.CAR).queryBuilder().where(CarDao.Properties.Name.eq(carName)).list();
+            List<Config> connectedConfig = factory.getDao(DaoTypes.CONFIG).queryBuilder().where(ConfigDao.Properties.CarID.eq(connectedCar.get(0).getId())).list();
             Date date = new Date();
             tv_error.setText("");
             Race race = new Race(null, "Testing", description, false, date);
-            factory.getDao(DaoTypes.RACE).insert(race);
-            //connecting the car to race is missing
+            long raceId = factory.getDao(DaoTypes.RACE).insert(race);
+            Lap dummyLap = new Lap(null, null, null, null, -1, raceId, connectedConfig.get(0).getId(), connectedCar.get(0).getId());
+            factory.getDao(DaoTypes.LAP).insert(dummyLap);
+
             Intent intent = new Intent(this, RaceTable.class);
             intent.putExtra("RaceID", race.getId());
             factory.closeDb();

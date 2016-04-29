@@ -198,9 +198,9 @@ public class RaceTable extends AppCompatActivity {
     }
 
     /**
-     *  toggle Poll
+     * toggle Poll
      */
-    private void togglePoll () {
+    private void togglePoll() {
         if (pollRunning) {
             stopPoll();
         } else if (!pollRunning) {
@@ -209,9 +209,9 @@ public class RaceTable extends AppCompatActivity {
     }
 
     /**
-     *  stops the loop
+     * stops the loop
      */
-    private void stopPoll () {
+    private void stopPoll() {
         if (timer != null) {
             timer.cancel();
             pollRunning = false;
@@ -221,7 +221,7 @@ public class RaceTable extends AppCompatActivity {
     }
 
     /**
-     *  runs the loop
+     * runs the loop
      */
     private void runPoll() {
         if (!race.getFinished()) {
@@ -268,26 +268,34 @@ public class RaceTable extends AppCompatActivity {
                 long configId;
                 long carId;
 
-                List<Config> config = factory.getDao(DaoTypes.CONFIG).queryBuilder().where(ConfigDao.Properties.Barcode.eq(barCode), ConfigDao.Properties.Current.eq(true)).list();
-
-                if (config.size() == 1) {
-                    configId = config.get(0).getId();
-                    carId = config.get(0).getCarID();
+                Timber.e("race mod: " +race.getType().toString());
+                if (race.getType().toString().equals("Testing")) {
+                    List<Lap> dummyLap = factory.getDao(DaoTypes.LAP).queryBuilder().where(LapDao.Properties.RaceID.eq(raceId), LapDao.Properties.Timestamp.isNull()).list();
+                    carId = dummyLap.get(0).getCarID();
+                    configId = dummyLap.get(0).getConfigID();
+                    Timber.e("test");
                 } else {
-                    Team dummyTeam = new Team(null, "Dummy Team");
-                    long dummyTeamId = factory.getDao(DaoTypes.TEAM).insert(dummyTeam);
-                    Car dummyCar = new Car(null, "Dummy Car", dummyTeamId);
-                    long dummyCarId = factory.getDao(DaoTypes.CAR).insert(dummyCar);
-                    Timber.e("Dummy Car ID: %s", dummyCarId);
-                    Config dummyConfig = new Config(null, null, "" + barCode, null, true, dummyCarId);
-                    configId = factory.getDao(DaoTypes.CONFIG).insert(dummyConfig);
-                    carId = dummyCarId;
-                }
+                    List<Config> config = factory.getDao(DaoTypes.CONFIG).queryBuilder().where(ConfigDao.Properties.Barcode.eq(barCode), ConfigDao.Properties.Current.eq(true)).list();
 
-                List<Lap> lapsOfCarInRace = factory.getDao(DaoTypes.LAP).queryBuilder().where(
-                        LapDao.Properties.RaceID.eq(raceId),
-                        LapDao.Properties.CarID.eq(carId))
-                        .list();
+                    if (config.size() == 1) {
+                        configId = config.get(0).getId();
+                        carId = config.get(0).getCarID();
+                    } else {
+                        Team dummyTeam = new Team(null, "Dummy Team");
+                        long dummyTeamId = factory.getDao(DaoTypes.TEAM).insert(dummyTeam);
+                        Car dummyCar = new Car(null, "Dummy Car", dummyTeamId);
+                        long dummyCarId = factory.getDao(DaoTypes.CAR).insert(dummyCar);
+                        Timber.e("Dummy Car ID: %s", dummyCarId);
+                        Config dummyConfig = new Config(null, null, "" + barCode, null, true, dummyCarId);
+                        configId = factory.getDao(DaoTypes.CONFIG).insert(dummyConfig);
+                        carId = dummyCarId;
+                    }
+                }
+                    List<Lap> lapsOfCarInRace = factory.getDao(DaoTypes.LAP).queryBuilder().where(
+                            LapDao.Properties.RaceID.eq(raceId),
+                            LapDao.Properties.CarID.eq(carId))
+                            .list();
+
 
                 Timber.e("Anzahl Laps: %s in Rennen: %s, CarID: %s", lapsOfCarInRace.size(), raceId, carId);
 
@@ -301,7 +309,7 @@ public class RaceTable extends AppCompatActivity {
                     }
                 }
 
-                if (lastlap != null) {
+                if (lastlap != null && lastlap.getTimestamp() != null) {
                     time = timestamp - lastlap.getTimestamp();
                 }
 
