@@ -139,7 +139,7 @@ public class ConfigurationSettings extends AppCompatActivity {
         barcode = et_barcode.getText().toString();
         driverName = et_driverName.getText().toString();
         currentConfig.get(0).setCurrent(false);
-        factory.getDao(DaoTypes.CONFIG).update(currentConfig.get(0));
+        factory.getDao(DaoTypes.CONFIG).insertOrReplace(currentConfig.get(0));
         Config newConfig = new Config(null, comment, barcode, driverName, true, currentCar.get(0).getId());
         factory.getDao(DaoTypes.CONFIG).insert(newConfig);
         factory.getDaoSession().clear();

@@ -272,8 +272,10 @@ public class RaceTable extends AppCompatActivity {
                 if (race.getType().toString().equals("Testing")) {
                     List<Lap> dummyLap = factory.getDao(DaoTypes.LAP).queryBuilder().where(LapDao.Properties.RaceID.eq(raceId), LapDao.Properties.Timestamp.isNull()).list();
                     carId = dummyLap.get(0).getCarID();
-                    configId = dummyLap.get(0).getConfigID();
-                    Timber.e("test");
+                    List<Race> currentRace = factory.getDao(DaoTypes.RACE).queryBuilder().where(RaceDao.Properties.Id.eq(raceId)).list();
+                    List<Config> currentConfig = factory.getDao(DaoTypes.CONFIG).queryBuilder().where(ConfigDao.Properties.CarID.eq(carId), ConfigDao.Properties.Current.eq(true)).list();
+                    configId = currentConfig.get(0).getId();
+                    Timber.e("config car: " + currentConfig.get(0).getCar().getName());
                 } else {
                     List<Config> config = factory.getDao(DaoTypes.CONFIG).queryBuilder().where(ConfigDao.Properties.Barcode.eq(barCode), ConfigDao.Properties.Current.eq(true)).list();
 

@@ -82,16 +82,23 @@ public class TestingRaceCreator extends AppCompatActivity {
             String carName = spn_cars.getSelectedItem().toString();
             List<Car> connectedCar = factory.getDao(DaoTypes.CAR).queryBuilder().where(CarDao.Properties.Name.eq(carName)).list();
             List<Config> connectedConfig = factory.getDao(DaoTypes.CONFIG).queryBuilder().where(ConfigDao.Properties.CarID.eq(connectedCar.get(0).getId())).list();
+            String comment = et_config.getText().toString();
+            Config oldConfig = connectedConfig.get(0);
+            oldConfig.setCurrent(false);
+            Config newConfig = new Config(null, comment, connectedConfig.get(0).getBarcode(), connectedConfig.get(0).getDriver(), true, connectedCar.get(0).getId());
+            factory.getDao(DaoTypes.CONFIG).insertOrReplace(oldConfig);
+            factory.getDao(DaoTypes.CONFIG).insert(newConfig);
             Date date = new Date();
             tv_error.setText("");
             Race race = new Race(null, "Testing", description, false, date);
             long raceId = factory.getDao(DaoTypes.RACE).insert(race);
-            Lap dummyLap = new Lap(null, null, null, null, -1, raceId, connectedConfig.get(0).getId(), connectedCar.get(0).getId());
+            Lap dummyLap = new Lap(null, null, null, null, -1, raceId, newConfig.getId(), connectedCar.get(0).getId());
             factory.getDao(DaoTypes.LAP).insert(dummyLap);
 
             Intent intent = new Intent(this, RaceTable.class);
             intent.putExtra("RaceID", race.getId());
             factory.closeDb();
+            factory.getDaoSession().clear();
             startActivity(intent);
         }
     }
