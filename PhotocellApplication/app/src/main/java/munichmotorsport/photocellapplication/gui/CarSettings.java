@@ -79,7 +79,7 @@ public class CarSettings extends AppCompatActivity {
         factory.initializeDB();
         factory.getDao(DaoTypes.CAR).delete(clickedCar.get(0));
         factory.closeDb();
-        Intent intent = new Intent(this, CarViewer.class);
+        Intent intent = new Intent(this, CarManager.class);
         startActivity(intent);
     }
 }

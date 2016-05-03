@@ -20,7 +20,7 @@
         </activity>
         <activity android:name=".gui.RaceCreator" />
         <activity android:name=".gui.CarCreator" />
-        <activity android:name=".gui.TeamCreator" />
+        <activity android:name=".gui.TeamCreator" android:noHistory="true" />
         <activity android:name=".gui.CarManager" />
         <activity android:name=".gui.CarViewer" />
         <activity android:name=".gui.CarSelector" />
@@ -31,12 +31,11 @@
         <activity android:name=".gui.RaceViewer" />
         <activity android:name=".gui.RaceTable" />
         <activity android:name=".gui.CarSettings" />
-        <activity android:name=".gui.ConfigurationSettings" />
-        <activity android:name=".gui.TeamRelationModifier" />
-        <activity android:name=".gui.BarcodeChanger" />
+        <activity android:name=".gui.ConfigurationSettings" android:noHistory="true"/>
+        <activity android:name=".gui.TeamRelationModifier" android:noHistory="true" />
         <activity android:name=".gui.DriverChanger" />
-        <activity android:name=".gui.LapViewer" />
-        <activity android:name=".gui.TestingRaceCreator"></activity>
+        <activity android:name=".gui.LapViewer" android:noHistory="true" />
+        <activity android:name=".gui.TestingRaceCreator" android:noHistory="true" />
     </application>
 
 </manifest>

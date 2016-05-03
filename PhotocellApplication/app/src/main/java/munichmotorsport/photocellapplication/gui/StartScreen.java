@@ -67,6 +67,15 @@ public class StartScreen extends AppCompatActivity {
     }
 
     /**
+     * to activity "CarViewer"
+     *
+     * @param view
+     */
+    public void cars(View view) {
+        Intent intent = new Intent(this, CarViewer.class);
+        startActivity(intent);
+    }
+    /**
      * to activity "TeamManager"
      *
      * @param view

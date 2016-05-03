@@ -81,4 +81,9 @@ public class CarViewer extends AppCompatActivity {
         factory.getDaoSession().clear();
         factory.closeDb();
     }
+
+    public void createCar(View view) {
+        Intent intent = new Intent(this, CarCreator.class);
+        startActivity(intent);
+    }
 }

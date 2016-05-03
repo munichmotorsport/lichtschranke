@@ -20,11 +20,12 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Car Manager"
-        android:onClick="carManager"
+        android:text="Cars"
+        android:onClick="cars"
         android:id="@+id/btn_Manager"
         android:layout_below="@+id/btn_screen_createRace"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:enabled="true" />
 
     <Button
         android:layout_width="wrap_content"
