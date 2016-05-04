@@ -24,7 +24,7 @@
         <activity android:name=".gui.CarManager" />
         <activity android:name=".gui.CarViewer" />
         <activity android:name=".gui.CarSelector" />
-        <activity android:name=".gui.RaceManager" />
+        <activity android:name=".gui.RaceSettings" />
         <activity android:name=".gui.RaceStarter" />
         <activity android:name=".gui.TeamManager" />
         <activity android:name=".gui.TeamViewer" />

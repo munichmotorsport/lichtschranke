@@ -13,7 +13,7 @@
     <Button
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:text="Race Manager"
+    android:text="Race settings"
     android:onClick="toRaceManager"
     android:id="@+id/btn_screen_createRace"/>
 
@@ -30,9 +30,9 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Team Manager"
+        android:text="Teams"
         android:id="@+id/btn_teamManager"
-        android:onClick="teamManager"
+        android:onClick="teamViewer"
         android:layout_alignRight="@+id/btn_screen_createRace"
         android:layout_alignEnd="@+id/btn_screen_createRace"
         android:layout_alignParentLeft="true"

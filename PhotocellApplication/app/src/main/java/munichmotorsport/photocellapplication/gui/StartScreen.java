@@ -10,7 +10,6 @@ import android.widget.TextView;
 import java.util.List;
 
 import db.Race;
-import de.greenrobot.dao.AbstractDao;
 import munichmotorsport.photocellapplication.R;
 import munichmotorsport.photocellapplication.utils.DaoFactory;
 import munichmotorsport.photocellapplication.utils.DaoTypes;
@@ -47,12 +46,12 @@ public class StartScreen extends AppCompatActivity {
     }
 
     /**
-     * zur Activity "RaceManager"
+     * zur Activity "RaceSettings"
      *
      * @param view
      */
     public void toRaceManager(View view) {
-        Intent intent = new Intent(this, RaceManager.class);
+        Intent intent = new Intent(this, RaceSettings.class);
         startActivity(intent);
     }
 
@@ -82,6 +81,16 @@ public class StartScreen extends AppCompatActivity {
      */
     public void teamManager(View view) {
         Intent intent = new Intent(this, TeamManager.class);
+        startActivity(intent);
+    }
+
+    /**
+     * to activity "TeamCreator"
+     *
+     * @param view
+     */
+    public void teamViewer (View view) {
+        Intent intent = new Intent(this, TeamViewer.class);
         startActivity(intent);
     }
 

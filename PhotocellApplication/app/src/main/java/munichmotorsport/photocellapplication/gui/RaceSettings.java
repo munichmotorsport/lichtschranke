@@ -8,11 +8,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.List;
 
-import db.DaoSession;
 import db.Lap;
 import db.LapDao;
 import db.Race;
@@ -23,7 +20,7 @@ import munichmotorsport.photocellapplication.utils.DaoFactory;
 import munichmotorsport.photocellapplication.utils.DaoTypes;
 import timber.log.Timber;
 
-public class RaceManager extends AppCompatActivity {
+public class RaceSettings extends AppCompatActivity {
     DaoFactory factory;
     Button btn_finishRace;
     Button btn_newRace;
@@ -33,7 +30,7 @@ public class RaceManager extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_race_manager);
+        setContentView(R.layout.activity_race_settings);
         setTitle("Race Manager");
         factory = new DaoFactory(this);
         btn_finishRace = (Button) findViewById(R.id.btn_finishRace);

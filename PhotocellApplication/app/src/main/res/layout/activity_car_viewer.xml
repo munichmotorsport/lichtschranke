@@ -10,31 +10,45 @@
     tools:context="munichmotorsport.photocellapplication.gui.CarViewer">
 
 
-    <LinearLayout
+    <RelativeLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:weightSum="1"
+        android:id="@+id/linearLayout5">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Liste vorhandener Autos"
             android:id="@+id/textView"
-            android:layout_gravity="center_horizontal" />
+            android:layout_gravity="center_horizontal"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true" />
 
         <ListView
             android:layout_width="match_parent"
-            android:layout_height="464dp"
+            android:layout_height="450dp"
             android:id="@+id/lv_cars"
-            android:layout_gravity="center_horizontal" />
+            android:layout_gravity="center_horizontal"
+            android:layout_below="@+id/textView"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
 
         <Button
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:id="@+id/button"
             android:onClick="createCar"
             android:layout_gravity="center_horizontal"
-            android:text="create car" />
-    </LinearLayout>
+            android:text="create car"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/lv_cars"
+            android:enabled="true" />
+
+
+    </RelativeLayout>
+
+
 
 </RelativeLayout>

@@ -1,7 +1,9 @@
 package munichmotorsport.photocellapplication.gui;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -31,6 +33,12 @@ public class TeamViewer extends AppCompatActivity {
         showExistingTeams();
     }
 
+    @Override
+    public void onResume(){
+        super.onResume();
+        showExistingTeams();
+    }
+
     /**
      * Load existing Teams from DB
      */
@@ -49,4 +57,13 @@ public class TeamViewer extends AppCompatActivity {
         factory.getDaoSession().clear();
         factory.closeDb();
     }
+
+    /**
+     * To activity "CarCreator"
+     */
+    public void createCar(View view) {
+        Intent intent = new Intent(this, TeamCreator.class);
+        startActivity(intent);
+    }
+
 }
