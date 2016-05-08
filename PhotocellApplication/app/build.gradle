@@ -9,6 +9,7 @@ android {
     java.srcDirs = ['src/main/java', 'src-gen/main/java']
         }
     }
+    
 
     defaultConfig {
         applicationId "munichmotorsport.photocellapplication"
@@ -31,6 +32,8 @@ android {
         exclude 'META-INF/notice.txt'
     }
 }
+
+
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])

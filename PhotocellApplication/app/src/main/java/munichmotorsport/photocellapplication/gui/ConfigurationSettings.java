@@ -145,6 +145,9 @@ public class ConfigurationSettings extends AppCompatActivity {
         factory.getDaoSession().clear();
         factory.closeDb();
         currentConfig = getCurrentConfig();
+        Intent intent = new Intent(this, CarSettings.class);
+        intent.putExtra("CarID", carId);
+        startActivity(intent);
     }
 
 }

@@ -1,6 +1,7 @@
 package munichmotorsport.photocellapplication.gui;
 
 import android.os.AsyncTask;
+import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -13,6 +14,9 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -53,6 +57,7 @@ public class RaceTable extends AppCompatActivity {
     private TextView tv_fastestLapInRace;
     private TextView tv_fastestLapForCar;
     private Race race;
+    private String[][] content;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -136,7 +141,6 @@ public class RaceTable extends AppCompatActivity {
                 LapDao.Properties.Number.notEq(0))
                 .list();
         String[][] data = new String[laps.size()][6];
-
         if (laps.size() != 0) {
             Timber.e("laps in list: %s", laps.size());
             for (Lap l : laps) {
@@ -171,6 +175,8 @@ public class RaceTable extends AppCompatActivity {
                 index++;
             }
         }
+
+        content = data;
 
         String[][] sortedData = new String[data.length][6];
         int iterator = 0;
@@ -268,7 +274,7 @@ public class RaceTable extends AppCompatActivity {
                 long configId;
                 long carId;
 
-                Timber.e("race mod: " +race.getType().toString());
+                Timber.e("race mod: " + race.getType().toString());
                 if (race.getType().toString().equals("Testing")) {
                     List<Lap> dummyLap = factory.getDao(DaoTypes.LAP).queryBuilder().where(LapDao.Properties.RaceID.eq(raceId), LapDao.Properties.Timestamp.isNull()).list();
                     carId = dummyLap.get(0).getCarID();
@@ -293,10 +299,10 @@ public class RaceTable extends AppCompatActivity {
                         carId = dummyCarId;
                     }
                 }
-                    List<Lap> lapsOfCarInRace = factory.getDao(DaoTypes.LAP).queryBuilder().where(
-                            LapDao.Properties.RaceID.eq(raceId),
-                            LapDao.Properties.CarID.eq(carId))
-                            .list();
+                List<Lap> lapsOfCarInRace = factory.getDao(DaoTypes.LAP).queryBuilder().where(
+                        LapDao.Properties.RaceID.eq(raceId),
+                        LapDao.Properties.CarID.eq(carId))
+                        .list();
 
 
                 Timber.e("Anzahl Laps: %s in Rennen: %s, CarID: %s", lapsOfCarInRace.size(), raceId, carId);
@@ -338,5 +344,43 @@ public class RaceTable extends AppCompatActivity {
             }
         }
     }
+
+        public void createFile(View view) {
+            factory.initializeDB();
+
+            String filename = race .getId() +"_"+ race.getDescription();
+            String contentString = "Auto        Runde    Zeit                 Datum                      Config" + "\n";
+            try {
+
+                File root = new File(getExternalCacheDir(), "Races");
+
+                if (!root.exists()) {
+                    root.mkdirs();
+                }
+
+
+                File filepath = new File(root, filename + ".txt");
+                FileWriter writer = new FileWriter(filepath);
+
+                for(int i = 0; i < content.length; i++) {
+                    List<Config> config = factory.getDao(DaoTypes.CONFIG).queryBuilder().where(ConfigDao.Properties.Id.eq(Long.parseLong(content[i][5]))).list();
+                contentString += content[i][0] +"      "+ content[i][1] +"      "+ Float.parseFloat(content[i][2])/1000.000 +"      "+ content[i][4] +"      "+ config.get(0).getComment() +"\n";
+                }
+
+                writer.append(contentString);
+                writer.flush();
+                writer.close();
+
+                String m = "File generated with name " + filename + ".txt in Folder: " +root.getAbsolutePath();
+                Timber.e(m);
+
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            factory.closeDb();
+        }
+
+
 
 }

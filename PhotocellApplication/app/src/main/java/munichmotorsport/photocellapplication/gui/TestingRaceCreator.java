@@ -81,7 +81,7 @@ public class TestingRaceCreator extends AppCompatActivity {
         } else {
             String carName = spn_cars.getSelectedItem().toString();
             List<Car> connectedCar = factory.getDao(DaoTypes.CAR).queryBuilder().where(CarDao.Properties.Name.eq(carName)).list();
-            List<Config> connectedConfig = factory.getDao(DaoTypes.CONFIG).queryBuilder().where(ConfigDao.Properties.CarID.eq(connectedCar.get(0).getId())).list();
+            List<Config> connectedConfig = factory.getDao(DaoTypes.CONFIG).queryBuilder().where(ConfigDao.Properties.CarID.eq(connectedCar.get(0).getId()), ConfigDao.Properties.Current.eq(true)).list();
             String comment = et_config.getText().toString();
             Config oldConfig = connectedConfig.get(0);
             oldConfig.setCurrent(false);
