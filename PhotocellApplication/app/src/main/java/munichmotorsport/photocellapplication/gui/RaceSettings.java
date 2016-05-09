@@ -126,7 +126,9 @@ public class RaceSettings extends AppCompatActivity {
         factory.initializeDB();
         List<Race> races = factory.getDao(DaoTypes.RACE).queryBuilder().where(RaceDao.Properties.Finished.eq(false)).list();
         Intent intent = new Intent(this, RaceTable.class);
-        intent.putExtra("RaceID", races.get(0).getId());
+        String[] raceId = new String[3];
+        raceId[2] = races.get(0).getId().toString();
+        intent.putExtra("RaceInfo", raceId);
         factory.closeDb();
         this.startActivity(intent);
     }

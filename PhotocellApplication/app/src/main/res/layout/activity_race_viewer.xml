@@ -20,11 +20,12 @@
             android:id="@+id/tv_listeRaces"
             android:layout_gravity="center_horizontal" />
 
-        <ListView
+        <de.codecrafters.tableview.TableView
+            xmlns:table="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/tv_races"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/lv_races"
-            android:layout_gravity="center_horizontal" />
+            android:layout_height="match_parent"
+            table:columnCount="2" />
     </LinearLayout>
 
 </RelativeLayout>

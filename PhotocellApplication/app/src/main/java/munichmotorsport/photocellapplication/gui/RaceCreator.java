@@ -8,7 +8,9 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -26,6 +28,9 @@ public class RaceCreator extends AppCompatActivity {
     private Spinner spn_modus;
     private DaoFactory factory;
     private long RaceID;
+    private Calendar calendar;
+    private SimpleDateFormat dateFormat;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +39,8 @@ public class RaceCreator extends AppCompatActivity {
         setTitle("Neues Rennen erstellen");
 
         factory = new DaoFactory(this);
+        dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
 
         spn_modus = (Spinner) findViewById(R.id.spn_modus);
         ArrayList<String> modi = new ArrayList<>();
@@ -70,7 +77,11 @@ public class RaceCreator extends AppCompatActivity {
      */
     public void createRace(View view) {
         factory.initializeDB();
-        Date date = new Date();
+
+        calendar = Calendar.getInstance();
+        String formattedDate = dateFormat.format(calendar.getTime());
+        calendar.clear();
+
         String type = spn_modus.getSelectedItem().toString();
 
 
@@ -82,14 +93,13 @@ public class RaceCreator extends AppCompatActivity {
             startActivity(intent);
         }
         else {
-            Race race = new Race(null, type, description, false, date);
+            Race race = new Race(null, type, description, false, formattedDate);
             RaceID = factory.getDao(DaoTypes.RACE).insert(race);
             factory.closeDb();
-//            toCarSelector();
             toRaceTable();
 
             // Logging
-            Timber.e("Created Race with ID: %s, Description: '%s', Modus: %s, Date: %s", RaceID, race.getDescription(), race.getType(), date);
+            Timber.e("Created Race with ID: %s, Description: '%s', Modus: %s, Date: %s", RaceID, race.getDescription(), race.getType(), formattedDate);
 
         }
     }
@@ -108,7 +118,9 @@ public class RaceCreator extends AppCompatActivity {
      */
     private void toRaceTable() {
         Intent intent = new Intent(this, RaceTable.class);
-        intent.putExtra("RaceID", RaceID);
+        String[] raceId = new String[3];
+        raceId[2] = Long.toString(RaceID);
+        intent.putExtra("RaceInfo", raceId);
         startActivity(intent);
     }
 

@@ -11,7 +11,9 @@ import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -36,6 +38,8 @@ public class TestingRaceCreator extends AppCompatActivity {
     ArrayAdapter<String> adapter;
     TextView tv_error;
     String description;
+    private Calendar calendar;
+    private SimpleDateFormat dateFormat;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +49,7 @@ public class TestingRaceCreator extends AppCompatActivity {
         et_weather = (EditText) findViewById(R.id.et_weather);
         spn_cars = (Spinner) findViewById(R.id.spn_cars);
         tv_error = (TextView) findViewById(R.id.tv_error);
+        dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         factory = new DaoFactory(this);
         description = getIntent().getExtras().getString("raceDescription");
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
@@ -88,15 +93,19 @@ public class TestingRaceCreator extends AppCompatActivity {
             Config newConfig = new Config(null, comment, connectedConfig.get(0).getBarcode(), connectedConfig.get(0).getDriver(), true, connectedCar.get(0).getId());
             factory.getDao(DaoTypes.CONFIG).insertOrReplace(oldConfig);
             factory.getDao(DaoTypes.CONFIG).insert(newConfig);
-            Date date = new Date();
+            calendar = Calendar.getInstance();
+            String formattedDate = dateFormat.format(calendar.getTime());
+            calendar.clear();
             tv_error.setText("");
-            Race race = new Race(null, "Testing", description, false, date);
+            Race race = new Race(null, "Testing", description, false, formattedDate);
             long raceId = factory.getDao(DaoTypes.RACE).insert(race);
             Lap dummyLap = new Lap(null, null, null, null, -1, raceId, newConfig.getId(), connectedCar.get(0).getId());
             factory.getDao(DaoTypes.LAP).insert(dummyLap);
 
             Intent intent = new Intent(this, RaceTable.class);
-            intent.putExtra("RaceID", race.getId());
+            String[] raceInfo = new String[3];
+            raceInfo[2] = Long.toString(raceId);
+            intent.putExtra("RaceInfo", raceId);
             factory.closeDb();
             factory.getDaoSession().clear();
             startActivity(intent);

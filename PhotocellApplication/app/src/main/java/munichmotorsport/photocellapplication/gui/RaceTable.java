@@ -58,15 +58,23 @@ public class RaceTable extends AppCompatActivity {
     private TextView tv_fastestLapForCar;
     private Race race;
     private String[][] content;
+    private int CARNAME = 0;
+    private int LAPNUMBER = 1;
+    private int LAPTIME = 2;
+    private int LAPID = 3;
+    private int LAPDATE = 4;
+    private int CONFIGID = 5;
+    private String[] raceInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Bundle b = getIntent().getExtras();
 
         dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-        raceId = b.getLong("RaceID");
+        raceInfo = getIntent().getStringArrayExtra("RaceInfo");
+        raceId = Long.parseLong(raceInfo[2]);
+
         Timber.e("RaceID: %s", raceId);
         setContentView(R.layout.activity_race_table);
         factory = new DaoFactory(this);
@@ -130,47 +138,28 @@ public class RaceTable extends AppCompatActivity {
         factory.initializeDB();
         int index = 0;
 
-     /*   Timber.e("All finished Races: ");
-        for (int i = 0; i < races.size(); i++) {
-            Timber.e("Rennen: '%s' (Typ: %s) , finished: %s , mit Anzahl Runden: %s", races.get(i).getDescription(), races.get(i).getType(), races.get(i).getFinished().toString(), races.get(0).getLapList().size());
-      }*/
-
         List<Lap> laps = factory.getDao(DaoTypes.LAP).queryBuilder().where(
                 LapDao.Properties.Time.isNotNull(),
                 LapDao.Properties.RaceID.eq(raceId),
-                LapDao.Properties.Number.notEq(0))
+                LapDao.Properties.Number.notEq(0)).orderDesc(LapDao.Properties.Date)
                 .list();
         String[][] data = new String[laps.size()][6];
         if (laps.size() != 0) {
             Timber.e("laps in list: %s", laps.size());
             for (Lap l : laps) {
                 for (int j = 0; j < 6; j++) {
-                    switch (j) {
-                        case 0:
-                            List<Config> lapConfig = factory.getDao(DaoTypes.CONFIG).queryBuilder().where(ConfigDao.Properties.Id.eq(l.getConfigID())).list();
-                            if (!lapConfig.isEmpty()) {
-                                data[index][j] = lapConfig.get(0).getCar().getName();
-                            } else {
-                                data[index][j] = "Deleted Car";
-                            }
-                            break;
-                        case 1:
-                            data[index][j] = Integer.toString(l.getNumber());
-                            break;
-                        case 2:
-                            String time = Long.toString(l.getTime().longValue());
-                            data[index][j] = time;
-                            break;
-                        case 3:
-                            data[index][j] = l.getId().toString();
-                            break;
-                        case 4:
-                            data[index][j] = l.getDate();
-                            break;
-                        case 5:
-                            data[index][j] = Long.toString(l.getConfigID());
-                            break;
+                    List<Config> lapConfig = factory.getDao(DaoTypes.CONFIG).queryBuilder().where(ConfigDao.Properties.Id.eq(l.getConfigID())).list();
+                    if (!lapConfig.isEmpty()) {
+                        data[index][CARNAME] = lapConfig.get(0).getCar().getName();
+                    } else {
+                        data[index][CARNAME] = "Deleted Car";
                     }
+                    data[index][LAPNUMBER] = Integer.toString(l.getNumber());
+                    String time = Long.toString(l.getTime().longValue());
+                    data[index][LAPTIME] = time;
+                    data[index][LAPID] = l.getId().toString();
+                    data[index][LAPDATE] = l.getDate();
+                    data[index][CONFIGID] = Long.toString(l.getConfigID());
                 }
                 index++;
             }
@@ -178,15 +167,8 @@ public class RaceTable extends AppCompatActivity {
 
         content = data;
 
-        String[][] sortedData = new String[data.length][6];
-        int iterator = 0;
-        for (int i = data.length - 1; i >= 0; i--) {
-            sortedData[i] = data[iterator];
-            iterator++;
-        }
-
         tableView.setDataAdapter(new
-                        LapTableDataAdapter(this, sortedData)
+                LapTableDataAdapter(this, data)
         );
         factory.closeDb();
     }
@@ -345,42 +327,41 @@ public class RaceTable extends AppCompatActivity {
         }
     }
 
-        public void createFile(View view) {
-            factory.initializeDB();
+    public void createFile(View view) {
+        factory.initializeDB();
 
-            String filename = race .getId() +"_"+ race.getDescription();
-            String contentString = "Auto        Runde    Zeit                 Datum                      Config" + "\n";
-            try {
+        String filename = race.getId() + "_" + race.getDescription();
+        String contentString = "Auto        Runde    Zeit                 Datum                      Config" + "\n";
+        try {
 
-                File root = new File(getExternalCacheDir(), "Races");
+            File root = new File(getExternalCacheDir(), "Races");
 
-                if (!root.exists()) {
-                    root.mkdirs();
-                }
-
-
-                File filepath = new File(root, filename + ".txt");
-                FileWriter writer = new FileWriter(filepath);
-
-                for(int i = 0; i < content.length; i++) {
-                    List<Config> config = factory.getDao(DaoTypes.CONFIG).queryBuilder().where(ConfigDao.Properties.Id.eq(Long.parseLong(content[i][5]))).list();
-                contentString += content[i][0] +"      "+ content[i][1] +"      "+ Float.parseFloat(content[i][2])/1000.000 +"      "+ content[i][4] +"      "+ config.get(0).getComment() +"\n";
-                }
-
-                writer.append(contentString);
-                writer.flush();
-                writer.close();
-
-                String m = "File generated with name " + filename + ".txt in Folder: " +root.getAbsolutePath();
-                Timber.e(m);
-
-
-            } catch (IOException e) {
-                e.printStackTrace();
+            if (!root.exists()) {
+                root.mkdirs();
             }
-            factory.closeDb();
-        }
 
+
+            File filepath = new File(root, filename + ".txt");
+            FileWriter writer = new FileWriter(filepath);
+
+            for (int i = 0; i < content.length; i++) {
+                List<Config> config = factory.getDao(DaoTypes.CONFIG).queryBuilder().where(ConfigDao.Properties.Id.eq(Long.parseLong(content[i][5]))).list();
+                contentString += content[i][0] + "      " + content[i][1] + "      " + Float.parseFloat(content[i][2]) / 1000.000 + "      " + content[i][4] + "      " + config.get(0).getComment() + "\n";
+            }
+
+            writer.append(contentString);
+            writer.flush();
+            writer.close();
+
+            String m = "File generated with name " + filename + ".txt in Folder: " + root.getAbsolutePath();
+            Timber.e(m);
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        factory.closeDb();
+    }
 
 
 }

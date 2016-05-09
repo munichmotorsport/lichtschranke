@@ -12,17 +12,26 @@ import java.util.List;
 
 import db.Race;
 import db.RaceDao;
+import de.codecrafters.tableview.TableDataAdapter;
+import de.codecrafters.tableview.TableView;
+import de.codecrafters.tableview.toolkit.SimpleTableDataAdapter;
+import de.codecrafters.tableview.toolkit.SimpleTableHeaderAdapter;
 import de.greenrobot.dao.AbstractDao;
 import munichmotorsport.photocellapplication.R;
 import munichmotorsport.photocellapplication.utils.DaoFactory;
 import munichmotorsport.photocellapplication.utils.DaoTypes;
+import munichmotorsport.photocellapplication.utils.LapTableDataAdapter;
+import munichmotorsport.photocellapplication.utils.RaceClickListener;
 import timber.log.Timber;
 
 public class RaceViewer extends AppCompatActivity {
 
     private ArrayAdapter<String> raceDescriptions;
     private DaoFactory factory;
-    private ListView lv_races;
+    private TableView tv_races;
+    private int RACEDESCRIPTION = 0;
+    private int RACEDATE = 1;
+    private int RACEID = 2;
 
 
     @Override
@@ -31,24 +40,16 @@ public class RaceViewer extends AppCompatActivity {
         setContentView(R.layout.activity_race_viewer);
         setTitle("View Races");
 
-        raceDescriptions = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
         factory = new DaoFactory(this);
 
-        lv_races = (ListView)findViewById(R.id.lv_races);
-        lv_races.setClickable(true);
-        lv_races.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        tv_races = (TableView)findViewById(R.id.tv_races);
 
-            @Override
-            public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
-                factory.initializeDB();
-                String raceDescription =(String) lv_races.getItemAtPosition(position);
-                List<Race> raceClicked = factory.getDao(DaoTypes.RACE).queryBuilder().where(RaceDao.Properties.Description.eq(raceDescription)).list();
-                Intent intent = new Intent(RaceViewer.this, RaceTable.class);
-                intent.putExtra("RaceID", raceClicked.get(0).getId());
-                factory.closeDb();
-                startActivity(intent);
-            }
-        });
+        tv_races.addDataClickListener(new RaceClickListener(this));
+
+        String[] headers = {"Description", "Date"};
+        SimpleTableHeaderAdapter headerAdapter = new SimpleTableHeaderAdapter(this, headers);
+        tv_races.setHeaderAdapter(headerAdapter);
+
 
         showExistingRaces();
     }
@@ -58,16 +59,16 @@ public class RaceViewer extends AppCompatActivity {
      */
     public void showExistingRaces() {
         factory.initializeDB();
+        List<Race> races = factory.getDao(DaoTypes.RACE).queryBuilder().list();
+        String[][] data = new String[races.size()][3];
+        int index = 0;
         Timber.e("showExistingRaces()");
-        raceDescriptions.clear();
-        AbstractDao raceDao = factory.getDao(DaoTypes.RACE);
-        List<Race> races = raceDao.queryBuilder().list();
-        for (int i = 0; i < races.size(); i++) {
-            raceDescriptions.add(races.get(i).getDescription());
-            Timber.e("Found Race: %s finished: %s", races.get(i).getDescription(), races.get(i).getFinished().toString());
+        for (Race r:races) {
+            data[index][RACEDESCRIPTION] = r.getDescription();
+            data[index][RACEDATE] = r.getDate();
+            data[index][RACEID] = r.getId().toString();
         }
-        ListView listView = (ListView) findViewById(R.id.lv_races);
-        listView.setAdapter(raceDescriptions);
+        tv_races.setDataAdapter(new SimpleTableDataAdapter(this, data));
         factory.getDaoSession().clear();
         factory.closeDb();
     }

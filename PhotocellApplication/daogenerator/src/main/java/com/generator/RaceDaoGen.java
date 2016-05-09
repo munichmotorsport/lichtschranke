@@ -34,10 +34,11 @@ public class RaceDaoGen {
         race.addStringProperty("type").notNull();
         race.addStringProperty("description");
         race.addBooleanProperty("finished");
-        race.addDateProperty("date");
+        race.addStringProperty("date");
     }
 
     private static void createLap(Schema schema) {
+
         lap = schema.addEntity("Lap");
         lap.addIdProperty().autoincrement().primaryKey();
         lap.addStringProperty("date");
