@@ -17,7 +17,7 @@ public class RaceDaoGen {
     static Entity team;
 
     public static void main(String[] args) throws Exception {
-        Schema schema = new Schema(20, "db");
+        Schema schema = new Schema(21, "db");
         createTeam(schema);
         createCar(schema);
         createConfig(schema);
@@ -35,6 +35,7 @@ public class RaceDaoGen {
         race.addStringProperty("description");
         race.addBooleanProperty("finished");
         race.addStringProperty("date");
+        race.addStringProperty("weather");
     }
 
     private static void createLap(Schema schema) {

@@ -1,5 +1,6 @@
 package munichmotorsport.photocellapplication.gui;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -38,7 +39,7 @@ public class RaceViewer extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_race_viewer);
-        setTitle("View Races");
+        setTitle("Races");
 
         factory = new DaoFactory(this);
 
@@ -46,11 +47,18 @@ public class RaceViewer extends AppCompatActivity {
 
         tv_races.addDataClickListener(new RaceClickListener(this));
 
+
         String[] headers = {"Description", "Date"};
         SimpleTableHeaderAdapter headerAdapter = new SimpleTableHeaderAdapter(this, headers);
         tv_races.setHeaderAdapter(headerAdapter);
 
 
+        showExistingRaces();
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
         showExistingRaces();
     }
 
@@ -67,6 +75,7 @@ public class RaceViewer extends AppCompatActivity {
             data[index][RACEDESCRIPTION] = r.getDescription();
             data[index][RACEDATE] = r.getDate();
             data[index][RACEID] = r.getId().toString();
+            index ++;
         }
         tv_races.setDataAdapter(new SimpleTableDataAdapter(this, data));
         factory.getDaoSession().clear();

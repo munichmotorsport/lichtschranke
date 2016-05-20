@@ -28,7 +28,7 @@ public class CarViewer extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_car_viewer);
-        setTitle("View Cars");
+        setTitle("Cars");
 
         carNames = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
         factory = new DaoFactory(this);

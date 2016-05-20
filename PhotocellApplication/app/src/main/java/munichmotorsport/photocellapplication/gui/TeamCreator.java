@@ -20,7 +20,7 @@ public class TeamCreator extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_team_creator);
-        setTitle("Neues Team erstellen");
+        setTitle("Create New Team");
 
         factory = new DaoFactory(this);
     }

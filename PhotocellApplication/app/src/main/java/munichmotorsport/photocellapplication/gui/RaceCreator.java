@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -20,6 +21,7 @@ import de.greenrobot.dao.AbstractDao;
 import munichmotorsport.photocellapplication.R;
 import munichmotorsport.photocellapplication.utils.DaoFactory;
 import munichmotorsport.photocellapplication.utils.DaoTypes;
+import munichmotorsport.photocellapplication.utils.Utils;
 import timber.log.Timber;
 
 
@@ -30,17 +32,20 @@ public class RaceCreator extends AppCompatActivity {
     private long RaceID;
     private Calendar calendar;
     private SimpleDateFormat dateFormat;
+    private TextView tv_warning;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_race_creator);
-        setTitle("Neues Rennen erstellen");
+        setTitle("Create New Race");
 
         factory = new DaoFactory(this);
         dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
+
+        tv_warning = (TextView)findViewById(R.id.tv_warning);
 
         spn_modus = (Spinner) findViewById(R.id.spn_modus);
         ArrayList<String> modi = new ArrayList<>();
@@ -86,21 +91,25 @@ public class RaceCreator extends AppCompatActivity {
 
 
         EditText et_description = (EditText) findViewById(R.id.et_description);
-        String description = et_description.getText().toString();
-        if(type == "Testing") {
-            Intent intent = new Intent(this, TestingRaceCreator.class);
-            intent.putExtra("raceDescription", description);
-            startActivity(intent);
+        if(Utils.nameCheck(et_description.getText().toString())) {
+            String description = et_description.getText().toString();
+            if (type == "Testing") {
+                Intent intent = new Intent(this, TestingRaceCreator.class);
+                intent.putExtra("raceDescription", description);
+                startActivity(intent);
+            } else {
+                Race race = new Race(null, type, description, false, formattedDate, "");
+                RaceID = factory.getDao(DaoTypes.RACE).insert(race);
+                factory.closeDb();
+                toRaceTable();
+
+                // Logging
+                Timber.e("Created Race with ID: %s, Description: '%s', Modus: %s, Date: %s", RaceID, race.getDescription(), race.getType(), formattedDate);
+
+            }
         }
-        else {
-            Race race = new Race(null, type, description, false, formattedDate);
-            RaceID = factory.getDao(DaoTypes.RACE).insert(race);
-            factory.closeDb();
-            toRaceTable();
-
-            // Logging
-            Timber.e("Created Race with ID: %s, Description: '%s', Modus: %s, Date: %s", RaceID, race.getDescription(), race.getType(), formattedDate);
-
+        else{
+            tv_warning.setText("Description Required");
         }
     }
 

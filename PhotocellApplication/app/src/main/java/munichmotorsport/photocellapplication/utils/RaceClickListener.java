@@ -22,9 +22,12 @@ public class RaceClickListener implements TableDataClickListener<String[]> {
     @Override
     public void onDataClicked(int rowIndex, String[] clickedRace){
         Intent intent = new Intent(context, RaceTable.class);
+
         intent.putExtra("RaceInfo", clickedRace);
         context.startActivity(intent);
     }
+
+
 
 
 }

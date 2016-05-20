@@ -33,6 +33,7 @@ import timber.log.Timber;
 public class TestingRaceCreator extends AppCompatActivity {
     EditText et_config;
     EditText et_weather;
+    EditText et_driver;
     Spinner spn_cars;
     DaoFactory factory;
     ArrayAdapter<String> adapter;
@@ -47,6 +48,7 @@ public class TestingRaceCreator extends AppCompatActivity {
         setContentView(R.layout.activity_testing_race_creator);
         et_config = (EditText) findViewById(R.id.et_config);
         et_weather = (EditText) findViewById(R.id.et_weather);
+        et_driver = (EditText) findViewById(R.id.et_driver);
         spn_cars = (Spinner) findViewById(R.id.spn_cars);
         tv_error = (TextView) findViewById(R.id.tv_error);
         dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -79,25 +81,26 @@ public class TestingRaceCreator extends AppCompatActivity {
 
     public void createRace(View view) {
         factory.initializeDB();
-        if (!Utils.nameCheck(et_config.getText().toString()) || !Utils.nameCheck(et_weather.getText().toString()) || spn_cars.getSelectedItem() == null) {
-            Timber.e("No config-, weather input or car selected");
-            tv_error.setText("Please fill in all Informations for Testing");
+        if (!Utils.nameCheck(et_config.getText().toString()) || !Utils.nameCheck(et_weather.getText().toString()) || spn_cars.getSelectedItem() == null || !Utils.nameCheck(et_driver.getText().toString())) {
+            Timber.e("No config-, weather-, driver input or car selected");
+            tv_error.setText("Please fill in all Informations for Testing ");
             factory.closeDb();
         } else {
             String carName = spn_cars.getSelectedItem().toString();
             List<Car> connectedCar = factory.getDao(DaoTypes.CAR).queryBuilder().where(CarDao.Properties.Name.eq(carName)).list();
             List<Config> connectedConfig = factory.getDao(DaoTypes.CONFIG).queryBuilder().where(ConfigDao.Properties.CarID.eq(connectedCar.get(0).getId()), ConfigDao.Properties.Current.eq(true)).list();
             String comment = et_config.getText().toString();
+            String driver = et_driver.getText().toString();
             Config oldConfig = connectedConfig.get(0);
             oldConfig.setCurrent(false);
-            Config newConfig = new Config(null, comment, connectedConfig.get(0).getBarcode(), connectedConfig.get(0).getDriver(), true, connectedCar.get(0).getId());
+            Config newConfig = new Config(null, comment, connectedConfig.get(0).getBarcode(), driver, true, connectedCar.get(0).getId());
             factory.getDao(DaoTypes.CONFIG).insertOrReplace(oldConfig);
             factory.getDao(DaoTypes.CONFIG).insert(newConfig);
             calendar = Calendar.getInstance();
             String formattedDate = dateFormat.format(calendar.getTime());
             calendar.clear();
             tv_error.setText("");
-            Race race = new Race(null, "Testing", description, false, formattedDate);
+            Race race = new Race(null, "Testing", description, false, formattedDate, et_weather.getText().toString());
             long raceId = factory.getDao(DaoTypes.RACE).insert(race);
             Lap dummyLap = new Lap(null, null, null, null, -1, raceId, newConfig.getId(), connectedCar.get(0).getId());
             factory.getDao(DaoTypes.LAP).insert(dummyLap);
@@ -105,7 +108,7 @@ public class TestingRaceCreator extends AppCompatActivity {
             Intent intent = new Intent(this, RaceTable.class);
             String[] raceInfo = new String[3];
             raceInfo[2] = Long.toString(raceId);
-            intent.putExtra("RaceInfo", raceId);
+            intent.putExtra("RaceInfo", raceInfo);
             factory.closeDb();
             factory.getDaoSession().clear();
             startActivity(intent);

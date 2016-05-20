@@ -1,5 +1,7 @@
 package munichmotorsport.photocellapplication.gui;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -37,6 +39,17 @@ public class CarSettings extends AppCompatActivity {
         et_carName.setHint(clickedCar.get(0).getName());
     }
 
+    @Override
+    protected void onResume(){
+        super.onResume();
+        factory.initializeDB();
+        if(factory.getDao(DaoTypes.CAR).queryBuilder().where(CarDao.Properties.Id.eq(carId)).list().isEmpty()){
+            Intent intent = new Intent(this, StartScreen.class);
+            startActivity(intent);
+        }
+        factory.closeDb();
+    }
+
 
     /**
      * go to activity ConfigurationSettings
@@ -72,14 +85,36 @@ public class CarSettings extends AppCompatActivity {
     }
 
     /**
-     * delete car from db
+     * display a warning before delete
      * @param view
      */
-    public void deleteCar(View view) {
+    public void deleteCarWarning(View view) {
+        new AlertDialog.Builder(this)
+                .setTitle("Reset Race")
+                .setMessage("Are you sure you want to delete this car? It can't be undone.")
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        deleteCurrentCar();
+                    }
+                })
+                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // do nothing
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
+    }
+
+    /**
+     * delete current car from db
+     */
+    public void deleteCurrentCar(){
         factory.initializeDB();
         factory.getDao(DaoTypes.CAR).delete(clickedCar.get(0));
-        factory.closeDb();
-        Intent intent = new Intent(this, CarManager.class);
+        finish();
+        Intent intent = new Intent(this, CarViewer.class);
         startActivity(intent);
+        factory.closeDb();
     }
 }

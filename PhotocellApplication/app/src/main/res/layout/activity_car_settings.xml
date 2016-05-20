@@ -68,7 +68,7 @@
         android:layout_height="wrap_content"
         android:text="Delete car"
         android:id="@+id/btn_deleteCar"
-        android:onClick="deleteCar"
+        android:onClick="deleteCarWarning"
         android:layout_below="@+id/changeConfig"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"

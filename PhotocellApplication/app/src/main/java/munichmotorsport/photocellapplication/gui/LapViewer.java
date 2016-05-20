@@ -17,6 +17,7 @@ public class LapViewer extends AppCompatActivity {
 
     String[] lapInfo;
     TextView tv_lapId;
+    TextView tv_driver;
     TextView tv_lapNr;
     TextView tv_configComment;
     TextView tv_date;
@@ -31,6 +32,7 @@ public class LapViewer extends AppCompatActivity {
         tv_lapId = (TextView)findViewById(R.id.tv_lapId);
         tv_lapNr = (TextView)findViewById(R.id.tv_lapNr);
         tv_date = (TextView)findViewById(R.id.tv_date);
+        tv_driver = (TextView)findViewById(R.id.tv_driver);
         tv_configComment = (TextView)findViewById(R.id.tv_configComment);
 
         factory = new DaoFactory(this);
@@ -43,6 +45,7 @@ public class LapViewer extends AppCompatActivity {
         List<Config> drivenConfig = factory.getDao(DaoTypes.CONFIG).queryBuilder().where(ConfigDao.Properties.Id.eq(Long.parseLong(lapInfo[5]))).list();
         Timber.e("Driven Config: " +drivenConfig.get(0).getComment());
         tv_configComment.setText(drivenConfig.get(0).getComment());
+        tv_driver.append(drivenConfig.get(0).getDriver());
         factory.closeDb();
     }
 }

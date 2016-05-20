@@ -25,7 +25,7 @@ public class TeamViewer extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_team_viewer);
-        setTitle("View Teams");
+        setTitle("Teams");
 
         teamNames = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
         factory = new DaoFactory(this);

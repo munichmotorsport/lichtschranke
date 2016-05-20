@@ -31,7 +31,7 @@ public class RaceSettings extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_race_settings);
-        setTitle("Race Manager");
+        setTitle("Race Settings");
         factory = new DaoFactory(this);
         btn_finishRace = (Button) findViewById(R.id.btn_finishRace);
         btn_newRace = (Button) findViewById(R.id.btn_toRaceCreator);

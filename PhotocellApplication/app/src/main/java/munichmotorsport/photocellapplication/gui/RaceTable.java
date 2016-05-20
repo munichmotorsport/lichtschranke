@@ -1,5 +1,6 @@
 package munichmotorsport.photocellapplication.gui;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
@@ -141,7 +142,7 @@ public class RaceTable extends AppCompatActivity {
         List<Lap> laps = factory.getDao(DaoTypes.LAP).queryBuilder().where(
                 LapDao.Properties.Time.isNotNull(),
                 LapDao.Properties.RaceID.eq(raceId),
-                LapDao.Properties.Number.notEq(0)).orderDesc(LapDao.Properties.Date)
+                LapDao.Properties.Number.notEq(0)).orderDesc(LapDao.Properties.Id)
                 .list();
         String[][] data = new String[laps.size()][6];
         if (laps.size() != 0) {
@@ -149,7 +150,7 @@ public class RaceTable extends AppCompatActivity {
             for (Lap l : laps) {
                 for (int j = 0; j < 6; j++) {
                     List<Config> lapConfig = factory.getDao(DaoTypes.CONFIG).queryBuilder().where(ConfigDao.Properties.Id.eq(l.getConfigID())).list();
-                    if (!lapConfig.isEmpty()) {
+                    if (!lapConfig.isEmpty() && lapConfig.get(0).getCar() != null) {
                         data[index][CARNAME] = lapConfig.get(0).getCar().getName();
                     } else {
                         data[index][CARNAME] = "Deleted Car";
@@ -327,11 +328,15 @@ public class RaceTable extends AppCompatActivity {
         }
     }
 
+    /**
+     * create a file containing the race informations
+     * @param view
+     */
     public void createFile(View view) {
         factory.initializeDB();
 
-        String filename = race.getId() + "_" + race.getDescription();
-        String contentString = "Auto        Runde    Zeit                 Datum                      Config" + "\n";
+        String filename = race.getDescription() + "_" + race.getDate();
+        String contentString = "Description: "+ race.getDescription() + "    Date: " + race.getDate() + "    Weather Condition: "+race.getWeather()+"\nCar             Lap       Time                 Date                          Config                Driver" + "\n";
         try {
 
             File root = new File(getExternalCacheDir(), "Races");
@@ -340,13 +345,12 @@ public class RaceTable extends AppCompatActivity {
                 root.mkdirs();
             }
 
-
             File filepath = new File(root, filename + ".txt");
             FileWriter writer = new FileWriter(filepath);
 
             for (int i = 0; i < content.length; i++) {
                 List<Config> config = factory.getDao(DaoTypes.CONFIG).queryBuilder().where(ConfigDao.Properties.Id.eq(Long.parseLong(content[i][5]))).list();
-                contentString += content[i][0] + "      " + content[i][1] + "      " + Float.parseFloat(content[i][2]) / 1000.000 + "      " + content[i][4] + "      " + config.get(0).getComment() + "\n";
+                contentString += content[i][0] + "   ||   " + content[i][1] + "   ||   " + Float.parseFloat(content[i][2]) / 1000.000 + "   ||   " + content[i][4] + "   ||   " + config.get(0).getComment() + "   ||   " +config.get(0).getDriver()+"\n";
             }
 
             writer.append(contentString);
@@ -361,6 +365,14 @@ public class RaceTable extends AppCompatActivity {
             e.printStackTrace();
         }
         factory.closeDb();
+    }
+
+    public void deleteRace(View view){
+        factory.initializeDB();
+        factory.getDao(DaoTypes.RACE).delete(race);
+        finish();
+        Intent intent = new Intent(this, RaceViewer.class);
+        startActivity(intent);
     }
 
 

@@ -37,7 +37,7 @@ public class CarCreator extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_car_creator);
-        setTitle("Neues Auto erstellen");
+        setTitle("Create New Car");
 
         // elements
         spn_teams = (Spinner) findViewById(R.id.spn_teams);
@@ -110,7 +110,7 @@ public class CarCreator extends AppCompatActivity {
             Timber.e("Created Car with Name: %s", car.getName());
             Timber.e("Created Car for Team: %s", car.getTeamID());
 
-            Config config = new Config(null, "no comment", null, null, true, car.getId());
+            Config config = new Config(null, "no comment", null, "", true, car.getId());
             factory.getDao(DaoTypes.CONFIG).insert(config);
 
             Timber.e("Created Car with ConfigID: %s", config.getId());
