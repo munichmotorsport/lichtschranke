@@ -96,7 +96,7 @@
                 android:text="Delete Race"
                 android:id="@+id/btn_deleteRace"
                 android:layout_marginLeft="105dp"
-                android:onClick="deleteRace"
+                android:onClick="showAlertDialog"
                 android:clickable="false" />
         </LinearLayout>
 

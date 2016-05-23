@@ -1,5 +1,7 @@
 package munichmotorsport.photocellapplication.gui;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Environment;
@@ -130,6 +132,13 @@ public class RaceTable extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         stopPoll();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(this, RaceViewer.class);
+        startActivity(intent);
     }
 
     /**
@@ -367,7 +376,10 @@ public class RaceTable extends AppCompatActivity {
         factory.closeDb();
     }
 
-    public void deleteRace(View view){
+    /**
+     * delete chosen race
+     */
+    public void deleteRace(){
         factory.initializeDB();
         factory.getDao(DaoTypes.RACE).delete(race);
         finish();
@@ -375,5 +387,25 @@ public class RaceTable extends AppCompatActivity {
         startActivity(intent);
     }
 
+    /**
+     * show alert Dialog about deleting a race
+     * @param view
+     */
+    public void showAlertDialog(View view){
+        new AlertDialog.Builder(this)
+                .setTitle("Delete Race")
+                .setMessage("Are you sure you want to delete the race? This cant be undone")
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        deleteRace();
+                    }
+                })
+                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
+    }
 
 }

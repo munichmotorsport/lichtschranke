@@ -27,7 +27,6 @@ import timber.log.Timber;
 
 public class RaceViewer extends AppCompatActivity {
 
-    private ArrayAdapter<String> raceDescriptions;
     private DaoFactory factory;
     private TableView tv_races;
     private int RACEDESCRIPTION = 0;
