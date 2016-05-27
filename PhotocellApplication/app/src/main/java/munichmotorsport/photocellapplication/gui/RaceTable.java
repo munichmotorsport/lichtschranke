@@ -57,6 +57,7 @@ public class RaceTable extends AppCompatActivity {
     private Timer timer;
     private Boolean pollRunning = false;
     private Button btn_togglePoll;
+    private Button btn_deleteRace;
     private TextView tv_fastestLapInRace;
     private TextView tv_fastestLapForCar;
     private Race race;
@@ -84,6 +85,7 @@ public class RaceTable extends AppCompatActivity {
 
         tableView = (TableView) findViewById(R.id.laps);
         btn_togglePoll = (Button) findViewById(R.id.btn_togglePoll);
+        btn_deleteRace = (Button) findViewById(R.id.btn_deleteRace);
         tv_fastestLapInRace = (TextView) findViewById(R.id.tv_fastestLapInRace);
         tv_fastestLapForCar = (TextView) findViewById(R.id.tv_fastestLapForCar);
 
@@ -108,6 +110,10 @@ public class RaceTable extends AppCompatActivity {
         List<Race> raceList = factory.getDao(DaoTypes.RACE).queryBuilder().where(RaceDao.Properties.Id.eq(raceId)).list();
         race = raceList.get(0);
         factory.closeDb();
+
+        if(race.getFinished() == false) {
+            btn_deleteRace.setEnabled(false);
+        }
 
         setTitle(race.getDescription());
 
@@ -317,14 +323,8 @@ public class RaceTable extends AppCompatActivity {
                 String formattedDate = dateFormat.format(calendar.getTime());
                 calendar.clear();
 
-                Lap lapForDB;
-                if (time > 0) {
-                    lapForDB = new Lap(null, formattedDate, timestamp, time, lapNumber + 1, raceId, configId, carId);
-                } else {
-                    lapForDB = new Lap(null, formattedDate, timestamp, null, lapNumber + 1, raceId, configId, carId);
-                }
+                writeLapIntoDb(formattedDate, timestamp, time, lapNumber, configId, carId);
 
-                factory.getDao(DaoTypes.LAP).insert(lapForDB);
                 factory.getDaoSession().clear();
                 factory.closeDb();
 
@@ -334,6 +334,25 @@ public class RaceTable extends AppCompatActivity {
                 Timber.e("TimeStamp: %s", timestamp);
                 Timber.e("Time: %s", time);
             }
+        }
+
+        public void writeLapIntoDb(String date, long timestamp, long time, int lapNumber, long configId, long carId){
+            factory.initializeDB();
+            String racetype = race.getDescription();
+            Lap lapForDB;
+            if(racetype == "Skit Pad") {
+
+            }
+            else{
+                if (time > 0) {
+                    lapForDB = new Lap(null, date, timestamp, time, lapNumber + 1, raceId, configId, carId);
+                } else {
+                    lapForDB = new Lap(null, date, timestamp, null, lapNumber + 1, raceId, configId, carId);
+                }
+                factory.getDao(DaoTypes.LAP).insert(lapForDB);
+            }
+            factory.getDaoSession().clear();
+            factory.closeDb();
         }
     }
 
