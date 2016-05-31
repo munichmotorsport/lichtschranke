@@ -1,4 +1,4 @@
-package org.gruenewald.mock.mock;
+package de.nilsgruenewald.mock;
 
 import java.util.TimerTask;
 

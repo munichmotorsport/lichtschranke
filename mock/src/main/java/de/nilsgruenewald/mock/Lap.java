@@ -1,4 +1,4 @@
-package org.gruenewald.mock.mock;
+package de.nilsgruenewald.mock;
 
 public class Lap {
 	

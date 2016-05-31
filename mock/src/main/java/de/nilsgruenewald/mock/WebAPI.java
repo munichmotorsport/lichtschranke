@@ -1,4 +1,4 @@
-package org.gruenewald.mock.mock;
+package de.nilsgruenewald.mock;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
