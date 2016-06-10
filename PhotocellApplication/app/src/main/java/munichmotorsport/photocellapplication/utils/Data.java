@@ -7,5 +7,6 @@ public class Data {
     // colors in ViewCurrentRaceTable
     public static int textColor = 0x99000000;
     public static int fastestLapInRace = 0xff00ff00;
+    private String test = "";
     public static int fastestLapForCar = 0xffff00ff;
 }
