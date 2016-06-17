@@ -50,7 +50,7 @@ public class RaceCreator extends AppCompatActivity {
         spn_modus = (Spinner) findViewById(R.id.spn_modus);
         ArrayList<String> modi = new ArrayList<>();
         modi.add("Acceleration");
-        modi.add("Auto Cross");
+        modi.add("AutoX");
         modi.add("Endurance");
         modi.add("Skit Pad");
         modi.add("Testing");

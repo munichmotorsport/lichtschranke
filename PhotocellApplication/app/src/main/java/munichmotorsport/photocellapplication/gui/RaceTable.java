@@ -68,8 +68,11 @@ public class RaceTable extends AppCompatActivity {
     private int LAPID = 3;
     private int LAPDATE = 4;
     private int CONFIGID = 5;
+    private int acc_lap_written = 0;
+    private long acc_timestamp = 0;
     private String[] raceInfo;
-
+    private SimpleTableHeaderAdapter headerAdapter;
+    private String racetype;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,10 +81,20 @@ public class RaceTable extends AppCompatActivity {
 
         raceInfo = getIntent().getStringArrayExtra("RaceInfo");
         raceId = Long.parseLong(raceInfo[2]);
-
         Timber.e("RaceID: %s", raceId);
         setContentView(R.layout.activity_race_table);
         factory = new DaoFactory(this);
+
+        List<Race> raceList = factory.getDao(DaoTypes.RACE).queryBuilder().where(RaceDao.Properties.Id.eq(raceId)).list();
+        race = raceList.get(0);
+        if(!race.getLapList().isEmpty()){
+            if (race.getLapList().get(0).getTimestamp() != null) {
+                acc_timestamp = race.getLapList().get(0).getTimestamp();
+            }
+        }
+        racetype = race.getType();
+        Timber.e(racetype);
+
 
         tableView = (TableView) findViewById(R.id.laps);
         btn_togglePoll = (Button) findViewById(R.id.btn_togglePoll);
@@ -96,8 +109,14 @@ public class RaceTable extends AppCompatActivity {
             Timber.e("tableview = null");
         } else {
             Timber.e(Integer.toString(tableView.getColumnCount()));
-            String[] headers = {"Car", "Lap", "Time"};
-            SimpleTableHeaderAdapter headerAdapter = new SimpleTableHeaderAdapter(this, headers);
+            if(racetype.equals("Acceleration") || racetype.equals("Skit Pad")) {
+                String[] headers = {"Car", "Run", "Time"};
+                headerAdapter = new SimpleTableHeaderAdapter(this, headers);
+            }
+            else {
+                String[] headers = {"Car", "Lap", "Time"};
+                headerAdapter = new SimpleTableHeaderAdapter(this, headers);
+            }
             tableView.setHeaderAdapter(headerAdapter);
             tableView.setColumnWeight(0, 2);
             tableView.setColumnWeight(2, 2);
@@ -107,8 +126,7 @@ public class RaceTable extends AppCompatActivity {
         toggleButtonText();
 
         factory.initializeDB();
-        List<Race> raceList = factory.getDao(DaoTypes.RACE).queryBuilder().where(RaceDao.Properties.Id.eq(raceId)).list();
-        race = raceList.get(0);
+
         factory.closeDb();
 
         if(race.getFinished() == false) {
@@ -336,14 +354,44 @@ public class RaceTable extends AppCompatActivity {
             }
         }
 
+        /**
+         * write a lap into the db depending on the race modus
+         * @param date
+         * @param timestamp
+         * @param time
+         * @param lapNumber
+         * @param configId
+         * @param carId
+         */
         public void writeLapIntoDb(String date, long timestamp, long time, int lapNumber, long configId, long carId){
             factory.initializeDB();
-            String racetype = race.getDescription();
-            Lap lapForDB;
-            if(racetype == "Skit Pad") {
+            Lap lapForDB = null;
+            if(racetype.equals("Acceleration")) {
+
+                if(acc_lap_written == 0 && time > 0){
+                    if(acc_timestamp != 0) {
+                        lapForDB = new Lap(null, date,timestamp, timestamp - acc_timestamp, lapNumber + 1, raceId, configId, carId);
+                    }
+                    else{
+                        lapForDB = new Lap(null, date, timestamp, time, lapNumber + 1, raceId, configId, carId);
+                    }
+                    acc_lap_written = 1;
+                }
+               else if(acc_lap_written == 0 && time < 1){
+                    lapForDB = new Lap(null, date, timestamp, null, lapNumber + 1, raceId, configId, carId);
+                }
+                else {
+                    acc_timestamp = timestamp;
+                    acc_lap_written = 0;
+                }
+                if(lapForDB != null) {
+                    factory.getDao(DaoTypes.LAP).insert(lapForDB);
+                }
+            }
+            if(racetype.equals("Skit Pad")) {
 
             }
-            else{
+            if(racetype.equals("Endurance") || racetype.equals("AutoX") || racetype.equals("Testing")){
                 if (time > 0) {
                     lapForDB = new Lap(null, date, timestamp, time, lapNumber + 1, raceId, configId, carId);
                 } else {
