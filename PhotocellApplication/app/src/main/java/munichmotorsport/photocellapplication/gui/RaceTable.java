@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -21,14 +20,12 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import db.Car;
-import db.CarDao;
 import db.Config;
 import db.ConfigDao;
 import db.Lap;
@@ -302,7 +299,7 @@ public class RaceTable extends AppCompatActivity {
                     List<Config> config = factory.getDao(DaoTypes.CONFIG).queryBuilder().where(ConfigDao.Properties.Barcode.eq(barCode), ConfigDao.Properties.Current.eq(true)).list();
 
                     if (config.size() == 1) {
-                        configId = config.get(0).getId();
+                        configId = config.get(0).getId();http://nilsgruenewald.de/webapi/getLastLap
                         carId = config.get(0).getCarID();
                     } else {
                         Team dummyTeam = new Team(null, "Dummy Team");

@@ -20,21 +20,38 @@
         </activity>
         <activity android:name=".gui.RaceCreator" />
         <activity android:name=".gui.CarCreator" />
-        <activity android:name=".gui.TeamCreator" android:noHistory="true" />
+        <activity
+            android:name=".gui.TeamCreator"
+            android:noHistory="true" />
         <activity android:name=".gui.CarManager" />
-        <activity android:name=".gui.CarViewer" android:launchMode = "singleInstance" />
+        <activity
+            android:name=".gui.CarViewer"
+            android:launchMode="singleInstance" />
         <activity android:name=".gui.CarSelector" />
         <activity android:name=".gui.RaceSettings" />
         <activity android:name=".gui.RaceStarter" />
         <activity android:name=".gui.TeamManager" />
-        <activity android:name=".gui.TeamViewer" android:launchMode = "singleInstance" />
-        <activity android:name=".gui.RaceViewer" android:launchMode = "singleInstance" />
+        <activity
+            android:name=".gui.TeamViewer"
+            android:launchMode="singleInstance" />
+        <activity
+            android:name=".gui.RaceViewer"
+            android:launchMode="singleInstance" />
         <activity android:name=".gui.RaceTable" />
         <activity android:name=".gui.CarSettings" />
-        <activity android:name=".gui.ConfigurationSettings" android:noHistory="true"/>
-        <activity android:name=".gui.TeamRelationModifier" android:noHistory="true" />
-        <activity android:name=".gui.LapViewer" android:noHistory="true" />
-        <activity android:name=".gui.TestingRaceCreator" android:noHistory="true" />
+        <activity
+            android:name=".gui.ConfigurationSettings"
+            android:noHistory="true" />
+        <activity
+            android:name=".gui.TeamRelationModifier"
+            android:noHistory="true" />
+        <activity
+            android:name=".gui.LapViewer"
+            android:noHistory="true" />
+        <activity
+            android:name=".gui.TestingRaceCreator"
+            android:noHistory="true" />
+        <activity android:name=".gui.ManualLapAttachment"></activity>
     </application>
 
 </manifest>
