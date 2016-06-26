@@ -54,6 +54,7 @@ public class RaceCreator extends AppCompatActivity {
         modi.add("Endurance");
         modi.add("Skit Pad");
         modi.add("Testing");
+        modi.add("Pre Event");
         ArrayAdapter<String> dropDown = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
         dropDown.addAll(modi);
         spn_modus.setAdapter(dropDown);
@@ -97,7 +98,15 @@ public class RaceCreator extends AppCompatActivity {
                 Intent intent = new Intent(this, TestingRaceCreator.class);
                 intent.putExtra("raceDescription", description);
                 startActivity(intent);
-            } else {
+            }
+            else if (type == "Pre Event"){
+                Race race = new Race(null, type, description, false, formattedDate, "");
+                Intent intent = new Intent(this, ManualLapAttachment.class);
+                RaceID = factory.getDao(DaoTypes.RACE).insert(race);
+                intent.putExtra("raceId", RaceID);
+                startActivity(intent);
+            }
+            else {
                 Race race = new Race(null, type, description, false, formattedDate, "");
                 RaceID = factory.getDao(DaoTypes.RACE).insert(race);
                 factory.closeDb();

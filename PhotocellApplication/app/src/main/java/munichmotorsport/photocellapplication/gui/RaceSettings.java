@@ -118,19 +118,28 @@ public class RaceSettings extends AppCompatActivity {
     }
 
     /**
-     * go to Activity "Current Race"
+     * go to Activity "RaceTable" of "ManualLapAttachment"
      *
      * @param view
      */
     public void toCurrentRace(View view) {
         factory.initializeDB();
         List<Race> races = factory.getDao(DaoTypes.RACE).queryBuilder().where(RaceDao.Properties.Finished.eq(false)).list();
-        Intent intent = new Intent(this, RaceTable.class);
-        String[] raceId = new String[3];
-        raceId[2] = races.get(0).getId().toString();
-        intent.putExtra("RaceInfo", raceId);
+        Race currentRace = races.get(0);
+        if(currentRace.getType().equals("Pre Event")) {
+            Intent intent = new Intent(this, ManualLapAttachment.class);
+            long RaceID = currentRace.getId();
+            intent.putExtra("raceId", RaceID);
+            this.startActivity(intent);
+        }
+        else {
+            String[] raceId = new String[3];
+            raceId[2] = races.get(0).getId().toString();
+            Intent intent = new Intent(this, RaceTable.class);
+            intent.putExtra("RaceInfo", raceId);
+            this.startActivity(intent);
+        }
         factory.closeDb();
-        this.startActivity(intent);
     }
 
     /**

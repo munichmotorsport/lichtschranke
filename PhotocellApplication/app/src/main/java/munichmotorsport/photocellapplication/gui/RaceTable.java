@@ -302,7 +302,7 @@ public class RaceTable extends AppCompatActivity {
                     List<Config> config = factory.getDao(DaoTypes.CONFIG).queryBuilder().where(ConfigDao.Properties.Barcode.eq(barCode), ConfigDao.Properties.Current.eq(true)).list();
 
                     if (config.size() == 1) {
-                        configId = config.get(0).getId();
+                        configId = config.get(0).getId();http://nilsgruenewald.de/webapi/getLastLap
                         carId = config.get(0).getCarID();
                     } else {
                         Team dummyTeam = new Team(null, "Dummy Team");
