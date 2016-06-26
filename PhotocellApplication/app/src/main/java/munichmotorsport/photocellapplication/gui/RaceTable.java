@@ -302,7 +302,7 @@ public class RaceTable extends AppCompatActivity {
                     List<Config> config = factory.getDao(DaoTypes.CONFIG).queryBuilder().where(ConfigDao.Properties.Barcode.eq(barCode), ConfigDao.Properties.Current.eq(true)).list();
 
                     if (config.size() == 1) {
-                        configId = config.get(0).getId();http://nilsgruenewald.de/webapi/getLastLap
+                        configId = config.get(0).getId();
                         carId = config.get(0).getCarID();
                     } else {
                         Team dummyTeam = new Team(null, "Dummy Team");
@@ -366,7 +366,9 @@ public class RaceTable extends AppCompatActivity {
             }
             Timber.e("CarName sent to server: %s", messageCarName);
 
-            messageTime = "" + time;
+
+            Double time2 = Float.parseFloat(""+time) / 1000.0;
+            messageTime = time2+"s";
             Timber.e("CarName sent to server: %s", messageTime);
 
             new HttpSendCarNameTask().execute();
