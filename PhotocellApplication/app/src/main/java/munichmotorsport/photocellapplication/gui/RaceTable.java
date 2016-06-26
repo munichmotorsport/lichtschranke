@@ -342,7 +342,6 @@ public class RaceTable extends AppCompatActivity {
                 calendar.clear();
 
                 writeLapIntoDb(formattedDate, timestamp, time, lapNumber, configId, carId);
-                sendLapToServer(configId, time);
 
                 factory.getDaoSession().clear();
                 factory.closeDb();
@@ -396,6 +395,8 @@ public class RaceTable extends AppCompatActivity {
                 if(acc_lap_written == 0 && time > 0){
                     if(acc_timestamp != 0) {
                         lapForDB = new Lap(null, date,timestamp, timestamp - acc_timestamp, lapNumber + 1, raceId, configId, carId);
+                        sendLapToServer(configId, time);
+                        factory.initializeDB();
                     }
                     else{
                         lapForDB = new Lap(null, date, timestamp, time, lapNumber + 1, raceId, configId, carId);
@@ -419,6 +420,8 @@ public class RaceTable extends AppCompatActivity {
             if(racetype.equals("Endurance") || racetype.equals("AutoX") || racetype.equals("Testing")){
                 if (time > 0) {
                     lapForDB = new Lap(null, date, timestamp, time, lapNumber + 1, raceId, configId, carId);
+                    sendLapToServer(configId, time);
+                    factory.initializeDB();
                 } else {
                     lapForDB = new Lap(null, date, timestamp, null, lapNumber + 1, raceId, configId, carId);
                 }

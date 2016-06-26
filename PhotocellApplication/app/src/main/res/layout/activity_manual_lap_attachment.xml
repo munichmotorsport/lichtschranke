@@ -20,7 +20,7 @@
         android:id="@+id/ll_cars">
 
         <Button
-            android:layout_width="190dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/btn_togglePoll"
             android:onClick="togglePoll"/>
@@ -33,6 +33,5 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_toRightOf="@+id/ll_cars"
-        android:layout_toEndOf="@+id/ll_cars"
-        android:layout_alignParentTop="true" />
+        android:layout_toEndOf="@+id/ll_cars" />
 </RelativeLayout>

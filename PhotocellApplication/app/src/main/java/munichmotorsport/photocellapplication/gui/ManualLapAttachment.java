@@ -54,6 +54,8 @@ public class ManualLapAttachment extends AppCompatActivity {
     private long timestamp;
     private Calendar calendar;
     private SimpleDateFormat dateFormat;
+    private String messageCarName;
+    private String messageTime;
 
 
 
@@ -76,12 +78,6 @@ public class ManualLapAttachment extends AppCompatActivity {
         toggleButtonText();
         dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-        timestamps.add(23435L);
-        timestamps.add(645634L);
-        timestamps.add(2654L);
-        timestamps.add(86756L);
-        timestamps.add(34565L);
-        timestamps.add(645245L);
 
         for (Car car : listOfCars) {
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
@@ -259,10 +255,11 @@ public class ManualLapAttachment extends AppCompatActivity {
 
             if (time != 0) {
                 lapForDB = new Lap(null, formattedDate, timestamp, time, lapNumber + 1, raceId, configId, carId);
+                sendLapToServer(configId, time);
             } else {
                 lapForDB = new Lap(null, formattedDate, timestamp, null, lapNumber + 1, raceId, configId, carId);
             }
-
+            factory.initializeDB();
             factory.getDao(DaoTypes.LAP).insert(lapForDB);
             factory.getDaoSession().clear();
             factory.closeDb();
@@ -270,4 +267,79 @@ public class ManualLapAttachment extends AppCompatActivity {
             fillTimestamps();
 
         }
+
+    class HttpSendCarNameTask extends AsyncTask<Void, Void, LapDto> {
+
+        @Override
+        protected LapDto doInBackground(Void... params) {
+
+            try {
+                final String url = Data.url_pushCarName;
+
+                RestTemplate restTemplate = new RestTemplate();
+                restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
+                restTemplate.postForObject(url, messageCarName, String.class);
+
+                return null;
+            } catch (HttpClientErrorException e) {
+                return null;
+            } catch (ResourceAccessException e) {
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(LapDto lapResponse) {
+        }
+    }
+
+    public void sendLapToServer(long configId, long time) {
+        factory.initializeDB();
+
+        messageCarName = "";
+        List<Config> lapConfig = factory.getDao(DaoTypes.CONFIG).queryBuilder().where(ConfigDao.Properties.Id.eq(configId)).list();
+        if (!lapConfig.isEmpty() && lapConfig.get(0).getCar() != null) {
+            messageCarName =lapConfig.get(0).getCar().getName();
+        } else {
+            messageCarName = "Deleted Car";
+        }
+        Timber.e("CarName sent to server: %s", messageCarName);
+
+        messageTime = "" + time;
+        Timber.e("CarName sent to server: %s", messageTime);
+
+        new HttpSendCarNameTask().execute();
+        new HttpSendTimeTask().execute();
+
+        factory.getDaoSession().clear();
+        factory.closeDb();
+
+
+    }
+
+    class HttpSendTimeTask extends AsyncTask<Void, Void, LapDto> {
+
+        @Override
+        protected LapDto doInBackground(Void... params) {
+
+            try {
+                final String url = Data.url_pushTime;
+
+                RestTemplate restTemplate = new RestTemplate();
+                restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
+                restTemplate.postForObject(url, messageTime, String.class);
+
+                return null;
+            } catch (HttpClientErrorException e) {
+                return null;
+            } catch (ResourceAccessException e) {
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(LapDto lapResponse) {
+
+        }
+    }
 }
