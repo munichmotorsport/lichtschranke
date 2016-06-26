@@ -46,12 +46,12 @@ public class ManualLapAttachment extends AppCompatActivity {
     private Boolean pollRunning = false;
     private Button btn_togglePoll;
     private Timer timer;
-    DaoFactory factory;
-    ListView lv;
-    long raceId;
-    Race race;
-    long time;
-    long timestamp;
+    private DaoFactory factory;
+    private ListView lv;
+    private long raceId;
+    private Race race;
+    private long time;
+    private long timestamp;
     private Calendar calendar;
     private SimpleDateFormat dateFormat;
 
@@ -74,6 +74,14 @@ public class ManualLapAttachment extends AppCompatActivity {
         List<Race> currentRace = factory.getDao(DaoTypes.RACE).queryBuilder().where(RaceDao.Properties.Id.eq(raceId)).list();
         race = currentRace.get(0);
         toggleButtonText();
+        dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+        timestamps.add(23435L);
+        timestamps.add(645634L);
+        timestamps.add(2654L);
+        timestamps.add(86756L);
+        timestamps.add(34565L);
+        timestamps.add(645245L);
 
         for (Car car : listOfCars) {
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
@@ -86,10 +94,13 @@ public class ManualLapAttachment extends AppCompatActivity {
             ll.addView(btn, params);
             btn.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View view) {
-                        addTimeToLap(carId);
+                        if(!timestamps.isEmpty()) {
+                            addTimeToLap(carId);
+                        }
                 }
             });
         }
+        fillTimestamps();
     }
 
     @Override
@@ -209,11 +220,20 @@ public class ManualLapAttachment extends AppCompatActivity {
         }
 
         public void addTimeToLap(long carId){
+            factory.initializeDB();
             Timber.e("CarId: %s", carId);
+            timestamp = timestamps.get(0);
+            if(timestamps.size() > 1) {
+                timestamps = timestamps.subList(1, timestamps.size());
+            }
+            else{
+                timestamps.clear();
+            }
             List<Lap> lapsOfCarInRace = factory.getDao(DaoTypes.LAP).queryBuilder().where(
                     LapDao.Properties.RaceID.eq(raceId),
                     LapDao.Properties.CarID.eq(carId))
                     .list();
+
             List<Config> config = factory.getDao(DaoTypes.CONFIG).queryBuilder().where(ConfigDao.Properties.CarID.eq(carId), ConfigDao.Properties.Current.eq(true)).list();
             Lap lapForDB;
             long configId = config.get(0).getId();
@@ -221,11 +241,11 @@ public class ManualLapAttachment extends AppCompatActivity {
 
             int lapNumber = -1;
             Lap lastlap = null;
-            for (int i = 0; i < lapsOfCarInRace.size(); i++) {
-                int actualNumber = lapsOfCarInRace.get(i).getNumber();
+            for (Lap lap:lapsOfCarInRace) {
+                int actualNumber = lap.getNumber();
                 if (actualNumber > lapNumber) {
                     lapNumber = actualNumber;
-                    lastlap = lapsOfCarInRace.get(i);
+                    lastlap = lap;
                 }
             }
 
@@ -237,7 +257,7 @@ public class ManualLapAttachment extends AppCompatActivity {
             String formattedDate = dateFormat.format(calendar.getTime());
             calendar.clear();
 
-            if (time > 0) {
+            if (time != 0) {
                 lapForDB = new Lap(null, formattedDate, timestamp, time, lapNumber + 1, raceId, configId, carId);
             } else {
                 lapForDB = new Lap(null, formattedDate, timestamp, null, lapNumber + 1, raceId, configId, carId);
@@ -246,6 +266,8 @@ public class ManualLapAttachment extends AppCompatActivity {
             factory.getDao(DaoTypes.LAP).insert(lapForDB);
             factory.getDaoSession().clear();
             factory.closeDb();
+
+            fillTimestamps();
 
         }
 }
