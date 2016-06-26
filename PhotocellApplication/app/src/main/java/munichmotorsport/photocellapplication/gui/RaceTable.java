@@ -435,7 +435,7 @@ public class RaceTable extends AppCompatActivity {
         protected LapDto doInBackground(Void... params) {
 
             try {
-                final String url = "http://nilsgruenewald.de/webapi/viewer/saveLap";
+                final String url = Data.url_pushCarName;
 
                 RestTemplate restTemplate = new RestTemplate();
                 restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
@@ -460,7 +460,7 @@ public class RaceTable extends AppCompatActivity {
         protected LapDto doInBackground(Void... params) {
 
             try {
-                final String url = "http://nilsgruenewald.de/webapi/viewer/saveTime";
+                final String url = Data.url_pushTime;
 
                 RestTemplate restTemplate = new RestTemplate();
                 restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
