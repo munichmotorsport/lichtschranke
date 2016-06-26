@@ -1,18 +1,27 @@
 package munichmotorsport.photocellapplication.gui;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.springframework.http.HttpMethod;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.ResourceAccessException;
+import org.springframework.web.client.RestTemplate;
+
 import java.util.List;
 
 import db.Race;
 import munichmotorsport.photocellapplication.R;
+import munichmotorsport.photocellapplication.model.LapDto;
 import munichmotorsport.photocellapplication.utils.DaoFactory;
 import munichmotorsport.photocellapplication.utils.DaoTypes;
+import munichmotorsport.photocellapplication.utils.Data;
 import timber.log.Timber;
 
 public class StartScreen extends AppCompatActivity {

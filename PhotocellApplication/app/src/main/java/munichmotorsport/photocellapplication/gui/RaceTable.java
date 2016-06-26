@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -21,14 +20,12 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import db.Car;
-import db.CarDao;
 import db.Config;
 import db.ConfigDao;
 import db.Lap;
@@ -73,6 +70,9 @@ public class RaceTable extends AppCompatActivity {
     private String[] raceInfo;
     private SimpleTableHeaderAdapter headerAdapter;
     private String racetype;
+    private String messageCarName;
+    private String messageTime;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -342,6 +342,7 @@ public class RaceTable extends AppCompatActivity {
                 calendar.clear();
 
                 writeLapIntoDb(formattedDate, timestamp, time, lapNumber, configId, carId);
+                sendLapToServer(configId, time);
 
                 factory.getDaoSession().clear();
                 factory.closeDb();
@@ -352,6 +353,30 @@ public class RaceTable extends AppCompatActivity {
                 Timber.e("TimeStamp: %s", timestamp);
                 Timber.e("Time: %s", time);
             }
+        }
+
+        public void sendLapToServer(long configId, long time) {
+            factory.initializeDB();
+
+            messageCarName = "";
+            List<Config> lapConfig = factory.getDao(DaoTypes.CONFIG).queryBuilder().where(ConfigDao.Properties.Id.eq(configId)).list();
+            if (!lapConfig.isEmpty() && lapConfig.get(0).getCar() != null) {
+                messageCarName =lapConfig.get(0).getCar().getName();
+            } else {
+                messageCarName = "Deleted Car";
+            }
+            Timber.e("CarName sent to server: %s", messageCarName);
+
+            messageTime = "" + time;
+            Timber.e("CarName sent to server: %s", messageTime);
+
+            new HttpSendCarNameTask().execute();
+            new HttpSendTimeTask().execute();
+
+            factory.getDaoSession().clear();
+            factory.closeDb();
+
+
         }
 
         /**
@@ -401,6 +426,57 @@ public class RaceTable extends AppCompatActivity {
             }
             factory.getDaoSession().clear();
             factory.closeDb();
+        }
+    }
+
+    class HttpSendCarNameTask extends AsyncTask<Void, Void, LapDto> {
+
+        @Override
+        protected LapDto doInBackground(Void... params) {
+
+            try {
+                final String url = "http://nilsgruenewald.de/webapi/viewer/saveLap";
+
+                RestTemplate restTemplate = new RestTemplate();
+                restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
+                restTemplate.postForObject(url, messageCarName, String.class);
+
+                return null;
+            } catch (HttpClientErrorException e) {
+                return null;
+            } catch (ResourceAccessException e) {
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(LapDto lapResponse) {
+        }
+    }
+
+    class HttpSendTimeTask extends AsyncTask<Void, Void, LapDto> {
+
+        @Override
+        protected LapDto doInBackground(Void... params) {
+
+            try {
+                final String url = "http://nilsgruenewald.de/webapi/viewer/saveTime";
+
+                RestTemplate restTemplate = new RestTemplate();
+                restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
+                restTemplate.postForObject(url, messageTime, String.class);
+
+                return null;
+            } catch (HttpClientErrorException e) {
+                return null;
+            } catch (ResourceAccessException e) {
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(LapDto lapResponse) {
+
         }
     }
 
